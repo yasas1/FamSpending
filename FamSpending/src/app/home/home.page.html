@@ -24,7 +24,7 @@
       </ion-button>
     </ion-col>
     <ion-col size="6">
-      <ion-button (click)="addExpendituresDB()" expand="block" fill="outline">
+      <ion-button (click)="getExpendituresDB()" expand="block" fill="outline">
         Get Spendings
       </ion-button>
     </ion-col>
@@ -73,8 +73,8 @@
                     -
                     {{event.endTime|date: 'HH:mm'}}
                 </span> -->
-           
-            <span class="event-detail">  {{event.title}}</span>
+            <span class="monthview-eventdetail-timecolumn">  {{event.startTime|date: 'EEEE '}} : </span>
+            <span class="event-detail">   {{ event.title}}</span>
         </ion-item>
         <ion-item *ngIf="selectedDate?.events.length==0">
             <div class="no-events-label">{{noEventsLabel}}</div>
