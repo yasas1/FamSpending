@@ -2,7 +2,6 @@
   <ion-toolbar>
     <ion-title>New Spending</ion-title>
 
-    <!-- Side menu ion-buttons -->
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
@@ -20,98 +19,99 @@
   </div>
   <br>
 
-  <div >
+  <div> 
 
-    <ion-item>
-      <ion-label class="fontClass">Date</ion-label>
-      <ion-input type='text'  [(ngModel)]="date" name="date" > </ion-input>
-    </ion-item>
-    <br><br>
-    
+    <form [formGroup]="expenditureForm" >
 
-    <ion-item>
-      <ion-label class="fontClass">Member</ion-label>
-      <ion-select interface="popover" [(ngModel)]="member" name="member">
-        <ion-select-option *ngFor="let member of members" [value]="member.id">{{member.name}}</ion-select-option >
-      </ion-select>
-    </ion-item>
-    <br><br>
-
-    <ion-item>
-      <ion-label class="fontClass">Category</ion-label>
-      <ion-select interface="popover"  [(ngModel)]="category" name="category">
-        <ion-select-option  *ngFor="let categorie of categories" [value]="categorie.id">{{categorie.name}}</ion-select-option >
-      </ion-select>
-    </ion-item>
-    <br><br>
-
-    <ion-item>
-      <ion-label class="fontClass">Notes</ion-label>
-      <ion-textarea clearOnEdit="true" [(ngModel)]="description" name="description"></ion-textarea>
-    </ion-item>
-    <br>
-
-    <ion-radio-group [(ngModel)]="unnecessary"> 
-
-      <ion-grid>
-
-        <ion-row >
-
-          <ion-col size="6">
-            <ion-item>
-              <ion-label class="fontClass">Necessary</ion-label>
-              <ion-radio [value]="0" ></ion-radio>
-            </ion-item>
-          </ion-col>
-
-          <ion-col size="6">
-            <ion-item>
-              <ion-label class="fontClass">Unnecessary</ion-label>
-              <ion-radio [value]="1"></ion-radio>
-            </ion-item>
-          </ion-col>
-
-        </ion-row>
-
-     </ion-grid>
-
-    </ion-radio-group>
+      <ion-item>
+        <ion-label class="fontClass">Date</ion-label>
+        <ion-input type='text'  [(ngModel)]="date" name="date" formControlName="date" > </ion-input>
+      </ion-item>
+      <br><br>
       
-    <br><br>
+      <ion-item>
+        <ion-label class="fontClass">Member</ion-label>
+        <ion-select interface="popover" [(ngModel)]="member" name="member" formControlName="member">
+          <ion-select-option *ngFor="let member of members" [value]="member.id">{{member.name}}</ion-select-option >
+        </ion-select>
+      </ion-item>
+      <br><br>
 
-    <ion-item>
-      <ion-label class="fontClass">Amount Rs. </ion-label> 
-      <ion-input  type="number" [(ngModel)]="amount" name="amount"></ion-input>
-    </ion-item>
-    <br><br>
+      <ion-item>
+        <ion-label class="fontClass">Category</ion-label>
+        <ion-select interface="popover"  [(ngModel)]="category" name="category" formControlName="category">
+          <ion-select-option  *ngFor="let categorie of categories" [value]="categorie.id">{{categorie.name}}</ion-select-option >
+        </ion-select>
+      </ion-item>
+      <br><br>
 
-    <div >
-      <ion-button class="center" (click)="getExpenditures()"  shape="round" expand="block" fill="outline">Get Expenditure </ion-button> 
-    </div>
-    
-    <br>
+      <ion-item>
+        <ion-label class="fontClass">Notes</ion-label>
+        <ion-textarea clearOnEdit="true" [(ngModel)]="description" name="description" formControlName="description"></ion-textarea>
+      </ion-item>
+      <br>
 
-    <div >
+      <ion-radio-group [(ngModel)]="unnecessary" formControlName="unnecessary">  
 
-      <ion-grid>
+        <ion-grid>
 
-        <ion-row>
+          <ion-row >
+
             <ion-col size="6">
-              <ion-button (click)="clearInputFields()" class="fontClass"  shape="round" expand="block" fill="outline"> Clear </ion-button> 
+              <ion-item>
+                <ion-label class="fontClass">Necessary</ion-label>
+                <ion-radio [value]="0" ></ion-radio>
+              </ion-item>
             </ion-col>
-    
+
             <ion-col size="6">
-              <ion-button color="secondary" class="fontClass" (click)="addExpenditure()" shape="round" expand="block" fill="outline"> Submit </ion-button>
+              <ion-item>
+                <ion-label class="fontClass">Unnecessary</ion-label>
+                <ion-radio [value]="1"></ion-radio>
+              </ion-item>
             </ion-col>
-        </ion-row>
-    
+
+          </ion-row>
+
       </ion-grid>
-  
-    </div>
 
-   
+      </ion-radio-group>
+        
+      <br><br>
+
+      <ion-item>
+        <ion-label class="fontClass">Amount Rs. </ion-label> 
+        <ion-input  type="number" [(ngModel)]="amount" name="amount" formControlName="amount"></ion-input>
+      </ion-item>
+      <br><br>
+
+      <div >
+        <ion-button class="center" (click)="getExpenditures()"  shape="round" expand="block" fill="outline">Get Expenditure </ion-button> 
+      </div>
+      
+      <br>
+
+      <div >
+
+        <ion-grid>
+
+          <ion-row>
+              <ion-col size="6">
+                <ion-button (click)="clearInputFields()" class="fontClass"  shape="round" expand="block" fill="outline"> Clear </ion-button> 
+              </ion-col>
+      
+              <ion-col size="6">
+                <!-- <ion-button color="secondary" class="fontClass" (click)="addExpenditure()" shape="round" expand="block" fill="outline"> Submit </ion-button> -->
+                <ion-button  (click)="addExpenditure()" [disabled]="!expenditureForm.valid" color="secondary" class="fontClass" shape="round" expand="block" fill="outline"> Submit </ion-button> 
+              </ion-col>
+          </ion-row>
+      
+        </ion-grid>
     
+      </div>
 
-  </div>
+  </form>
+
+</div>
 
 </ion-content>

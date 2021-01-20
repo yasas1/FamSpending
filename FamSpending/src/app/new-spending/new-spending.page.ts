@@ -1,6 +1,6 @@
 import { Component,OnInit , Inject, LOCALE_ID} from '@angular/core';
 
-import { NavController } from '@ionic/angular';
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { formatDate } from '@angular/common';
 
 import { ViewControllerService } from '../services/viewController/view-controller.service';
@@ -31,6 +31,8 @@ export class NewSpendingPage implements OnInit {
 
   public unnecessary =0;
 
+  expenditureForm: FormGroup;
+
 
   constructor(
 
@@ -38,12 +40,22 @@ export class NewSpendingPage implements OnInit {
    
     public alertViewer: ViewControllerService,
     private database: DatabaseService,
-    
+    public formBuilder: FormBuilder
     ) {
       this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
       this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
       this.maxDate = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
-   
+
+      this.expenditureForm = formBuilder.group({
+        date: ['', Validators.compose([Validators.required])],
+        member: ['', Validators.compose([Validators.required])],
+        category: ['', Validators.compose([Validators.required])],
+        description: ['', Validators.compose([Validators.required])],
+        amount: ['', Validators.compose([Validators.required])],
+        unnecessary: ['', Validators.compose([Validators.required])],
+      });
+
+      
 
   }
 
@@ -163,11 +175,12 @@ export class NewSpendingPage implements OnInit {
 
   /** insert default categories */
   private insertCategories(){
+    this.database.insertCategory("Common");
     this.database.insertCategory("Food");
     this.database.insertCategory("Medicine");
     this.database.insertCategory("Bills");
     this.database.insertCategory("Fashion");
-    this.database.insertCategory("Common");
+    
   }
 
   /** check members count from db and set categories*/
