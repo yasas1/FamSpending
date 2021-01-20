@@ -13,11 +13,13 @@ export class MenuPage implements OnInit {
   pages = [
     {
       name: 'Home',
-      path: '/menu/home'
+      path: '/menu/home',
+      icon: 'calendar'
     },
     {
       name: 'New Spending',
-      path: '/menu/newSpending'
+      path: '/menu/newSpending',
+      icon: 'create'
     }
   ]
 
