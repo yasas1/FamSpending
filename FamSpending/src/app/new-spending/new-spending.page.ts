@@ -6,6 +6,8 @@ import { formatDate } from '@angular/common';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 
+import { DatePicker } from '@ionic-native/date-picker/ngx';
+
 @Component({
   selector: 'app-new-spending',
   templateUrl: './new-spending.page.html',
@@ -23,7 +25,7 @@ export class NewSpendingPage implements OnInit {
 
   public today: any;
 
-  public maxDate: any;
+  public displayDate: any;
 
   public categories = [];
 
@@ -40,14 +42,15 @@ export class NewSpendingPage implements OnInit {
    
     public alertViewer: ViewControllerService,
     private database: DatabaseService,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private datePicker: DatePicker
     ) {
       this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
       this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
-      this.maxDate = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
+      this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
 
       this.expenditureForm = formBuilder.group({
-        date: ['', Validators.compose([Validators.required])],
+        //date: ['', Validators.compose([Validators.required])],
         member: ['', Validators.compose([Validators.required])],
         category: ['', Validators.compose([Validators.required])],
         description: ['', Validators.compose([Validators.required])],
@@ -79,6 +82,22 @@ export class NewSpendingPage implements OnInit {
     //   });
   }
 
+  showDatePicker(){
+    this.datePicker.show({
+      date: new Date(),
+      mode: 'date',
+      androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+      minDate: new Date(new Date().setDate(new Date().getDate() - 300)).valueOf(),
+      maxDate: new Date().valueOf() ,
+    }).then(
+      date => {
+        this.date = formatDate(date, 'yyyy-MM-dd', this.locale);
+        this.displayDate = formatDate(date, 'MMMM dd yyyy', this.locale);
+      },
+      err => console.log('Error occurred while getting date: ', err)
+    );
+  }
+
   addExpenditure() {
 
     let date = this.date;
@@ -90,18 +109,31 @@ export class NewSpendingPage implements OnInit {
 
     this.database.insertExpenditure(date,member, category, description, unnecessary, amount);
 
-    
+    this.expenditureForm.reset();
+    this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
+    this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
+    this.unnecessary =0;
 
   }
 
   clearInputFields(){
 
-    
+    this.expenditureForm.reset({
+      member: '',
+      category: '',
+      description: '',
+      amount: '',
+      unnecessary: 0,
+    });
+    this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
+    this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
+    this.unnecessary =0;
+ 
   }
 
   getExpenditures(){
   
-    this.database.getExpendituresByDate("2021-01-18").then((result) => { 
+    this.database.getExpendituresByDate(this.date).then((result) => { 
 
       let expenditures;
 

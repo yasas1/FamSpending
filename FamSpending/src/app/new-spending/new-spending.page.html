@@ -23,66 +23,129 @@
 
     <form [formGroup]="expenditureForm" >
 
-      <ion-item>
-        <ion-label class="fontClass">Date</ion-label>
-        <ion-input type='text'  [(ngModel)]="date" name="date" formControlName="date" > </ion-input>
-      </ion-item>
-      <br><br>
+      <ion-grid>
+
+        <ion-row >
+
+          <ion-col size="4">
+
+            <ion-item lines="none">
+              <ion-label class="fontClass">Date</ion-label>            
+            </ion-item>
+
+          </ion-col>
+          
+          <ion-col size="8">
+            
+            <ion-item lines="none">
+              <ion-button style="color:darkgrey;" class="center"  (click)="showDatePicker()" size="default" expand="full" fill="clear">
+                {{displayDate}}
+              </ion-button>
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+
+  
+
+      <br>
       
-      <ion-item>
-        <ion-label class="fontClass">Member</ion-label>
-        <ion-select interface="popover" [(ngModel)]="member" name="member" formControlName="member">
-          <ion-select-option *ngFor="let member of members" [value]="member.id">{{member.name}}</ion-select-option >
-        </ion-select>
-      </ion-item>
-      <br><br>
+      <ion-row >
 
-      <ion-item>
-        <ion-label class="fontClass">Category</ion-label>
-        <ion-select interface="popover"  [(ngModel)]="category" name="category" formControlName="category">
-          <ion-select-option  *ngFor="let categorie of categories" [value]="categorie.id">{{categorie.name}}</ion-select-option >
-        </ion-select>
-      </ion-item>
-      <br><br>
+        <ion-col size="4">
+          <ion-item lines="none">
+            <ion-label class="fontClass">Member</ion-label>
+          </ion-item>
+        </ion-col>
 
-      <ion-item>
-        <ion-label class="fontClass">Notes</ion-label>
-        <ion-textarea clearOnEdit="true" [(ngModel)]="description" name="description" formControlName="description"></ion-textarea>
-      </ion-item>
+        <ion-col size="8">
+          <ion-item lines="none">
+            <ion-select placeholder="Member" class="center"  interface="popover" [(ngModel)]="member" name="member" formControlName="member">
+              <ion-select-option  *ngFor="let member of members" [value]="member.id">{{member.name}}</ion-select-option >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+
+      <br>
+      <ion-row >
+
+        <ion-col size="4">
+          <ion-item lines="none">
+            <ion-label class="fontClass">Category</ion-label>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="8">
+          <ion-item lines="none">
+            <ion-select placeholder="Category"  class="center" interface="popover"  [(ngModel)]="category" name="category" formControlName="category">
+              <ion-select-option  *ngFor="let categorie of categories" [value]="categorie.id">{{categorie.name}}</ion-select-option >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+      <br>
+
+      <ion-row >
+
+        <ion-col size="4">
+          <ion-item lines="none">
+            <ion-label class="fontClass">Notes</ion-label>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="8">
+          <ion-item>
+            <ion-textarea clearOnEdit="true" [(ngModel)]="description" name="description" formControlName="description"></ion-textarea>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+
       <br>
 
       <ion-radio-group [(ngModel)]="unnecessary" formControlName="unnecessary">  
 
-        <ion-grid>
+        <ion-row >
 
-          <ion-row >
+          <ion-col size="6">
+            <ion-item lines="none">
+              <ion-label class="fontClass">Necessary</ion-label>
+              <ion-radio [value]="0" ></ion-radio>
+            </ion-item>
+          </ion-col>
 
-            <ion-col size="6">
-              <ion-item>
-                <ion-label class="fontClass">Necessary</ion-label>
-                <ion-radio [value]="0" ></ion-radio>
-              </ion-item>
-            </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none">
+              <ion-label class="fontClass">Unnecessary</ion-label>
+              <ion-radio [value]="1"></ion-radio>
+            </ion-item>
+          </ion-col>
 
-            <ion-col size="6">
-              <ion-item>
-                <ion-label class="fontClass">Unnecessary</ion-label>
-                <ion-radio [value]="1"></ion-radio>
-              </ion-item>
-            </ion-col>
-
-          </ion-row>
-
-      </ion-grid>
+        </ion-row>
 
       </ion-radio-group>
         
-      <br><br>
+      <br>
 
-      <ion-item>
-        <ion-label class="fontClass">Amount Rs. </ion-label> 
-        <ion-input  type="number" [(ngModel)]="amount" name="amount" formControlName="amount"></ion-input>
-      </ion-item>
+      <ion-row >
+
+        <ion-col size="6">
+          <ion-item lines="none">
+            <ion-label class="fontClass">Amount Rs </ion-label> 
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-item >
+            <ion-input class="center"  type="number" [(ngModel)]="amount" name="amount" formControlName="amount"></ion-input>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+
       <br><br>
 
       <div >
@@ -102,13 +165,15 @@
       
               <ion-col size="6">
                 <!-- <ion-button color="secondary" class="fontClass" (click)="addExpenditure()" shape="round" expand="block" fill="outline"> Submit </ion-button> -->
-                <ion-button  (click)="addExpenditure()" [disabled]="!expenditureForm.valid" color="secondary" class="fontClass" shape="round" expand="block" fill="outline"> Submit </ion-button> 
+                <ion-button  (click)="addExpenditure()" [disabled]="!expenditureForm.valid" color="secondary" class="fontClass" shape="round" expand="block" fill="solid"> Submit </ion-button> 
               </ion-col>
           </ion-row>
       
         </ion-grid>
     
       </div>
+
+    </ion-grid>
 
   </form>
 
