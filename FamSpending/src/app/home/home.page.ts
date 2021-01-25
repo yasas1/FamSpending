@@ -1,7 +1,7 @@
-import { Component, ViewChild , Inject, LOCALE_ID} from '@angular/core';
+import { Component, ViewChild ,OnInit, Inject, LOCALE_ID} from '@angular/core';
 import { formatDate } from '@angular/common';
 
-import { AlertController } from '@ionic/angular';
+import { AlertController,Platform } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
@@ -11,10 +11,12 @@ import { DatabaseService } from '../services/database/database.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit{
 
   eventSource = [];
   viewTitle: string;
+
+  private newDateToday = new Date();
 
   calendar = {
     mode: 'month',
@@ -28,15 +30,38 @@ export class HomePage {
  
   selectedDate: Date;
 
-  
+  private expenditures: Array<{date: string, total: any}>;
+
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
   constructor(
     private alertCtrl: AlertController,
     @Inject(LOCALE_ID) private locale: string,
     private database: DatabaseService, 
-    private alertViewer: ViewControllerService
-  ){}
+    private alertViewer: ViewControllerService,
+    private platform: Platform,
+  ){
+
+  }
+
+  ngOnInit() {
+
+    this.platform
+    .ready()
+    .then(() =>
+    {
+      setTimeout(() =>
+      {
+        this.spendingsInitializer();
+      }, 400);
+    });
+    
+  }
+
+  ionViewDidLoad() {
+    
+    
+  }
 
   
   next() {
@@ -61,7 +86,7 @@ export class HomePage {
     const alert = await this.alertCtrl.create({
       header: start,
       subHeader: event.desc,
-      message: 'Total Spending: ' + 'Rs.1500 ',
+      message: 'Total Spending: ' + 'Rs. '+ event.spends,
       buttons: ['OK'],
     });
     alert.present();
@@ -100,42 +125,70 @@ export class HomePage {
     });
    
     this.eventSource = events;
+
   }
 
-  addExpendituresDB() {
+  private spendingsInitializer(){
 
-    this.insertCategories();
-    this.insertMember();
-    this.addExpenditure();
+    var events = [];
 
-    this.createRandomEvents();
+    let year = this.newDateToday.getFullYear();
+    let month = this.newDateToday.getMonth();
+
+    //set dates to get total spendings foreach day
+    let dateStart =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+1), 'yyyy-MM-dd', this.locale);
+    let dateEnd =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
+    
+    //update global expenditure array 
+    this.getExpendituresFromTo(dateStart,dateEnd);
+
+    setTimeout(() =>
+    {
       
-  }
+      let expendituresLength = this.expenditures.length;
+      
 
-  getExpendituresDB() {
-    this.getExpenditures();
-     
+      for (let i = 0; i < this.newDateToday.getDate(); i++) {
+
+        let spends = 0;
+        let loopDateString = year.toString()+'-'+month.toString()+1+'-'+(i+1);
+
+        //set total spendings from dates
+        for (let j = 0; j < expendituresLength; j++) {
+          if( this.compareDate(this.expenditures[j].date ,loopDateString)==0){
+            spends = this.expenditures[j].total;
+            break;
+          }
+        }
+
+        //push into spending array
+        if(spends!=0){
+          events.push({
+            title: 'Total Spending Rs. '+ spends,
+            startTime: new Date(Date.UTC(year,month,(i+1))),
+            endTime: new Date(Date.UTC(year,month,(i+2))),
+            allDay: true,
+            date:loopDateString,
+            spends:spends
+          });   
+        }
+            
+      }
+      this.eventSource =[];
+      this.eventSource = events;
+
+    }, 600); 
+
   }
 
   
-  addExpenditure() {
 
-    let date = "2021-01-17";
-    let member = 1;
-    let category = 1;
-    let description = "noted";
-    let amount = 250; 
-    let unnecessary = 1;
 
-    this.database.insertExpenditure(date,member, category, description, unnecessary, amount);
-  
-  
+  public getExpendituresFromTo(datestart:string, dateEnd:string){
 
-  }
+    this.expenditures = [];
 
-  getExpenditures(){
-
-    this.database.getExpendituresForMonth("2021-01-01","2021-01-31").then((result) => { 
+    this.database.getExpendituresForMonth(datestart,dateEnd).then((result) => { 
 
       let expenditures;
 
@@ -149,29 +202,42 @@ export class HomePage {
 
           for(let i=0; i < expendituresLength; i++) { 
 
-            this.alertViewer.presentAlert("Get Expenditures! ",expenditures[i].date+" "+expenditures[i].total);
+            this.expenditures.push({
+              date: expenditures[i].date ,
+              total:  expenditures[i].total
+            });
           }
 
         }
       }  
       else{
         expenditures = 0;
-        this.alertViewer.presentAlert("Get Expenditures! ","nooo");
       } 
-
     });
   }
 
-  private insertCategories(){
-    this.database.insertCategory("Food");
-    this.database.insertCategory("Medicine");
-    this.database.insertCategory("Bills");
-    this.database.insertCategory("Fashion");
-    this.database.insertCategory("Common");
+  addExpendituresDB() {
+
+    this.createRandomEvents();
+      
   }
 
-  private insertMember(){
-    this.database.insertMember("Family");
+  
+  
+
+  private compareDate(date1: string, date2: string): number{
+
+    let d1 = new Date(date1); let d2 = new Date(date2);
+
+    // Check if the dates are equal
+    let same = d1.getTime() === d2.getTime();
+    if (same) return 0;
+
+    // Check if the first is greater than second
+    if (d1 > d2) return 1;
+  
+    // Check if the first is less than second
+    if (d1 < d2) return -1;
   }
 
 }
