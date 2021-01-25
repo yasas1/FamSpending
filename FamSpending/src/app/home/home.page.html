@@ -64,20 +64,17 @@
     [markDisabled]="markDisabled"
     [monthviewEventDetailTemplate]="detailTemplate"
   >
-  </calendar>
+  </calendar> 
 
-  <ng-template #detailTemplate let-showEventDetail="showEventDetail"  let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+  <ng-template #detailTemplate let-showEventDetail="showEventDetail"  let-selectedDate="selectedDate" >
+
     <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
         <ion-item *ngFor="let event of selectedDate?.events"  (click)="onEventSelected(event)">
-                <!-- <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
-                    -
-                    {{event.endTime|date: 'HH:mm'}}
-                </span> -->
             <span class="monthview-eventdetail-timecolumn">  {{event.startTime|date: 'EEEE '}} : </span>
             <span class="event-detail">   {{ event.title}}</span>
         </ion-item>
         <ion-item *ngIf="selectedDate?.events.length==0">
-            <div class="no-events-label">{{noEventsLabel}}</div>
+            <div class="no-events-label"> No Spendings</div>
         </ion-item>
     </ion-list>
 </ng-template>

@@ -38,7 +38,7 @@
           <ion-col size="8">
             
             <ion-item lines="none">
-              <ion-button style="color:darkgrey;" class="center"  (click)="showDatePicker()" size="default" expand="full" fill="clear">
+              <ion-button  class="center"  (click)="showDatePicker()" size="default" expand="full" fill="clear">
                 {{displayDate}}
               </ion-button>
             </ion-item>
@@ -98,7 +98,7 @@
 
         <ion-col size="8">
           <ion-item>
-            <ion-textarea clearOnEdit="true" [(ngModel)]="description" name="description" formControlName="description"></ion-textarea>
+            <ion-textarea placeholder="Notes"  class="center" clearOnEdit="true" [(ngModel)]="description" name="description" formControlName="description"></ion-textarea>
           </ion-item>
         </ion-col>
 
@@ -132,15 +132,15 @@
 
       <ion-row >
 
-        <ion-col size="6">
+        <ion-col size="4">
           <ion-item lines="none">
-            <ion-label class="fontClass">Amount Rs </ion-label> 
+            <ion-label class="fontClass">Amount </ion-label> 
           </ion-item>
         </ion-col>
 
-        <ion-col size="6">
+        <ion-col size="8">
           <ion-item >
-            <ion-input class="center"  type="number" [(ngModel)]="amount" name="amount" formControlName="amount"></ion-input>
+            <ion-input placeholder="Rs." class="center"  type="number" [(ngModel)]="amount" name="amount" formControlName="amount"></ion-input>
           </ion-item>
         </ion-col>
 

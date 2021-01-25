@@ -23,75 +23,80 @@ export class HomePage {
       formatMonthViewDay: function(date:Date) {
           return date.getDate().toString();
       }            
-  }
+    }
   };
  
   selectedDate: Date;
- 
-  @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
+  
+  @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
   constructor(
     private alertCtrl: AlertController,
     @Inject(LOCALE_ID) private locale: string,
     private database: DatabaseService, 
     private alertViewer: ViewControllerService
-    ) {}
+  ){}
 
   
-    next() {
-      this.myCal.slideNext();
-    }
-   
-    back() {
-      this.myCal.slidePrev();
-    }
-   
-    // Selected date reange and hence title changed
-    onViewTitleChanged(title) {
-      this.viewTitle = title;
-    }
-   
-    // Calendar event was clicked
-    async onEventSelected(event) {
-      // Use Angular date pipe for conversion
-      let start = formatDate(event.startTime, 'fullDate', this.locale);
-      let end = formatDate(event.endTime, 'fullDate', this.locale);
-   
-      const alert = await this.alertCtrl.create({
-        header: start,
-        subHeader: event.desc,
-        message: 'Total Spending: ' + 'Rs.1500 ',
-        buttons: ['OK'],
-      });
-      alert.present();
-    }
+  next() {
+    this.myCal.slideNext();
+  }
   
-    onCurrentDateChanged(event:Date){
-      console.log(event);
-    }
+  back() {
+    this.myCal.slidePrev();
+  }
   
-    markDisabled = (date: Date) => {
-      var current = new Date();
+  // Selected date reange and hence title changed
+  onViewTitleChanged(title) {
+    this.viewTitle = title;
+  }
+  
+  // Calendar event was clicked
+  async onEventSelected(event) {
+    
+    let start = formatDate(event.startTime, 'fullDate', this.locale);
+    let end = formatDate(event.endTime, 'fullDate', this.locale);
+  
+    const alert = await this.alertCtrl.create({
+      header: start,
+      subHeader: event.desc,
+      message: 'Total Spending: ' + 'Rs.1500 ',
+      buttons: ['OK'],
+    });
+    alert.present();
+  }
+
+  onCurrentDateChanged(event:Date){
+    console.log(event);
+  }
+
+  markDisabled = (date: Date) => {
+
+    var current = new Date();
+    if (date.getFullYear() == current.getFullYear() && date.getMonth() == current.getMonth() && date.getDate() == current.getDate()){
+      return false;
+    }
+    else {
       return date >= current;
-    };
+    }
+  };
 
   createRandomEvents() {
     var events = [];
-    var date = new Date("2021-01-20");
 
     console.log( Date.UTC(2021,0,15));
     events.push({
       title: 'Total Spending Rs.1500',
-      startTime: new Date(Date.UTC(2021,0,20)),
-      endTime: new Date(Date.UTC(2021,0,20)),
-      allDay: false,
+      startTime: new Date(Date.UTC(2021,0,21)),
+      endTime: new Date(Date.UTC(2021,0,22)),
+      allDay: true,
     },
     {
       title: 'Total Spending Rs.700',
       startTime: new Date(Date.UTC(2021,0,18)),
-      endTime: new Date(Date.UTC(2021,0,18)),
-      allDay: false,
+      endTime: new Date(Date.UTC(2021,0,19)),
+      allDay: true,
     });
    
     this.eventSource = events;

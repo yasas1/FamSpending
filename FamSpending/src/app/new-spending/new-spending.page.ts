@@ -109,7 +109,13 @@ export class NewSpendingPage implements OnInit {
 
     this.database.insertExpenditure(date,member, category, description, unnecessary, amount);
 
-    this.expenditureForm.reset();
+    this.expenditureForm.reset({
+      member: '',
+      category: '',
+      description: '',
+      amount: '',
+      unnecessary: 0,
+    });
     this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
     this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
     this.unnecessary =0;
