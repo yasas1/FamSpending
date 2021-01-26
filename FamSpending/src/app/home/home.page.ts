@@ -63,7 +63,6 @@ export class HomePage implements OnInit{
     
   }
 
-  
   next() {
     this.myCal.slideNext();
   }
@@ -75,6 +74,14 @@ export class HomePage implements OnInit{
   // Selected date reange and hence title changed
   onViewTitleChanged(title) {
     this.viewTitle = title;
+    // let spit = title.match(/([\w+]+)/g);
+    // this.alertViewer.presentAlert("onViewTitleChanged! ",spit[0]+" / " + spit[1]);
+    // let months = ['January','February','March','April','May','June','July','August','September','October','November','December']; 
+
+    // let checker = months.find(x=>x ===spit[0]);
+
+    // this.alertViewer.presentAlert("onViewTitleChanged 2 ",checker);
+
   }
   
   // Calendar event was clicked
@@ -92,8 +99,22 @@ export class HomePage implements OnInit{
     alert.present();
   }
 
-  onCurrentDateChanged(event:Date){
-    console.log(event);
+  onCurrentDateChanged(event:Date) {
+
+    
+    // this.alertViewer.presentAlert("onCurrentDateChanged! ",event.toDateString());
+  
+    /* var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    event.setHours(0, 0, 0, 0);
+
+    if (this.calendar.mode === 'month') {
+        if (event.getFullYear() < today.getFullYear() || (event.getFullYear() === today.getFullYear() && event.getMonth() <= today.getMonth())) {
+            this.lockSwipeToNext = true;
+        } else {
+            this.lockSwipeToNext = false;
+        }
+    } */
   }
 
   markDisabled = (date: Date) => {
@@ -135,54 +156,50 @@ export class HomePage implements OnInit{
     let year = this.newDateToday.getFullYear();
     let month = this.newDateToday.getMonth();
 
-    //set dates to get total spendings foreach day
+    let date6Early = new Date();
+    date6Early.setMonth(date6Early.getMonth() - 6);
+    let dateStart6Early =  formatDate(date6Early, 'yyyy-MM-dd', this.locale);
+    //this.alertViewer.presentAlert("onCurrentDateChanged 1 ",dateStart6Early);
+    
     let dateStart =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+1), 'yyyy-MM-dd', this.locale);
     let dateEnd =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
     
     //update global expenditure array 
-    this.getExpendituresFromTo(dateStart,dateEnd);
+    this.getExpendituresFromTo(dateStart6Early,dateEnd);
 
     setTimeout(() =>
     {
       
       let expendituresLength = this.expenditures.length;
       
-
-      for (let i = 0; i < this.newDateToday.getDate(); i++) {
-
+      for (let j = 0; j < expendituresLength; j++) {
         let spends = 0;
-        let loopDateString = year.toString()+'-'+month.toString()+1+'-'+(i+1);
+        
+        spends = this.expenditures[j].total;
 
-        //set total spendings from dates
-        for (let j = 0; j < expendituresLength; j++) {
-          if( this.compareDate(this.expenditures[j].date ,loopDateString)==0){
-            spends = this.expenditures[j].total;
-            break;
-          }
-        }
+        let dateString = this.expenditures[j].date;
 
-        //push into spending array
+        let eventDate = new Date(dateString);
+
         if(spends!=0){
           events.push({
             title: 'Total Spending Rs. '+ spends,
-            startTime: new Date(Date.UTC(year,month,(i+1))),
-            endTime: new Date(Date.UTC(year,month,(i+2))),
+            startTime: new Date( Date.UTC( eventDate.getFullYear(),eventDate.getMonth(),eventDate.getDate() ) ),
+            endTime: new Date(Date.UTC( eventDate.getFullYear(),eventDate.getMonth(),eventDate.getDate()+1 )),
             allDay: true,
-            date:loopDateString,
+            date:dateString,
             spends:spends
           });   
         }
-            
+         
       }
+
       this.eventSource =[];
       this.eventSource = events;
 
     }, 600); 
 
   }
-
-  
-
 
   public getExpendituresFromTo(datestart:string, dateEnd:string){
 
@@ -215,15 +232,6 @@ export class HomePage implements OnInit{
       } 
     });
   }
-
-  addExpendituresDB() {
-
-    this.createRandomEvents();
-      
-  }
-
-  
-  
 
   private compareDate(date1: string, date2: string): number{
 
