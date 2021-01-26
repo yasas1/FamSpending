@@ -1,0 +1,74 @@
+
+//////////////Cordova
+
+ionic cordova platform
+ionic cordova platform add ios
+ionic cordova platform add android
+ionic cordova platform rm ios
+
+//////////////////////Build for Browser
+
+ionic cordova platform add browser
+ionic cordova build browser --prod
+
+      ///To build app,
+ionic cordova build browser
+     ///To run app,
+ionic cordova run browser
+
+
+//////////////////////////////SQLITE
+
+ionic cordova plugin add cordova-sqlite-storage
+npm install @ionic-native/sqlite
+(npm install @ionic-native/sqlite@4)
+
+
+////////////////////ionic2 calendar //event calendar
+
+npm i ionic2-calendar
+
+-----https://www.npmjs.com/package/ionic2-calendar
+
+////////////////////// ionic2-calendar // with moment picker
+
+npm install ion2-calendar moment --save
+
+-----https://www.npmjs.com/package/ion2-calendar 
+
+
+
+////////////// ionic generate
+
+ionic generate
+ionic generate page
+ionic generate page contact
+ionic generate component contact/form
+ionic generate component login-form --change-detection=OnPush
+ionic generate directive ripple --skip-import
+ionic generate service api/user
+
+
+///////////// cordova date picker
+
+ionic cordova plugin add cordova-plugin-datepicker
+npm install --save @ionic-native/date-picker
+
+https://ionicframework.com/docs/native/date-picker
+https://ionicframework.com/docs/v3/native/date-picker/
+https://forum.ionicframework.com/t/ionic-native-datetimepicker-demo/101151
+
+
+/////////// native run 
+npm i -g native-run
+
+
+//// Cordova Unable to load platformapi /// Failed to install 'cordova-plugin
+
+cordova platform rm browser
+cordova platform add browser
+
+
+
+
+

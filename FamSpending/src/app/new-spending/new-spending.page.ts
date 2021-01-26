@@ -87,7 +87,7 @@ export class NewSpendingPage implements OnInit {
       date: new Date(),
       mode: 'date',
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
-      minDate: new Date(new Date().setDate(new Date().getDate() - 300)).valueOf(),
+      minDate: new Date(new Date().setDate(new Date().getDate() - 200)).valueOf(),
       maxDate: new Date().valueOf() ,
     }).then(
       date => {

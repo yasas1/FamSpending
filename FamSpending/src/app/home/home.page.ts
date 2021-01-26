@@ -65,6 +65,7 @@ export class HomePage implements OnInit{
 
   next() {
     this.myCal.slideNext();
+    
   }
   
   back() {
@@ -100,21 +101,6 @@ export class HomePage implements OnInit{
   }
 
   onCurrentDateChanged(event:Date) {
-
-    
-    // this.alertViewer.presentAlert("onCurrentDateChanged! ",event.toDateString());
-  
-    /* var today = new Date();
-    today.setHours(0, 0, 0, 0);
-    event.setHours(0, 0, 0, 0);
-
-    if (this.calendar.mode === 'month') {
-        if (event.getFullYear() < today.getFullYear() || (event.getFullYear() === today.getFullYear() && event.getMonth() <= today.getMonth())) {
-            this.lockSwipeToNext = true;
-        } else {
-            this.lockSwipeToNext = false;
-        }
-    } */
   }
 
   markDisabled = (date: Date) => {
@@ -149,6 +135,7 @@ export class HomePage implements OnInit{
 
   }
 
+  /** Event initializer on calnedar */
   private spendingsInitializer(){
 
     var events = [];
@@ -156,23 +143,27 @@ export class HomePage implements OnInit{
     let year = this.newDateToday.getFullYear();
     let month = this.newDateToday.getMonth();
 
-    let date6Early = new Date();
-    date6Early.setMonth(date6Early.getMonth() - 6);
-    let dateStart6Early =  formatDate(date6Early, 'yyyy-MM-dd', this.locale);
-    //this.alertViewer.presentAlert("onCurrentDateChanged 1 ",dateStart6Early);
+    // get initially total spendings for last 8 months
+    let dateForEarlyMonth = new Date();
+    dateForEarlyMonth.setMonth(dateForEarlyMonth.getMonth() - 8);
+    let startDateForEarlyMonth =  formatDate(dateForEarlyMonth, 'yyyy-MM-dd', this.locale);
     
-    let dateStart =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+1), 'yyyy-MM-dd', this.locale);
-    let dateEnd =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
+    //let dateStart =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+1), 'yyyy-MM-dd', this.locale);
+
+    // upto today
+    let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
     
     //update global expenditure array 
-    this.getExpendituresFromTo(dateStart6Early,dateEnd);
+    this.getExpendituresFromTo(startDateForEarlyMonth,endDate);
 
     setTimeout(() =>
     {
-      
+      // set spendings in calendar events
+
       let expendituresLength = this.expenditures.length;
       
       for (let j = 0; j < expendituresLength; j++) {
+
         let spends = 0;
         
         spends = this.expenditures[j].total;
@@ -231,21 +222,6 @@ export class HomePage implements OnInit{
         expenditures = 0;
       } 
     });
-  }
-
-  private compareDate(date1: string, date2: string): number{
-
-    let d1 = new Date(date1); let d2 = new Date(date2);
-
-    // Check if the dates are equal
-    let same = d1.getTime() === d2.getTime();
-    if (same) return 0;
-
-    // Check if the first is greater than second
-    if (d1 > d2) return 1;
-  
-    // Check if the first is less than second
-    if (d1 < d2) return -1;
   }
 
 }
