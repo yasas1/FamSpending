@@ -197,7 +197,6 @@ export class DatabaseService {
         .then((data) => {
 
           if(data.rows.length > 0){
-            
             return data.rows.item(0).total;
           }
           else{

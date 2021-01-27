@@ -1,13 +1,14 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Home</ion-title>
+  <ion-toolbar color="primary">
 
-    <!-- Side menu button -->
+    <ion-title style="font-style:italic;font-family:monospace;">Home</ion-title>
+
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
 
   </ion-toolbar>
+ 
 </ion-header>
 
 <ion-content >
@@ -16,14 +17,13 @@
     <ion-label style="font-style: oblique;font-family: fantasy; font-size:x-small ;">  {{today}} </ion-label>
   </div>
   <div class="ion-text-center">
-    <ion-title  class="fontClass"> Spending Calendar</ion-title>
+    <ion-title style="font-style:inherit;font-family: cursive; font-size:x-large ;"> Spending Calendar</ion-title>
   </div>
   
-  <br>
+  <br><br>
 
-
-  <div  style="font-style:inherit ;font-family: fantasy; color:darkslategray; font-size: small;" class="ion-text-start">
-    Total Spending for {{ viewTitle }} :  <span class="event-detail">  Rs. {{totalForMonth}} /= </span>  
+  <div  style="font-style:oblique ;font-family:fantasy; color:darkslategray; font-size:medium;" class="ion-text-start">
+    Total for <b>{{ viewTitle }} </b>:  <span class="event-detail"> Rs. {{totalForMonth}} /=  </span>  
   </div>
 
 
@@ -39,7 +39,7 @@
     </ion-col>
  
     <ion-col size="6" style="font-style:inherit ;font-family: fantasy; color:dodgerblue;" class="ion-text-center">
-      {{ viewTitle }} 
+    <b>{{ viewTitle }} </b>
     </ion-col>
  
     <!-- Move forward one screen of the slides -->
@@ -49,6 +49,8 @@
       </ion-button>
     </ion-col>
   </ion-row>
+
+ 
 
   <calendar
     [eventSource]="eventSource"
@@ -65,7 +67,7 @@
   >
   </calendar> 
 
-  <ng-template #detailTemplate let-showEventDetail="showEventDetail"  let-selectedDate="selectedDate" >
+  <ng-template  #detailTemplate let-showEventDetail="showEventDetail"  let-selectedDate="selectedDate" >
 
     <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
       
@@ -79,7 +81,6 @@
     </ion-list>
 
   </ng-template>
-
- 
+  
 
 </ion-content>

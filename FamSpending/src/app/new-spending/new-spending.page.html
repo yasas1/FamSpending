@@ -1,6 +1,6 @@
 <ion-header translucent="true">
-  <ion-toolbar>
-    <ion-title>New Spending</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title style="font-style:italic;font-family:monospace;">New Spending</ion-title>
 
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
@@ -15,7 +15,7 @@
     <ion-label style="font-style: oblique;font-family: fantasy; font-size:x-small ;">  {{today}} </ion-label>
   </div>
   <div class="ion-text-center">
-    <ion-title  class="fontClass">Spending</ion-title>
+    <ion-title   style="font-style:inherit;font-family: cursive; font-size:x-large ;">Spend</ion-title>
   </div>
   <br>
 
@@ -149,12 +149,6 @@
       <br><br>
 
       <div >
-        <ion-button class="center" (click)="getExpenditures()"  shape="round" expand="block" fill="outline">Get Expenditure </ion-button> 
-      </div>
-      
-      <br>
-
-      <div >
 
         <ion-grid>
 
@@ -172,6 +166,11 @@
         </ion-grid>
     
       </div>
+
+      <div >
+        <ion-button class="center" (click)="getExpenditures()"  shape="round" expand="block" fill="outline">Get Expenditure </ion-button> 
+      </div>
+      
 
     </ion-grid>
 

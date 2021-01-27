@@ -81,14 +81,22 @@ export class HomePage implements OnInit{
   
   // Selected date reange and hence title changed
   onViewTitleChanged(title) {
+
     this.viewTitle = title;
-    // let spit = title.match(/([\w+]+)/g);
-    // this.alertViewer.presentAlert("onViewTitleChanged! ",spit[0]+" / " + spit[1]);
-    // let months = ['January','February','March','April','May','June','July','August','September','October','November','December']; 
+    let spit = title.match(/([\w+]+)/g);
 
-    // let checker = months.find(x=>x ===spit[0]);
+    let months = ['January','February','March','April','May','June','July','August','September','October','November','December']; 
 
-    // this.alertViewer.presentAlert("onViewTitleChanged 2 ",checker);
+    let month = months.indexOf(spit[0])+1;
+    let year = spit[1];
+
+    let daysInMonth = this.daysInAMonth( parseInt(year), month);
+
+    let startDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
+    let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
+
+    this.getTotalExpendituresFromTo(startDate,endDate);
+    
 
   }
   
@@ -155,9 +163,7 @@ export class HomePage implements OnInit{
     let dateForEarlyMonth = new Date();
     dateForEarlyMonth.setMonth(dateForEarlyMonth.getMonth() - 8);
     let startDateForEarlyMonth =  formatDate(dateForEarlyMonth, 'yyyy-MM-dd', this.locale);
-    
     //let dateStart =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+1), 'yyyy-MM-dd', this.locale);
-
     // upto today
     let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
     
@@ -249,14 +255,17 @@ export class HomePage implements OnInit{
 
     this.database.getTotalExpendituresForDateRange(datestart,dateEnd).then((result) => { 
 
-      if(result != -1){
-
+      if(result != -1 && typeof(result) =="number"){
         this.totalForMonth = result;
       }  
       else{
         this.totalForMonth = 0;
       } 
     });
+  }
+
+  private daysInAMonth(year:any,month:any) {
+    return new Date(year,month,0).getDate();
   }
 
 }

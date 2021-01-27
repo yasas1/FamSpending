@@ -53,7 +53,9 @@ ion-menu ion-content {
     color: var(--ion-color-primary);
   }
   
-  ion-menu.md ion-list-header,
+  ion-menu.md ion-list-header{
+    color: var(--ion-color-step-650,#fff);
+  }
   ion-menu.md ion-item ion-icon {
     color: var(--ion-color-step-650, #5f6368);
   }
