@@ -22,12 +22,12 @@
   <br>
 
 
-  <div  style="font-style:inherit ;font-family: fantasy; color:darkslategray;" class="ion-text-start">
-    {{ viewTitle }} :  <span class="event-detail">  Rs. 24,300 </span>  
+  <div  style="font-style:inherit ;font-family: fantasy; color:darkslategray; font-size: small;" class="ion-text-start">
+    Total Spending for {{ viewTitle }} :  <span class="event-detail">  Rs. {{totalForMonth}} /= </span>  
   </div>
 
 
-  
+  <ion-item></ion-item>
 
 
   <ion-row>
@@ -39,7 +39,7 @@
     </ion-col>
  
     <ion-col size="6" style="font-style:inherit ;font-family: fantasy; color:dodgerblue;" class="ion-text-center">
-      <h6>{{ viewTitle }}</h6>
+      {{ viewTitle }} 
     </ion-col>
  
     <!-- Move forward one screen of the slides -->

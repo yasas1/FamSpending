@@ -36,6 +36,8 @@ export class HomePage implements OnInit{
 
   private expenditures: Array<{date: string, total: any}>;
 
+  totalForMonth:any;
+
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
   constructor(
@@ -57,6 +59,7 @@ export class HomePage implements OnInit{
       setTimeout(() =>
       {
         this.spendingsInitializer();
+        this.totalMonthSpendingInitializer();
       }, 400);
     });
     
@@ -197,6 +200,18 @@ export class HomePage implements OnInit{
 
   }
 
+  private totalMonthSpendingInitializer(){
+
+    let year = this.newDateToday.getFullYear();
+    let month = this.newDateToday.getMonth()+1;
+
+    let startDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
+    let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
+
+    this.getTotalExpendituresFromTo(startDate,endDate);
+  }
+
+  /** get total spendings for each day between date range */
   public getExpendituresFromTo(datestart:string, dateEnd:string){
 
     this.expenditures = [];
@@ -225,6 +240,21 @@ export class HomePage implements OnInit{
       }  
       else{
         expenditures = 0;
+      } 
+    });
+  }
+
+  /** get the total spending for one date range*/
+  public getTotalExpendituresFromTo(datestart:string, dateEnd:string){
+
+    this.database.getTotalExpendituresForDateRange(datestart,dateEnd).then((result) => { 
+
+      if(result != -1){
+
+        this.totalForMonth = result;
+      }  
+      else{
+        this.totalForMonth = 0;
       } 
     });
   }

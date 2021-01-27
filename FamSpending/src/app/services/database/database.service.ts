@@ -187,6 +187,29 @@ export class DatabaseService {
     );
   }
 
+  getTotalExpendituresForDateRange(dateStart:string,dateEnd:string) {
+
+    return this.databaseObj.executeSql(`
+      SELECT sum(amount) as total 
+      FROM expenditure 
+      WHERE date BETWEEN '${dateStart}' AND '${dateEnd}'
+      `, [])
+        .then((data) => {
+
+          if(data.rows.length > 0){
+            
+            return data.rows.item(0).total;
+          }
+          else{
+            return -1;
+          }
+        })
+        .catch(error => {
+          this.alertViewer.presentAlert("Expenditures Getting-Month Error! ","Get error"+JSON.stringify(error));
+        }
+    );
+  }
+
   /**  Update Expenditure by id */
   updateExpenditureById(id:number,date:string,category_id:number,description:string,amount:number) {
     this.databaseObj.executeSql(`
