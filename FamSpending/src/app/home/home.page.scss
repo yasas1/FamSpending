@@ -30,7 +30,7 @@ ion-content {
   --padding-bottom: 10px;
   --padding-end: 10px;
   --padding-start: 10px;
-  --padding-top: 10px;
+  --padding-top: 8px;
 }
 
 .fontClass {
@@ -41,17 +41,11 @@ ion-content {
 .event-detail{
   font-style:inherit ;
   font-family: fantasy;
-  color:dodgerblue;
-}
-
-.no-events-label{
-  font-style:inherit ;
-  font-family: fantasy;
   color:royalblue;
 }
 
 .monthview-eventdetail-timecolumn{
   font-style:inherit ;
   font-family: fantasy;
-  color:cornflowerblue;
+  color:lightslategrey;
 }

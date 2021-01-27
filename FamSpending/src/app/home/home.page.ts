@@ -30,6 +30,8 @@ export class HomePage implements OnInit{
  
   selectedDate: Date;
 
+  selectedDateToEvent: Date;
+
   today: any;
 
   private expenditures: Array<{date: string, total: any}>;
@@ -96,13 +98,14 @@ export class HomePage implements OnInit{
     const alert = await this.alertCtrl.create({
       header: start,
       subHeader: event.desc,
-      message: 'Total Spending: ' + 'Rs. '+ event.spends,
+      message: 'Total Spendings: ' + 'Rs. '+ event.spends + '/= ',
       buttons: ['OK'],
     });
     alert.present();
   }
 
   onCurrentDateChanged(event:Date) {
+    this.selectedDateToEvent = event;
   }
 
   markDisabled = (date: Date) => {
@@ -176,7 +179,7 @@ export class HomePage implements OnInit{
 
         if(spends!=0){
           events.push({
-            title: 'Total Spending Rs. '+ spends,
+            title: 'Total Rs. '+ spends + '/= ',
             startTime: new Date( Date.UTC( eventDate.getFullYear(),eventDate.getMonth(),eventDate.getDate() ) ),
             endTime: new Date(Date.UTC( eventDate.getFullYear(),eventDate.getMonth(),eventDate.getDate()+1 )),
             allDay: true,

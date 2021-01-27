@@ -16,9 +16,18 @@
     <ion-label style="font-style: oblique;font-family: fantasy; font-size:x-small ;">  {{today}} </ion-label>
   </div>
   <div class="ion-text-center">
-    <ion-title  class="fontClass">Family Spending</ion-title>
+    <ion-title  class="fontClass"> Spending Calendar</ion-title>
   </div>
+  
   <br>
+
+
+  <div  style="font-style:inherit ;font-family: fantasy; color:darkslategray;" class="ion-text-start">
+    {{ viewTitle }} :  <span class="event-detail">  Rs. 24,300 </span>  
+  </div>
+
+
+  
 
 
   <ion-row>
@@ -30,7 +39,7 @@
     </ion-col>
  
     <ion-col size="6" style="font-style:inherit ;font-family: fantasy; color:dodgerblue;" class="ion-text-center">
-      <h4>{{ viewTitle }}</h4>
+      <h6>{{ viewTitle }}</h6>
     </ion-col>
  
     <!-- Move forward one screen of the slides -->
@@ -59,15 +68,18 @@
   <ng-template #detailTemplate let-showEventDetail="showEventDetail"  let-selectedDate="selectedDate" >
 
     <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-    
+      
         <ion-item *ngFor="let event of selectedDate?.events"  (click)="onEventSelected(event)">
           <span class="monthview-eventdetail-timecolumn">  {{event.startTime|date: 'EEEE '}} : </span>
             <span class="event-detail">   {{ event.title}}</span>
         </ion-item>
         <ion-item *ngIf="selectedDate?.events.length==0">
-            <div class="no-events-label"> No Spendings</div>
+          <span class="monthview-eventdetail-timecolumn">{{selectedDateToEvent|date: 'EEEE '}} : </span><div class="event-detail"> No Spendings</div>
         </ion-item>
     </ion-list>
-</ng-template>
+
+  </ng-template>
+
+ 
 
 </ion-content>
