@@ -30,6 +30,8 @@ export class HomePage implements OnInit{
  
   selectedDate: Date;
 
+  today: any;
+
   private expenditures: Array<{date: string, total: any}>;
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
@@ -41,7 +43,7 @@ export class HomePage implements OnInit{
     private alertViewer: ViewControllerService,
     private platform: Platform,
   ){
-
+    this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
   }
 
   ngOnInit() {
