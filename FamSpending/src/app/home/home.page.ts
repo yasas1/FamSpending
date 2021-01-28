@@ -90,10 +90,10 @@ export class HomePage implements OnInit{
     let month = months.indexOf(spit[0])+1;
     let year = spit[1];
 
-    let daysInMonth = this.daysInAMonth( parseInt(year), month);
+    let daysInMonth = new Date(parseInt(year), month,0).getDate(); 
 
     let startDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
-    let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
+    let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+daysInMonth), 'yyyy-MM-dd', this.locale);
 
     this.getTotalExpendituresFromTo(startDate,endDate);
     
@@ -164,6 +164,7 @@ export class HomePage implements OnInit{
     dateForEarlyMonth.setMonth(dateForEarlyMonth.getMonth() - 8);
     let startDateForEarlyMonth =  formatDate(dateForEarlyMonth, 'yyyy-MM-dd', this.locale);
     //let dateStart =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+1), 'yyyy-MM-dd', this.locale);
+
     // upto today
     let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
     
@@ -264,8 +265,5 @@ export class HomePage implements OnInit{
     });
   }
 
-  private daysInAMonth(year:any,month:any) {
-    return new Date(year,month,0).getDate();
-  }
 
 }

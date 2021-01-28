@@ -20,6 +20,11 @@ export class MenuPage implements OnInit {
       name: 'New Spending',
       path: '/menu/newSpending',
       icon: 'create'
+    },
+    {
+      name: 'Category-Member',
+      path: '/menu/CategoryAndMember',
+      icon: 'basket'
     }
   ]
 
