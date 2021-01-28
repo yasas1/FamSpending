@@ -15,6 +15,10 @@ const routes: Routes = [
       {
         path: 'newSpending',
         loadChildren: '../new-spending/new-spending.module#NewSpendingPageModule'
+      },
+      {
+        path: 'CategoryAndMember',
+        loadChildren: '../category-member/category-member.module#CategoryMemberPageModule'
       }
     ]
   },

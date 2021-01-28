@@ -7,11 +7,11 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: './menu/menu.module#MenuPageModule'
-  },
-  {
-    path: 'category-member',
-    loadChildren: () => import('./category-member/category-member.module').then( m => m.CategoryMemberPageModule)
   }
+  // {
+  //   path: 'category-member',
+  //   loadChildren: () => import('./category-member/category-member.module').then( m => m.CategoryMemberPageModule)
+  // }
   // {
   //   path: 'home',
   //   loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
