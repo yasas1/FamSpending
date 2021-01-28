@@ -24,7 +24,7 @@ export class MenuPage implements OnInit {
     {
       name: 'Category-Member',
       path: '/menu/CategoryAndMember',
-      icon: 'create'
+      icon: 'briefcase'
     }
   ]
 

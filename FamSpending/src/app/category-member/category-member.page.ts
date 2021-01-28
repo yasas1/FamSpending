@@ -21,11 +21,14 @@ export class CategoryMemberPage implements OnInit {
 
   public dataArray:any=[];
 
-  public categoryList: Array<{id: number, name: string}>;
+  public List: Array<{id: number, name: string}>;
 
   public canAddField:boolean = true;
 
   public today: any;
+
+  type =0;
+  typeDisplay ="Categories";
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -78,7 +81,7 @@ export class CategoryMemberPage implements OnInit {
     /**  remove this input field  */
   removeField(index){
 
-    this.dataArray.splice(index);
+    this.dataArray.splice(index,1);
 
     let size = this.dataArray.length;
 
@@ -101,6 +104,18 @@ export class CategoryMemberPage implements OnInit {
 
   }
 
+  typeClick(){
+
+    if(this.type==0){
+      this.typeDisplay = "Categories";
+      this.getCategories();
+    }
+    else{
+      this.typeDisplay = "Members";
+      this.getMembers();
+    }
+  }
+
   getCategories(){
 
     this.database.getAllCategories().then((result) => { 
@@ -115,13 +130,44 @@ export class CategoryMemberPage implements OnInit {
 
         if(categoriesLength > 0){
 
-          this.categoryList = [];
+          this.List = [];
 
           for(let i=0; i < categoriesLength; i++) {
 
-            this.categoryList.push({
+            this.List.push({
               id: categories[i].id,
               name: categories[i].name
+            });
+       
+          }
+
+        }
+      }  
+    });
+
+  }
+
+  getMembers(){
+
+    this.database.getAllMembers().then((result) => { 
+
+      let members;
+
+      if(result != 0){
+
+        members =  result;  
+
+        let membersLength = members.length;
+
+        if(membersLength > 0){
+
+          this.List = [];
+
+          for(let i=0; i < membersLength; i++) {
+
+            this.List.push({
+              id: members[i].id,
+              name: members[i].name
             });
        
           }
@@ -141,20 +187,20 @@ export class CategoryMemberPage implements OnInit {
     if(size > 0){
 
       for(var i = 0; i < size; i++) { 
-        let categoryName = this.dataArray[i].name;  
-        if(categoryName != ""){
+        let name = this.dataArray[i].name;  
+        if(name != ""){
           allNull = false;
-          this.database.checkCategoryByName(categoryName).then((result) => { 
+          this.database.checkCategoryByName(name).then((result) => { 
             if(result != 1){
               try{         
-                this.database.insertCategory(categoryName);
+                this.database.insertCategory(name);
                 atleastOneAdded = true;
               }catch(error){
                 //this.alertViewer.presentAlert("Insert Error! ",error);
               }             
             }
             else{
-              this.alertViewer.presentAlert("Category Here! ", ` Category "${categoryName}" is already here `);
+              this.alertViewer.presentAlert("Category Here! ", ` Category "${name}" is already here `);
             }
           }).catch(error => {
             //this.alertViewer.presentAlert("Checking Error! ", error);

@@ -15,9 +15,32 @@
   <div class="ion-text-end">
     <ion-label style="font-style: oblique;font-family: fantasy; font-size:x-small ;">  {{today}} </ion-label>
   </div>
-  <div class="ion-text-center">
+
+  <ion-radio-group [(ngModel)]="type" (ionChange)="typeClick()">  
+
+    <ion-row >
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-label class="typeClass">Categories</ion-label>
+          <ion-radio [value]="0" ></ion-radio>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-label class="typeClass">Members</ion-label>
+          <ion-radio [value]="1" ></ion-radio>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-radio-group>
+
+  <!-- <div class="ion-text-center">
     <ion-title   style="font-style:inherit;font-family: cursive; font-size:x-large ;"> Categories</ion-title>
-  </div>
+  </div> -->
   <br>
 
   <div *ngFor="let att of dataArray; let idx = index">
@@ -26,7 +49,7 @@
 
       <ion-row>
         <ion-col size="3">
-          <ion-label color="primary">Name</ion-label>
+          <ion-label class="fontClass"  color="primary">Name</ion-label>
         </ion-col>
 
         <ion-col size="7">
@@ -50,35 +73,35 @@
   <div>
     <ion-button [disabled]="!canAddField" (click)="addField()" color="secondary" > <ion-icon name="add"></ion-icon>  </ion-button>
     <ion-button color="light" (click)="clear()" > Clear </ion-button> 
-    <ion-button (click)="onSubmit()" style="position: absolute; right: 0;">  ADD </ion-button>
+    <ion-button  (click)="onSubmit()" style="position: absolute; right:0%;">  ADD </ion-button>
   </div>
 
   <br>
   <div>
-    <ion-title> Categories </ion-title>
+    <ion-title class="fontClass" > {{typeDisplay}} </ion-title>
   </div>
 
   <div class="ion-text-center">
 
     <ion-list> 
 
-      <div ion-item *ngFor="let category of categoryList let idx = index" >
+      <div *ngFor="let typeItem of List let idx = index" >
 
         <ion-grid>
 
           <ion-row>
             <ion-col size="2">
 
-              <div icon-start>
+              <div class="ion-text-start">
                 <ion-icon name="star-outline"></ion-icon>
                 {{idx + 1}}
               </div>
                              
             </ion-col>
     
-            <ion-col size="6">
+            <ion-col class="fontClass" size="6">
 
-                {{category.name}}
+                {{typeItem.name}}
               
             </ion-col>
 
