@@ -379,6 +379,19 @@ export class DatabaseService {
     }
   }
 
+  /**  Update Category by id */
+  updateCategoryOrMemberById(id:number,name:string,dbName:string) {
+    this.databaseObj.executeSql(`
+      UPDATE '${dbName}'
+      SET name = '${name}'
+      WHERE id = '${id}';
+    `, [])
+      .catch(error => {
+        this.alertViewer.presentAlert("Updating Error! ",dbName+" updating error");
+      }
+    );
+  }
+
   /**
    * *************************************************
    * MEMBER

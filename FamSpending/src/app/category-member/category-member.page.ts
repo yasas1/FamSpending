@@ -3,7 +3,7 @@ import { Component,OnInit , Inject, LOCALE_ID} from '@angular/core';
 import { formatDate } from '@angular/common';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 
 import { Category } from '../models/Category';
 import { Member } from '../models/Member';
@@ -35,7 +35,7 @@ export class CategoryMemberPage implements OnInit {
     public platform: Platform,
     public database: DatabaseService,
     public alertViewer: ViewControllerService,
-
+    public alertCtrl: AlertController
   ) { 
     this.category = new Category();
     this.category.name="";
@@ -190,8 +190,6 @@ export class CategoryMemberPage implements OnInit {
 
   onSubmit(){
 
-
-
     let dbType = this.type == 0 ? "category" : "member";
 
     let size = this.dataArray.length;
@@ -259,6 +257,59 @@ export class CategoryMemberPage implements OnInit {
       }, size*500);
       
     }
+  }
+
+  /**  Update Category   */
+  async presentPromptToEdit(id, oldItem:string) {
+
+    let dbType = this.type == 0 ? "category" : "member";
+
+    const alert = await  this.alertCtrl.create({
+      header: 'Update '+ dbType,
+      inputs: [
+        {
+          name: 'updateType',
+          placeholder: oldItem
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Update',
+          handler: data => {
+
+            this.database.checkCategoryOrMemberByName(data.updateType,dbType).then((result) => { 
+              if(result != 1){      
+                this.database.updateCategoryOrMemberById(parseInt(id),data.updateType,dbType);     
+                
+                setTimeout(() =>
+                {
+                  if(this.type==0){
+                    this.getCategories();
+                  }
+                  else{
+                    this.getMembers();
+                  }
+                }, 500);
+              }
+              else{
+                this.alertViewer.presentAlert("Already Here! ", dbType+`, "${data.updateType}" is already here `);
+              }
+            }).catch(error => {}); 
+
+            
+            
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   
