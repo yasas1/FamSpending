@@ -344,6 +344,43 @@ export class DatabaseService {
 
   /**
    * *************************************************
+   * Category + MEMBER
+   * 
+   * Together
+   */
+  
+  /**  Insert category/Member  */
+  insertCategoryOrMember(name:string,dbName:string) {
+    
+    this.databaseObj.executeSql(`
+      INSERT INTO '${dbName}' (name) VALUES ('${name}')
+    `, [])
+    .catch(e => {
+        this.alertViewer.presentAlert("Insert Error! ", dbName+" inserting error");
+      });
+  }
+
+
+  /**  Check the category/member by name */
+  async checkCategoryOrMemberByName(name:string,dbName:string) {
+
+    try {
+      const data = await this.databaseObj.executeSql(`
+      SELECT * FROM '${dbName}' WHERE name = '${name}';
+      `, []);
+      if (data.rows.length > 0) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    } catch (error) {
+      this.alertViewer.presentAlert("Check Category/Member Error! ", "Error " + JSON.stringify(error));
+    }
+  }
+
+  /**
+   * *************************************************
    * MEMBER
    * 
    * 

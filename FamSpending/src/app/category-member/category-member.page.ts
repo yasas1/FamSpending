@@ -64,10 +64,20 @@ export class CategoryMemberPage implements OnInit {
   /**  Add a new input field for category */
   addField(){
 
-    this.category = new Category();
-    this.category.name="";
-    this.dataArray.push(this.category);
+    if(this.type==0){
+      this.category = new Category();
+      this.category.name="";
+      this.dataArray.push(this.category);
 
+    }
+    else{
+      this.member = new Member();
+      this.member.name="";
+      this.dataArray.push(this.member);
+
+    }
+
+    
     let size = this.dataArray.length;
 
     if(size >= 5){
@@ -180,6 +190,10 @@ export class CategoryMemberPage implements OnInit {
 
   onSubmit(){
 
+
+
+    let dbType = this.type == 0 ? "category" : "member";
+
     let size = this.dataArray.length;
     let atleastOneAdded = false;
     let allNull = true;
@@ -190,17 +204,17 @@ export class CategoryMemberPage implements OnInit {
         let name = this.dataArray[i].name;  
         if(name != ""){
           allNull = false;
-          this.database.checkCategoryByName(name).then((result) => { 
+          this.database.checkCategoryOrMemberByName(name,dbType).then((result) => { 
             if(result != 1){
               try{         
-                this.database.insertCategory(name);
+                this.database.insertCategoryOrMember(name,dbType);
                 atleastOneAdded = true;
               }catch(error){
                 //this.alertViewer.presentAlert("Insert Error! ",error);
               }             
             }
             else{
-              this.alertViewer.presentAlert("Category Here! ", ` Category "${name}" is already here `);
+              this.alertViewer.presentAlert("Already Here! ", dbType+`, "${name}" is already here `);
             }
           }).catch(error => {
             //this.alertViewer.presentAlert("Checking Error! ", error);
@@ -210,14 +224,20 @@ export class CategoryMemberPage implements OnInit {
       setTimeout(() =>
         {
         if(atleastOneAdded){
-          this.alertViewer.presentAlert("Category Adding! ", "Successfully Added!");
+          this.alertViewer.presentAlert(dbType+ " Adding! ", "Successfully Added!");
           setTimeout(() =>
           {
-            this.getCategories();
+            if(this.type==0){
+              this.getCategories();
+            }
+            else{
+              this.getMembers();
+            }
+
           }, 500);
         }
         else if(allNull){
-          this.alertViewer.presentAlert("Category! ","Name of a category should be entered ");
+          this.alertViewer.presentAlert(dbType,`Name of a "${dbType}"  should be entered `);
         }
       }, 1000);
 
@@ -225,9 +245,17 @@ export class CategoryMemberPage implements OnInit {
       setTimeout(() =>
       {
         this.dataArray =[];
-        this.category = new Category();
-        this.category.name="";
-        this.dataArray.push(this.category);
+        if(this.type==0){
+          this.category = new Category();
+          this.category.name="";
+          this.dataArray.push(this.category);
+        }
+        else{
+          this.member = new Member();
+          this.member.name="";
+          this.dataArray.push(this.member);
+        }
+        
       }, size*500);
       
     }
