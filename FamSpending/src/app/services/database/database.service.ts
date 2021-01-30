@@ -404,6 +404,30 @@ export class DatabaseService {
     );
   }
 
+  /**  Check the category by name */
+  async checkCategoryOrMemberInExpendtiureById(id:number,type:number) {
+
+    //member_id INT, category_id INT
+    let attributeName = type == 0 ? "category_id" : "member_id";
+
+    try {
+      const data = await this.databaseObj.executeSql(`
+      SELECT * FROM expenditure  WHERE ${attributeName}  = ${id} LIMIT 1 ;
+      `, []);
+      if (data.rows.length > 0) {
+        return 1;
+      }
+      else {
+        this.alertViewer.presentAlert("checking  Error! ", `
+        SELECT * FROM expenditure  WHERE ${attributeName}  = ${id} ;
+        `  + data.rows.length);
+        return 0;
+      }
+    } catch (error) {
+       return 1;
+    }
+  }
+
   /**
    * *************************************************
    * MEMBER

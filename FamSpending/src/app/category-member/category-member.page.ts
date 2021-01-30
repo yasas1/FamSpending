@@ -315,33 +315,51 @@ export class CategoryMemberPage implements OnInit {
 
     let dbType = this.type == 0 ? "category" : "member";
 
-    const alert = await this.alertCtrl.create({
+    this.database.checkCategoryOrMemberInExpendtiureById(parseInt(id),this.type).then(async (result) => { 
 
-      header: 'Confirm Deleting',
-      message: 'Do you realy want to delete the "' +oldItem+ '" '+dbType+'?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Delete',
-          handler: () => {
+      if(result != 1){    
+        
+        const alert = await this.alertCtrl.create({
 
-            this.database.deleteCategoryeById(parseInt(id));
-
-            setTimeout(() =>
+          header: 'Confirm Deleting',
+          message: 'Do you realy want to delete the "' +oldItem+ '" '+dbType+'?',
+          buttons: [
             {
-              this.getCategories();
-            }, 1000);
-          }
-        }
-      ]
-    });
-    alert.present();
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+              }
+            },
+            {
+              text: 'Delete',
+              handler: () => {
+    
+                this.database.deleteCategoryOrMemberById(parseInt(id),dbType);
+    
+                setTimeout(() =>
+                {
+                  if(this.type==0){
+                    this.getCategories();
+                  }
+                  else{
+                    this.getMembers();
+                  }
+                }, 500);
+              }
+            }
+          ]
+        });
+        alert.present();
+       
+      }
+      else{
+        this.alertViewer.presentAlert("Spendings are Here! ", " Some Spendings are with this, Please Update ");
+      }
+
+    }).catch(error => {}); 
+
+    
   }
 
   
