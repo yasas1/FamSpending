@@ -302,9 +302,41 @@ export class CategoryMemberPage implements OnInit {
                 this.alertViewer.presentAlert("Already Here! ", dbType+`, "${data.updateType}" is already here `);
               }
             }).catch(error => {}); 
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
-            
-            
+  /**  Delete Category */
+  async presentConfirmToDelete(id, oldItem:string) {
+
+    let dbType = this.type == 0 ? "category" : "member";
+
+    const alert = await this.alertCtrl.create({
+
+      header: 'Confirm Deleting',
+      message: 'Do you realy want to delete the "' +oldItem+ '" '+dbType+'?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+
+            this.database.deleteCategoryeById(parseInt(id));
+
+            setTimeout(() =>
+            {
+              this.getCategories();
+            }, 1000);
           }
         }
       ]

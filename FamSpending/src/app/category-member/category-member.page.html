@@ -113,7 +113,7 @@
       
             <ion-col size="2">
 
-                <ion-button color="danger"> <ion-icon name="trash"></ion-icon> </ion-button>
+                <ion-button color="danger" (click)="presentConfirmToDelete(typeItem.id,typeItem.name.toString())"> <ion-icon name="trash"></ion-icon> </ion-button>
               
             </ion-col>
     

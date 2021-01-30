@@ -392,6 +392,18 @@ export class DatabaseService {
     );
   }
 
+  /**  Delete Category by Id */
+  deleteCategoryOrMemberById(id:number,dbName:string) {
+    this.databaseObj.executeSql(`
+      DELETE FROM '${dbName}' 
+      WHERE id = '${id}';
+    `, [])
+      .catch(error => {
+        this.alertViewer.presentAlert("Deleting Error! ", dbName+" deleting error");
+      }
+    );
+  }
+
   /**
    * *************************************************
    * MEMBER
