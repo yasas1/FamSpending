@@ -1,5 +1,6 @@
 import { Component, ViewChild ,OnInit, Inject, LOCALE_ID} from '@angular/core';
 import { formatDate } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { AlertController,Platform } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
@@ -46,6 +47,7 @@ export class HomePage implements OnInit{
     private database: DatabaseService, 
     private alertViewer: ViewControllerService,
     private platform: Platform,
+    private router:Router
   ){
     this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
   }
@@ -68,6 +70,12 @@ export class HomePage implements OnInit{
   ionViewDidLoad() {
     
     
+  }
+
+  navgateNew(date) {
+    this.alertViewer.presentAlert("sgsgsg","wsfsg");
+    console.log("sfgsg");
+    this.router.navigateByUrl('/menu/daySpendingManage/'+date);
   }
 
   next() {
@@ -103,13 +111,13 @@ export class HomePage implements OnInit{
   // Calendar event was clicked
   async onEventSelected(event) {
     
-    let start = formatDate(event.startTime, 'fullDate', this.locale);
-    let end = formatDate(event.endTime, 'fullDate', this.locale);
+    //let start = formatDate(event.startTime, 'MMMM d, y', this.locale);
+    //let end = formatDate(event.endTime, 'fullDate', this.locale);
   
     const alert = await this.alertCtrl.create({
-      header: start,
-      subHeader: event.desc,
-      message: 'Total Spendings: ' + 'Rs. '+ event.spends + '/= ',
+      header: formatDate(event.startTime, 'MMMM d, y', this.locale),
+      subHeader: formatDate(event.startTime, 'EEEE', this.locale),
+      message: 'Total : ' + ' Rs. '+ event.spends + '/= ',
       buttons: ['OK'],
     });
     alert.present();
@@ -189,7 +197,7 @@ export class HomePage implements OnInit{
 
         if(spends!=0){
           events.push({
-            title: 'Total Rs. '+ spends + '/= ',
+            title: 'Rs. '+ spends + '/= ',
             startTime: new Date( Date.UTC( eventDate.getFullYear(),eventDate.getMonth(),eventDate.getDate() ) ),
             endTime: new Date(Date.UTC( eventDate.getFullYear(),eventDate.getMonth(),eventDate.getDate()+1 )),
             allDay: true,

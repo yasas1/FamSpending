@@ -418,9 +418,6 @@ export class DatabaseService {
         return 1;
       }
       else {
-        this.alertViewer.presentAlert("checking  Error! ", `
-        SELECT * FROM expenditure  WHERE ${attributeName}  = ${id} ;
-        `  + data.rows.length);
         return 0;
       }
     } catch (error) {

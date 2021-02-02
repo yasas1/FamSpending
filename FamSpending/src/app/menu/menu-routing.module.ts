@@ -19,6 +19,10 @@ const routes: Routes = [
       {
         path: 'CategoryAndMember',
         loadChildren: '../category-member/category-member.module#CategoryMemberPageModule'
+      },
+      {
+        path: 'daySpendingManage/:date',
+        loadChildren: '../day-spendings-manage/day-spendings-manage.module#DaySpendingsManagePageModule'
       }
     ]
   },

@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { MenuPage } from './menu/menu.page';
-import { NewSpendingPage } from './new-spending/new-spending.page';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: './menu/menu.module#MenuPageModule'
+  },
+  {
+    path: 'daySpendingManage',
+    loadChildren: () => import('./day-spendings-manage/day-spendings-manage.module').then( m => m.DaySpendingsManagePageModule)
   }
   // {
   //   path: 'category-member',
