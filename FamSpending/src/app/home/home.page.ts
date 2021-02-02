@@ -72,12 +72,6 @@ export class HomePage implements OnInit{
     
   }
 
-  navgateNew(date) {
-    this.alertViewer.presentAlert("sgsgsg","wsfsg");
-    console.log("sfgsg");
-    this.router.navigateByUrl('/menu/daySpendingManage/'+date);
-  }
-
   next() {
     this.myCal.slideNext();
     
@@ -271,6 +265,10 @@ export class HomePage implements OnInit{
         this.totalForMonth = 0;
       } 
     });
+  }
+
+  navgateNew(date) {
+    this.router.navigateByUrl('/menu/daySpendingManage/'+date);
   }
 
 

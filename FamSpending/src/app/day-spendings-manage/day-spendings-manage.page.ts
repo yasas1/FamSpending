@@ -20,7 +20,7 @@ export class DaySpendingsManagePage implements OnInit {
   ngOnInit() {
     this.ParamDate = this.activatedRoute.snapshot.paramMap.get('date');
 
-    this.thisDay = formatDate(new Date(this.ParamDate), 'MMMM dd yyyy', this.locale);
+    this.thisDay = formatDate(new Date(this.ParamDate), 'EEEE MMMM dd yyyy', this.locale);
   }
 
 }
