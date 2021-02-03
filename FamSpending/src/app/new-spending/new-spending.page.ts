@@ -40,7 +40,7 @@ export class NewSpendingPage implements OnInit {
 
     @Inject(LOCALE_ID) private locale: string,
    
-    public alertViewer: ViewControllerService,
+    private alertViewer: ViewControllerService,
     private database: DatabaseService,
     public formBuilder: FormBuilder,
     private datePicker: DatePicker
