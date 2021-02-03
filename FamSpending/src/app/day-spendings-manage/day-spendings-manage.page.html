@@ -4,7 +4,7 @@
     <ion-title style="font-style:italic;font-family:monospace;">Day Spendings</ion-title>
     
     <ion-buttons slot="start">
-      <ion-button fill="solid" shape="round" routerLink="/menu/home"  >
+      <ion-button fill="solid" shape="round" (click)="navgateNew()" routerLink=""  >
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -15,7 +15,9 @@
 
 <ion-content>
 
-  <div class="fontClass"> {{thisDay}} {{ParamDate}}</div>
+  <div class="ion-text-center"> 
+    <ion-title  style="font-style:inherit;font-family: fantasy; font-size:large ;"> {{thisDay}}  </ion-title>
+  </div>
 
   <br>
 
@@ -38,27 +40,27 @@
                              
             </ion-col>
     
-            <ion-col class="fontClass" size="4">
+            <ion-col class="ion-text-start" size="4">
 
-                {{spending.amount}}
+                <div class="fontClass"> Rs. {{spending.amount}} /= </div>
               
             </ion-col>
 
             <ion-col size="2">
 
-              <ion-button color="success" > <ion-icon slot="icon-only" name="eye"></ion-icon> </ion-button>
+              <ion-button color="success" size="small"> <ion-icon slot="icon-only" name="eye"></ion-icon> </ion-button>
             
             </ion-col>
 
             <ion-col size="2">
 
-              <ion-button color="medium" > <ion-icon  slot="icon-only" name="create"></ion-icon> </ion-button>
+              <ion-button color="medium" size="small" > <ion-icon  slot="icon-only" name="create"></ion-icon> </ion-button>
             
             </ion-col>
       
             <ion-col size="2">
 
-              <ion-button color="danger" > <ion-icon name="trash"></ion-icon> </ion-button>
+              <ion-button color="danger" size="small" (click)="presentConfirmToDelete(spending.id,spending.amount)" > <ion-icon name="trash"></ion-icon> </ion-button>
               
             </ion-col>
 

@@ -5,11 +5,11 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: './menu/menu.module#MenuPageModule'
-  },
-  {
-    path: 'daySpendingManage',
-    loadChildren: () => import('./day-spendings-manage/day-spendings-manage.module').then( m => m.DaySpendingsManagePageModule)
   }
+  // {
+  //   path: 'daySpendingManage',
+  //   loadChildren: () => import('./day-spendings-manage/day-spendings-manage.module').then( m => m.DaySpendingsManagePageModule)
+  // }
   // {
   //   path: 'category-member',
   //   loadChildren: () => import('./category-member/category-member.module').then( m => m.CategoryMemberPageModule)

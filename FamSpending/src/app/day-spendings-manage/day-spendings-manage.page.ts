@@ -4,6 +4,8 @@ import { formatDate } from '@angular/common';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 import { Spending } from '../models/Spending';
+import {AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-day-spendings-manage',
@@ -19,10 +21,12 @@ export class DaySpendingsManagePage implements OnInit {
   public Spendings: Array<Spending>;
 
   constructor(
+    @Inject(LOCALE_ID) private locale: string,
     private activatedRoute: ActivatedRoute,
     private database: DatabaseService,
     private alertViewer: ViewControllerService,
-    @Inject(LOCALE_ID) private locale: string
+    public alertCtrl: AlertController,
+    private router:Router,
     ) {
 
       this.ParamDate = this.activatedRoute.snapshot.paramMap.get('date');
@@ -32,13 +36,15 @@ export class DaySpendingsManagePage implements OnInit {
 
   ngOnInit() {
     
-    
     setTimeout(() =>
     {
       this.getExpenditures();
-    }, 1000);
+    }, 600);
 
-    
+  }
+
+  navgateNew(date) {
+    this.router.navigateByUrl('/menu/home');
   }
 
   getExpenditures(){
@@ -59,8 +65,6 @@ export class DaySpendingsManagePage implements OnInit {
 
           for(let i=0; i < expendituresLength; i++) { 
 
-            this.alertViewer.presentAlert("Insert Error! ",expenditures[i].amount);
-
             this.Spendings.push(new Spending(
               expenditures[i].id,
               expenditures[i].date,
@@ -78,6 +82,38 @@ export class DaySpendingsManagePage implements OnInit {
       } 
 
     });
+  }
+
+  async presentConfirmToDelete(id:number,amount:number,){
+
+    const alert = await this.alertCtrl.create({
+
+      header: 'Confirm Deleting',
+      message: 'Do you realy want to delete the spedning Rs. '+amount+'/= ?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+
+            this.database.deleteExpenditureById(id);
+
+            setTimeout(() =>
+            {
+              this.getExpenditures();
+            }, 600);
+          }
+        }
+      ]
+    });
+    alert.present();
+
   }
 
 }

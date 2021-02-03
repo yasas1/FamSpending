@@ -54,6 +54,11 @@ export class HomePage implements OnInit{
 
   ngOnInit() {
 
+ 
+  }
+
+  ionViewWillEnter() {
+
     this.platform
     .ready()
     .then(() =>
@@ -64,11 +69,6 @@ export class HomePage implements OnInit{
         this.totalMonthSpendingInitializer();
       }, 400);
     });
-    
-  }
-
-  ionViewDidLoad() {
-    
     
   }
 
@@ -205,7 +205,7 @@ export class HomePage implements OnInit{
       this.eventSource =[];
       this.eventSource = events;
 
-    }, 600); 
+    }, 800); 
 
   }
 
