@@ -53,7 +53,7 @@ export class HomePage implements OnInit{
   }
 
   ngOnInit() {
-
+    
  
   }
 
@@ -157,19 +157,21 @@ export class HomePage implements OnInit{
   private spendingsInitializer(){
 
     var events = [];
-
+    
     let year = this.newDateToday.getFullYear();
-    let month = this.newDateToday.getMonth();
+    let month = this.newDateToday.getMonth()+1;
 
     // get initially total spendings for last 8 months
     let dateForEarlyMonth = new Date();
     dateForEarlyMonth.setMonth(dateForEarlyMonth.getMonth() - 8);
+   
     let startDateForEarlyMonth =  formatDate(dateForEarlyMonth, 'yyyy-MM-dd', this.locale);
+    
     //let dateStart =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+1), 'yyyy-MM-dd', this.locale);
 
     // upto today
-    let endDate =  formatDate(new Date(year.toString()+'-'+month.toString()+1+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
-    
+    let endDate =  formatDate(new Date(year.toString()+'-'+month+'-'+this.newDateToday.getDate()), 'yyyy-MM-dd', this.locale);
+  
     //update global expenditure array 
     this.getExpendituresFromTo(startDateForEarlyMonth,endDate);
 
@@ -178,6 +180,7 @@ export class HomePage implements OnInit{
       // set spendings in calendar events
 
       let expendituresLength = this.expenditures.length;
+      
       
       for (let j = 0; j < expendituresLength; j++) {
 
@@ -238,7 +241,7 @@ export class HomePage implements OnInit{
         if(expendituresLength > 0){
 
           for(let i=0; i < expendituresLength; i++) { 
-
+            
             this.expenditures.push({
               date: expenditures[i].date ,
               total:  expenditures[i].total

@@ -4,8 +4,9 @@ import { formatDate } from '@angular/common';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 import { Spending } from '../models/Spending';
-import {AlertController } from '@ionic/angular';
+import {AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { SpendViewComponent } from '../modals/spend-view/spend-view.component';
 
 @Component({
   selector: 'app-day-spendings-manage',
@@ -27,6 +28,7 @@ export class DaySpendingsManagePage implements OnInit {
     private alertViewer: ViewControllerService,
     public alertCtrl: AlertController,
     private router:Router,
+    private modalCtrl: ModalController,
     ) {
 
       this.ParamDate = this.activatedRoute.snapshot.paramMap.get('date');
@@ -43,7 +45,7 @@ export class DaySpendingsManagePage implements OnInit {
 
   }
 
-  navgateNew(date) {
+  navgateNew() {
     this.router.navigateByUrl('/menu/home');
   }
 
@@ -113,6 +115,16 @@ export class DaySpendingsManagePage implements OnInit {
       ]
     });
     alert.present();
+
+  }
+
+  async spendView(id,date,member,category,description,amount){
+
+    const modal = await this.modalCtrl.create({
+      component: SpendViewComponent
+    });
+
+    await modal.present();
 
   }
 
