@@ -118,7 +118,7 @@ export class DatabaseService {
   getExpendituresByDate(date:string) {
 
     return this.databaseObj.executeSql(`
-      SELECT e.id, e.date, m.name as mem_name, c.name as cat_name, e.description, e.amount 
+      SELECT e.id, e.date, m.name as mem_name, c.name as cat_name, e.unnecessary, e.description, e.amount 
       FROM expenditure e 
       JOIN category c ON e.category_id = c.id
       JOIN member m ON e.member_id = m.id
@@ -136,8 +136,9 @@ export class DatabaseService {
                 id:data.rows.item(i).id,
                 date:data.rows.item(i).date,
                 member:data.rows.item(i).mem_name,
-                category:data.rows.item(i).cat_name,             
+                category:data.rows.item(i).cat_name,         
                 description:data.rows.item(i).description,
+                unnecessary:data.rows.item(i).unnecessary,  
                 amount:data.rows.item(i).amount
               });
             }

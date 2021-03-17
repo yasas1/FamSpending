@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
 
-    <ion-title style="font-style:italic;font-family:monospace;"> Spending View</ion-title>
+    <ion-title style="font-family:monospace;"> Spending View </ion-title>
     
     <ion-buttons slot="end">
       <ion-button fill="solid" shape="round" (click)="dismissModal()" >
@@ -14,6 +14,123 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-grid>
+
+    <ion-row >
+
+      <ion-col size="6">
+
+        <ion-item lines="none">
+          <ion-label class="fontClass">Date</ion-label>            
+        </ion-item>
+
+      </ion-col>
+      
+      <ion-col size="6">
+        
+        <ion-item lines="none">
+          {{date}}
+        </ion-item>
+
+      </ion-col>
+
+    </ion-row>
+
+    <br>
+    
+    <ion-row >
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-label class="fontClass">Member</ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          {{member}}
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+    <br>
+    
+    <ion-row >
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-label class="fontClass">Category</ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          {{category}}
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+    <br>
+    
+    <ion-row >
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-label class="fontClass">Description</ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          {{description}}
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+    <br>
+
+    <ion-row >
+
+      <ion-col size="3">
+        
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-label class="fontClass" *ngIf="unnecessary==0">Necessary</ion-label>
+          <ion-label class="fontClass"*ngIf="unnecessary==1">Unnecessary</ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="3">
+        
+      </ion-col>
+
+    </ion-row>
+
+    <br>
+    
+    <ion-row >
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-label class="fontClass">Amount</ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-item lines="none">
+          Rs. {{amount}} /=
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
 
   
 

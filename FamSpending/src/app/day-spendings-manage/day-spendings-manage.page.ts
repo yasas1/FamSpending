@@ -74,6 +74,7 @@ export class DaySpendingsManagePage implements OnInit {
               expenditures[i].member,
               expenditures[i].category,
               expenditures[i].description,
+              expenditures[i].unnecessary,
               expenditures[i].amount
               ));
           }
@@ -119,17 +120,26 @@ export class DaySpendingsManagePage implements OnInit {
 
   }
 
-  async spendViewModal(id,date,member,category,description,amount){
+  async spendViewModal(spending){
 
     const modal = await this.modalCtrl.create({
-      component: SpendViewComponent
+      component: SpendViewComponent,
+      componentProps:{
+        id:spending.id, 
+        date:spending.date,
+        member:spending.member,
+        category:spending.category, 
+        description:spending.description,
+        unnecessary:spending.unnecessary, 
+        amount:spending.amount
+      }
     });
 
     await modal.present();
 
   }
 
-  async spendEditModal(id,date,member,category,description,amount){
+  async spendEditModal(spending){
 
     const modal = await this.modalCtrl.create({
       component: SpendEditComponent

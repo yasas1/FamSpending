@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -8,7 +8,19 @@ import { ModalController } from '@ionic/angular';
 })
 export class SpendViewComponent {
 
-  constructor( private modalCtrl: ModalController) { }
+  @Input() id:number;
+  @Input() date:string;
+  @Input() member:string;
+  @Input() category:string;
+  @Input() description:string;
+  @Input() unnecessary:number;
+  @Input() amount:number;
+
+
+
+  constructor( private modalCtrl: ModalController) {
+
+  }
 
   dismissModal(){
     this.modalCtrl.dismiss();
