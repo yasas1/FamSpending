@@ -19,7 +19,7 @@
 
     <ion-row >
 
-      <ion-col size="6">
+      <ion-col size="5">
 
         <ion-item lines="none">
           <ion-label class="fontClass">Date</ion-label>            
@@ -27,10 +27,10 @@
 
       </ion-col>
       
-      <ion-col size="6">
+      <ion-col size="7">
         
-        <ion-item lines="none">
-          {{date}}
+        <ion-item class="fontDetails" lines="none">
+          {{thisDay}}
         </ion-item>
 
       </ion-col>
@@ -41,14 +41,14 @@
     
     <ion-row >
 
-      <ion-col size="6">
+      <ion-col size="5">
         <ion-item lines="none">
           <ion-label class="fontClass">Member</ion-label>
         </ion-item>
       </ion-col>
 
-      <ion-col size="6">
-        <ion-item lines="none">
+      <ion-col size="7">
+        <ion-item class="fontDetails" lines="none">
           {{member}}
         </ion-item>
       </ion-col>
@@ -59,14 +59,14 @@
     
     <ion-row >
 
-      <ion-col size="6">
+      <ion-col size="5">
         <ion-item lines="none">
           <ion-label class="fontClass">Category</ion-label>
         </ion-item>
       </ion-col>
 
-      <ion-col size="6">
-        <ion-item lines="none">
+      <ion-col size="7">
+        <ion-item class="fontDetails" lines="none"> 
           {{category}}
         </ion-item>
       </ion-col>
@@ -77,14 +77,14 @@
     
     <ion-row >
 
-      <ion-col size="6">
+      <ion-col size="5">
         <ion-item lines="none">
           <ion-label class="fontClass">Description</ion-label>
         </ion-item>
       </ion-col>
 
-      <ion-col size="6">
-        <ion-item lines="none">
+      <ion-col size="7">
+        <ion-item class="fontDetails" lines="none">
           {{description}}
         </ion-item>
       </ion-col>
@@ -100,9 +100,9 @@
       </ion-col>
 
       <ion-col size="6">
-        <ion-item lines="none">
-          <ion-label class="fontClass" *ngIf="unnecessary==0">Necessary</ion-label>
-          <ion-label class="fontClass"*ngIf="unnecessary==1">Unnecessary</ion-label>
+        <ion-item class="fontClass" lines="none">
+          <ion-label  *ngIf="unnecessary==0">Necessary</ion-label>
+          <ion-label *ngIf="unnecessary==1">Unnecessary</ion-label>
         </ion-item>
       </ion-col>
 
@@ -116,14 +116,14 @@
     
     <ion-row >
 
-      <ion-col size="6">
+      <ion-col size="5">
         <ion-item lines="none">
           <ion-label class="fontClass">Amount</ion-label>
         </ion-item>
       </ion-col>
 
-      <ion-col size="6">
-        <ion-item lines="none">
+      <ion-col size="7">
+        <ion-item class="fontDetails" lines="none">
           Rs. {{amount}} /=
         </ion-item>
       </ion-col>

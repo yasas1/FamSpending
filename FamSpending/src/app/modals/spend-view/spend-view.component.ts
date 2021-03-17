@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Inject, LOCALE_ID} from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-spend-view',
@@ -16,10 +17,20 @@ export class SpendViewComponent {
   @Input() unnecessary:number;
   @Input() amount:number;
 
+  thisDay:any;
 
 
-  constructor( private modalCtrl: ModalController) {
+  constructor( 
+    @Inject(LOCALE_ID) private locale: string,
+    private modalCtrl: ModalController
+  ) {
 
+    
+
+  }
+
+  ionViewWillEnter() {
+    this.thisDay = formatDate(new Date(this.date), 'MMMM dd yyyy', this.locale);
   }
 
   dismissModal(){
