@@ -12,9 +12,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { SpendViewComponent } from './modals/spend-view/spend-view.component';
+import { SpendEditComponent } from './modals/spend-edit/spend-edit.component';
 
 @NgModule({
-  declarations: [AppComponent, SpendViewComponent],
+  declarations: [AppComponent, SpendViewComponent, SpendEditComponent],
   entryComponents: [],
   imports: [
     BrowserModule, 

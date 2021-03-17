@@ -7,6 +7,7 @@ import { Spending } from '../models/Spending';
 import {AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SpendViewComponent } from '../modals/spend-view/spend-view.component';
+import { SpendEditComponent } from '../modals/spend-edit/spend-edit.component';
 
 @Component({
   selector: 'app-day-spendings-manage',
@@ -118,10 +119,20 @@ export class DaySpendingsManagePage implements OnInit {
 
   }
 
-  async spendView(id,date,member,category,description,amount){
+  async spendViewModal(id,date,member,category,description,amount){
 
     const modal = await this.modalCtrl.create({
       component: SpendViewComponent
+    });
+
+    await modal.present();
+
+  }
+
+  async spendEditModal(id,date,member,category,description,amount){
+
+    const modal = await this.modalCtrl.create({
+      component: SpendEditComponent
     });
 
     await modal.present();
