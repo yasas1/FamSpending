@@ -187,6 +187,41 @@ export class DatabaseService {
         }
     );
   }
+  
+  /**  Get Expenditures by date */
+  getSpendsCategoryForday(date:string) {
+
+    return this.databaseObj.executeSql(`
+      SELECT sum(amount) as total, c.name as category 
+      FROM expenditure e
+      JOIN category c ON e.category_id = c.id
+      WHERE e.date='${date}'
+      GROUP BY category_id
+      `, [])
+        .then((data) => {
+
+          let expenditures= [];
+
+          if(data.rows.length > 0){
+
+            for(let i=0; i <data.rows.length; i++) {
+
+              expenditures.push({
+                category:data.rows.item(i).category,
+                total:data.rows.item(i).total,
+              });
+            }
+            return expenditures;
+          }
+          else{
+            return 0;
+          }
+        })
+        .catch(error => {
+          this.alertViewer.presentAlert("Expenditures Getting-Month Error! ","Get error"+JSON.stringify(error));
+        }
+    );
+  }
 
   getTotalExpendituresForDateRange(dateStart:string,dateEnd:string) {
 

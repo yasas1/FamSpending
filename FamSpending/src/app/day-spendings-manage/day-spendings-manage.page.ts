@@ -20,6 +20,8 @@ export class DaySpendingsManagePage implements OnInit {
 
   thisDay:any;
 
+  spendsByCategories: Array<{category: string, total: any}>;
+
   public Spendings: Array<Spending>;
 
   constructor(
@@ -42,6 +44,7 @@ export class DaySpendingsManagePage implements OnInit {
     setTimeout(() =>
     {
       this.getExpenditures();
+      this.getSpendsForCategories();
     }, 600);
 
   }
@@ -85,6 +88,38 @@ export class DaySpendingsManagePage implements OnInit {
         expenditures = 0;
       } 
 
+    });
+  }
+
+  public getSpendsForCategories(){
+
+    this.spendsByCategories = [];
+
+    this.database.getSpendsCategoryForday(this.ParamDate).then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+           //this.alertViewer.presentAlert("Expenditures Getting-Month Error! ",expenditures[i].category+" d " +expenditures[i].total);
+            this.spendsByCategories.push({
+              category: expenditures[i].category ,
+              total:  expenditures[i].total
+            });
+          }
+
+        }
+      }  
+      else{
+        expenditures = 0;
+      } 
     });
   }
 
