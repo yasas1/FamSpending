@@ -78,9 +78,13 @@
 
   <div class="ion-text-center">
 
+    <ion-list-header lines="full" >
+      <ion-label style="font-family:monospace;" class="ion-text-start">Categories</ion-label>
+    </ion-list-header>
+
     <ion-list> 
 
-      <div *ngFor="let spending of spendsByCategories let idx = index" >
+      <div *ngFor="let spending of spendsByCategories" >
 
         <ion-grid>
 
@@ -88,6 +92,34 @@
 
             <ion-col size="6">
               <div class="fontClass">  {{spending.category}}  </div>
+            </ion-col>
+
+            <ion-col size="6">
+              <div class="fontClass"> Rs. {{spending.total}} /= </div>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </div>
+
+    </ion-list>
+
+    <ion-list-header lines="full" >
+      <ion-label style="font-family:monospace;" class="ion-text-start">Members</ion-label>
+    </ion-list-header>
+
+    <ion-list> 
+
+      <div *ngFor="let spending of spendsByMembers" >
+
+        <ion-grid>
+
+          <ion-row>
+
+            <ion-col size="6">
+              <div class="fontClass">  {{spending.member}}  </div>
             </ion-col>
 
             <ion-col size="6">

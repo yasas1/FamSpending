@@ -21,6 +21,7 @@ export class DaySpendingsManagePage implements OnInit {
   thisDay:any;
 
   spendsByCategories: Array<{category: string, total: any}>;
+  spendsByMembers: Array<{member: string, total: any}>;
 
   public Spendings: Array<Spending>;
 
@@ -41,10 +42,17 @@ export class DaySpendingsManagePage implements OnInit {
 
   ngOnInit() {
     
+    
+
+  }
+
+  ionViewWillEnter() {
+
     setTimeout(() =>
     {
       this.getExpenditures();
       this.getSpendsForCategories();
+      this.getSpendsForMembers();
     }, 600);
 
   }
@@ -111,6 +119,38 @@ export class DaySpendingsManagePage implements OnInit {
            //this.alertViewer.presentAlert("Expenditures Getting-Month Error! ",expenditures[i].category+" d " +expenditures[i].total);
             this.spendsByCategories.push({
               category: expenditures[i].category ,
+              total:  expenditures[i].total
+            });
+          }
+
+        }
+      }  
+      else{
+        expenditures = 0;
+      } 
+    });
+  }
+
+  public getSpendsForMembers(){
+
+    this.spendsByMembers = [];
+
+    this.database.getSpendsMembersForday(this.ParamDate).then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+            
+            this.spendsByMembers.push({
+              member: expenditures[i].member ,
               total:  expenditures[i].total
             });
           }

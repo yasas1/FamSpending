@@ -188,7 +188,7 @@ export class DatabaseService {
     );
   }
   
-  /**  Get Expenditures by date */
+  /**  Get Expenditures by date grouping category */
   getSpendsCategoryForday(date:string) {
 
     return this.databaseObj.executeSql(`
@@ -208,6 +208,41 @@ export class DatabaseService {
 
               expenditures.push({
                 category:data.rows.item(i).category,
+                total:data.rows.item(i).total,
+              });
+            }
+            return expenditures;
+          }
+          else{
+            return 0;
+          }
+        })
+        .catch(error => {
+          this.alertViewer.presentAlert("Expenditures Getting-Month Error! ","Get error"+JSON.stringify(error));
+        }
+    );
+  }
+
+  /**  Get Expenditures by date grouping members*/
+  getSpendsMembersForday(date:string) {
+
+    return this.databaseObj.executeSql(`
+      SELECT sum(amount) as total, m.name as member 
+      FROM expenditure e
+      JOIN member m ON e.member_id = m.id
+      WHERE e.date='${date}'
+      GROUP BY member_id
+      `, [])
+        .then((data) => {
+
+          let expenditures= [];
+
+          if(data.rows.length > 0){
+
+            for(let i=0; i <data.rows.length; i++) {
+
+              expenditures.push({
+                member:data.rows.item(i).member,
                 total:data.rows.item(i).total,
               });
             }
