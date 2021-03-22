@@ -22,6 +22,7 @@ export class DaySpendingsManagePage implements OnInit {
 
   spendsByCategories: Array<{category: string, total: any}>;
   spendsByMembers: Array<{member: string, total: any}>;
+  spendsByNecessary: Array<{unnecessary: any, total: any}>;
 
   public Spendings: Array<Spending>;
 
@@ -42,7 +43,9 @@ export class DaySpendingsManagePage implements OnInit {
 
   ngOnInit() {
     
-    
+    this.spendsByCategories= [];
+    this.spendsByMembers= [];
+    this.spendsByNecessary= [];
 
   }
 
@@ -53,7 +56,8 @@ export class DaySpendingsManagePage implements OnInit {
       this.getExpenditures();
       this.getSpendsForCategories();
       this.getSpendsForMembers();
-    }, 600);
+      this.getSpendsForNecessary();
+    }, 700);
 
   }
 
@@ -103,7 +107,7 @@ export class DaySpendingsManagePage implements OnInit {
 
     this.spendsByCategories = [];
 
-    this.database.getSpendsCategoryForday(this.ParamDate).then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(this.ParamDate,"category").then((result) => { 
 
       let expenditures;
 
@@ -116,9 +120,9 @@ export class DaySpendingsManagePage implements OnInit {
         if(expendituresLength > 0){
 
           for(let i=0; i < expendituresLength; i++) { 
-           //this.alertViewer.presentAlert("Expenditures Getting-Month Error! ",expenditures[i].category+" d " +expenditures[i].total);
+           
             this.spendsByCategories.push({
-              category: expenditures[i].category ,
+              category: expenditures[i].name ,
               total:  expenditures[i].total
             });
           }
@@ -135,7 +139,7 @@ export class DaySpendingsManagePage implements OnInit {
 
     this.spendsByMembers = [];
 
-    this.database.getSpendsMembersForday(this.ParamDate).then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(this.ParamDate,"member").then((result) => { 
 
       let expenditures;
 
@@ -150,7 +154,7 @@ export class DaySpendingsManagePage implements OnInit {
           for(let i=0; i < expendituresLength; i++) { 
             
             this.spendsByMembers.push({
-              member: expenditures[i].member ,
+              member: expenditures[i].name ,
               total:  expenditures[i].total
             });
           }
@@ -158,6 +162,39 @@ export class DaySpendingsManagePage implements OnInit {
         }
       }  
       else{
+        expenditures = 0;
+      } 
+    });
+  }
+
+  public getSpendsForNecessary(){
+
+    this.spendsByNecessary= [];
+
+    this.database.getSpendsGroupByNecessaryForday(this.ParamDate).then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+            
+            this.spendsByNecessary.push({
+              unnecessary: expenditures[i].unnecessary ,
+              total:  expenditures[i].total
+            });
+          }
+
+        }
+      }  
+      else{
+        this.alertViewer.presentAlert("Spendings Getting Error! ","zero");
         expenditures = 0;
       } 
     });
@@ -186,7 +223,10 @@ export class DaySpendingsManagePage implements OnInit {
             setTimeout(() =>
             {
               this.getExpenditures();
-            }, 600);
+              this.getSpendsForCategories();
+              this.getSpendsForMembers();
+              this.getSpendsForNecessary();
+            }, 700);
           }
         }
       ]

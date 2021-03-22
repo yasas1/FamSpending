@@ -154,7 +154,7 @@ export class DatabaseService {
     );
   }
 
-  /**  Get Expenditures by date */
+  /**  Get Expenditures group by date for date range*/
   getExpendituresForMonth(dateStart:string,dateEnd:string) {
 
     return this.databaseObj.executeSql(`
@@ -188,15 +188,16 @@ export class DatabaseService {
     );
   }
   
-  /**  Get Expenditures by date grouping category */
-  getSpendsCategoryForday(date:string) {
+
+  /**  Get Expenditures by date grouping members or categories*/
+  getSpendsGroupingCateMemForday(date:string,dbType:string) {
 
     return this.databaseObj.executeSql(`
-      SELECT sum(amount) as total, c.name as category 
+      SELECT sum(amount) as total, t.name as name
       FROM expenditure e
-      JOIN category c ON e.category_id = c.id
+      JOIN '${dbType}' t ON e.${dbType}_id = t.id
       WHERE e.date='${date}'
-      GROUP BY category_id
+      GROUP BY ${dbType}_id
       `, [])
         .then((data) => {
 
@@ -207,7 +208,7 @@ export class DatabaseService {
             for(let i=0; i <data.rows.length; i++) {
 
               expenditures.push({
-                category:data.rows.item(i).category,
+                name:data.rows.item(i).name,
                 total:data.rows.item(i).total,
               });
             }
@@ -218,20 +219,19 @@ export class DatabaseService {
           }
         })
         .catch(error => {
-          this.alertViewer.presentAlert("Expenditures Getting-Month Error! ","Get error"+JSON.stringify(error));
+          this.alertViewer.presentAlert("Spendings Getting Error! ","Getting error"+JSON.stringify(error));
         }
     );
   }
 
-  /**  Get Expenditures by date grouping members*/
-  getSpendsMembersForday(date:string) {
+   /**  Get Expenditures by date grouping necessary*/
+   getSpendsGroupByNecessaryForday(date:string) {
 
     return this.databaseObj.executeSql(`
-      SELECT sum(amount) as total, m.name as member 
-      FROM expenditure e
-      JOIN member m ON e.member_id = m.id
-      WHERE e.date='${date}'
-      GROUP BY member_id
+      SELECT sum(amount) as total, unnecessary
+      FROM expenditure
+      WHERE date='${date}'
+      GROUP BY unnecessary
       `, [])
         .then((data) => {
 
@@ -242,7 +242,7 @@ export class DatabaseService {
             for(let i=0; i <data.rows.length; i++) {
 
               expenditures.push({
-                member:data.rows.item(i).member,
+                unnecessary:data.rows.item(i).unnecessary,
                 total:data.rows.item(i).total,
               });
             }
@@ -253,7 +253,7 @@ export class DatabaseService {
           }
         })
         .catch(error => {
-          this.alertViewer.presentAlert("Expenditures Getting-Month Error! ","Get error"+JSON.stringify(error));
+          this.alertViewer.presentAlert("Spendings Getting Error! ","Getting error"+JSON.stringify(error));
         }
     );
   }
