@@ -1,20 +1,27 @@
 <ion-content>
 
-  <p>testing</p>
-  <div class="ion-text-center">
+  <div class="ion-text-center"> 
 
+    
+    <div style="font-family:monospace;" class="ion-text-start">{{displayDate}} </div>
+    <br>
+    <div style="font-family:monospace;" class="ion-text-start"> <b> Total Rs. {{total}} /= </b></div>
+  
+    <br>
+    
     <ion-list> 
 
-      <!-- <div *ngFor="let spending of Spendings let idx = index" > -->
+      <div *ngFor="let spending of Spendings">
 
-        <!-- <div class="fontClass"> Rs. {{spending.amount}} /= </div> -->
-
-        <div>  {{date}} </div>
-        <div> Rs. {{total}} /= </div>
-              
-      <!-- </div> -->
+        <div class="fontDetails"> Rs. {{spending.amount}} /= </div>
+    
+      </div>
 
     </ion-list>
+
+    <br>
+
+    <ion-button color="success" expand="block" (click)="closePopover()">Ok</ion-button>
 
   </div>
 

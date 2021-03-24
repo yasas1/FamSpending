@@ -1,6 +1,8 @@
-import { Component,Input, OnInit } from '@angular/core';
+import { Component,Input, OnInit,Inject, LOCALE_ID } from '@angular/core';
 import { Spending } from 'src/app/models/Spending';
 import { DatabaseService } from 'src/app/services/database/database.service';
+import { formatDate } from '@angular/common';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-spend-list-popover',
@@ -14,9 +16,29 @@ export class SpendListPopoverComponent implements OnInit {
 
   Spendings: Array<Spending>;
 
-  constructor(private database: DatabaseService) { }
+  thisDay:any;
+  displayDate:any;
+
+  constructor(
+    @Inject(LOCALE_ID) private locale: string,
+    private popover:PopoverController,
+    private database: DatabaseService) { }
 
   ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.thisDay = formatDate(new Date(this.date), 'yyyy-MM-dd', this.locale);
+    this.displayDate = formatDate(new Date(this.date), 'EEEE MMMM dd yyyy', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getExpenditures(this.thisDay);
+    }, 500);
+  }
+
+  closePopover(){
+     this.popover.dismiss();
+  }
 
   getExpenditures(date:string){
 
