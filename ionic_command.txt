@@ -68,6 +68,11 @@ npm i -g native-run
 cordova platform rm browser
 cordova platform add browser
 
+Component
+ionic g c compName
+
+
+
 
 
 

@@ -13,9 +13,10 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { SpendViewComponent } from './modals/spend-view/spend-view.component';
 import { SpendEditComponent } from './modals/spend-edit/spend-edit.component';
+import { SpendListPopoverComponent } from './modals/spend-list-popover/spend-list-popover.component';
 
 @NgModule({
-  declarations: [AppComponent, SpendViewComponent, SpendEditComponent],
+  declarations: [AppComponent, SpendViewComponent, SpendEditComponent, SpendListPopoverComponent],
   entryComponents: [],
   imports: [
     BrowserModule, 

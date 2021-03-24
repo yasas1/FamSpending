@@ -7,6 +7,9 @@ import { CalendarComponent } from 'ionic2-calendar';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 
+import { PopoverController } from '@ionic/angular';
+import { SpendListPopoverComponent } from '../modals/spend-list-popover/spend-list-popover.component';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -47,6 +50,7 @@ export class HomePage implements OnInit{
     private database: DatabaseService, 
     private alertViewer: ViewControllerService,
     private platform: Platform,
+    private popoverController: PopoverController,
     private router:Router
   ){
     this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
@@ -108,13 +112,26 @@ export class HomePage implements OnInit{
     //let start = formatDate(event.startTime, 'MMMM d, y', this.locale);
     //let end = formatDate(event.endTime, 'fullDate', this.locale);
   
-    const alert = await this.alertCtrl.create({
-      header: formatDate(event.startTime, 'MMMM d, y', this.locale),
-      subHeader: formatDate(event.startTime, 'EEEE', this.locale),
-      message: 'Total : ' + ' Rs. '+ event.spends + '/= ',
-      buttons: ['OK'],
+    // const alert = await this.alertCtrl.create({
+    //   header: formatDate(event.startTime, 'MMMM d, y', this.locale),
+    //   subHeader: formatDate(event.startTime, 'EEEE', this.locale),
+    //   message: 'Total : ' + ' Rs. '+ event.spends + '/= ',
+    //   buttons: ['OK'],
+    // });
+    // alert.present();
+
+    const popover = await this.popoverController.create({
+      component: SpendListPopoverComponent,
+      event: event,
+      componentProps: {
+        date: event.startTime,
+        total:event.spends
+      },
+      translucent: true
     });
-    alert.present();
+
+    await popover.present();
+
   }
 
   onCurrentDateChanged(event:Date) {
