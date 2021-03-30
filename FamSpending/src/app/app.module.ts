@@ -16,7 +16,11 @@ import { SpendEditComponent } from './modals/spend-edit/spend-edit.component';
 import { SpendListPopoverComponent } from './modals/spend-list-popover/spend-list-popover.component';
 
 @NgModule({
-  declarations: [AppComponent, SpendViewComponent, SpendEditComponent, SpendListPopoverComponent],
+  declarations: [
+    AppComponent, 
+    SpendViewComponent,
+    SpendEditComponent, 
+    SpendListPopoverComponent],
   entryComponents: [],
   imports: [
     BrowserModule, 

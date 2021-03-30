@@ -1,14 +1,15 @@
 import { Component, ViewChild ,OnInit, Inject, LOCALE_ID} from '@angular/core';
 import { formatDate } from '@angular/common';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 
-import { AlertController,Platform } from '@ionic/angular';
+import { AlertController,Platform,NavController  } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 
 import { PopoverController } from '@ionic/angular';
 import { SpendListPopoverComponent } from '../modals/spend-list-popover/spend-list-popover.component';
+import { NewSpendingPage } from '../new-spending/new-spending.page';
 
 @Component({
   selector: 'app-home',
@@ -51,7 +52,8 @@ export class HomePage implements OnInit{
     private alertViewer: ViewControllerService,
     private platform: Platform,
     private popoverController: PopoverController,
-    private router:Router
+    private router:Router,
+    public navCtrl: NavController
   ){
     this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
   }
@@ -134,6 +136,25 @@ export class HomePage implements OnInit{
 
   }
 
+  async goToNewSpending(date:any){
+    // const alert = await this.alertCtrl.create({
+    //   header: ' : '+ date,
+    //   subHeader: ' : ' +date,
+    //   message: 'Total : ' + ' Rs. '+ date + '/= ',
+    //   buttons: ['OK'],
+    // });
+    // alert.present();
+
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+          date: date
+      }
+    };
+
+    this.navCtrl.navigateForward(['/menu/newSpending'], navigationExtras);
+
+  }
+
   onCurrentDateChanged(event:Date) {
     this.selectedDateToEvent = event;
   }
@@ -152,7 +173,6 @@ export class HomePage implements OnInit{
   createRandomEvents() {
     var events = [];
 
-    console.log( Date.UTC(2021,0,15));
     events.push({
       title: 'Total Spending Rs.1500',
       startTime: new Date(Date.UTC(2021,0,21)),

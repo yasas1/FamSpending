@@ -7,6 +7,7 @@ import { ViewControllerService } from '../services/viewController/view-controlle
 import { DatabaseService } from '../services/database/database.service';
 
 import { DatePicker } from '@ionic-native/date-picker/ngx';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-new-spending',
@@ -35,6 +36,8 @@ export class NewSpendingPage implements OnInit {
 
   expenditureForm: FormGroup;
 
+  passDate:any;
+
 
   constructor(
 
@@ -43,23 +46,33 @@ export class NewSpendingPage implements OnInit {
     private alertViewer: ViewControllerService,
     private database: DatabaseService,
     public formBuilder: FormBuilder,
-    private datePicker: DatePicker
-    ) {
-      this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
-      this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
-      this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
+    private datePicker: DatePicker,
+    private route: ActivatedRoute
+  ){
 
-      this.expenditureForm = formBuilder.group({
-        //date: ['', Validators.compose([Validators.required])],
-        member: ['', Validators.compose([Validators.required])],
-        category: ['', Validators.compose([Validators.required])],
-        description: ['', Validators.compose([Validators.required])],
-        amount: ['', Validators.compose([Validators.required])],
-        unnecessary: ['', Validators.compose([Validators.required])],
-      });
+    this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
 
+    this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
+    this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
+
+    this.route.queryParams.subscribe(params => {
+      this.passDate = params["date"];
+      this.date = formatDate(new Date(this.passDate), 'yyyy-MM-dd', this.locale);
+      this.displayDate = formatDate(new Date(this.passDate), 'MMMM dd yyyy', this.locale);
+
+    });
+
+    this.expenditureForm = formBuilder.group({
+      //date: ['', Validators.compose([Validators.required])],
+      member: ['', Validators.compose([Validators.required])],
+      category: ['', Validators.compose([Validators.required])],
+      description: ['', Validators.compose([Validators.required])],
+      amount: ['', Validators.compose([Validators.required])],
+      unnecessary: ['', Validators.compose([Validators.required])],
+    });
+
+    
       
-
   }
 
 
@@ -84,7 +97,7 @@ export class NewSpendingPage implements OnInit {
 
   showDatePicker(){
     this.datePicker.show({
-      date: new Date(),
+      date: new Date(this.date),
       mode: 'date',
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
       minDate: new Date(new Date().setDate(new Date().getDate() - 200)).valueOf(),
@@ -138,6 +151,8 @@ export class NewSpendingPage implements OnInit {
   }
 
   getExpenditures(){
+
+    this.alertViewer.presentAlert("gsfg sgsfgsg! "," date " + this.passDate);
   
     this.database.getExpendituresByDate(this.date).then((result) => { 
 
