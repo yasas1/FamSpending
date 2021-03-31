@@ -14,7 +14,7 @@
 <ion-content >
   
   <div class="ion-text-end">
-    <ion-label style="font-style: oblique;font-family: fantasy; font-size:x-small ;">  {{today}} </ion-label>
+    <ion-label style="font-style: oblique;font-family: fantasy; font-size:x-small ;">  {{today|date: 'MMMM dd yyyy'}} </ion-label>
   </div>
   <div class="ion-text-center">
     <ion-title style="font-style:inherit;font-family: cursive; font-size:x-large ;"> Spending Calendar</ion-title>
@@ -50,8 +50,6 @@
     </ion-col>
   </ion-row>
 
- 
-
   <calendar
     [eventSource]="eventSource"
     [calendarMode]="calendar.mode"
@@ -71,8 +69,9 @@
 
     <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
 
-      <ion-item >
-        <ion-button fill="solid" expand="block" color="medium"  (click)="goToNewSpending(selectedDateToEvent)">
+      <ion-item *ngIf="selectedDateToEvent.getMonth() <= today.getMonth() && selectedDateToEvent.getFullYear() <= today.getFullYear()" >
+        <!-- *ngIf="selectedDateToEvent.getMonth() <= today.getMonth() " -->
+        <ion-button fill="solid" expand="block"  (click)="goToNewSpending(selectedDateToEvent)">
            Add New Spending on {{selectedDateToEvent|date: 'MMMM dd yyyy'}}  
         </ion-button>
       </ion-item>

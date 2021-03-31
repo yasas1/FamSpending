@@ -37,7 +37,8 @@ export class HomePage implements OnInit{
 
   selectedDateToEvent: Date;
 
-  today: any;
+
+  today = new Date();
 
   private expenditures: Array<{date: string, total: any}>;
 
@@ -55,7 +56,7 @@ export class HomePage implements OnInit{
     private router:Router,
     public navCtrl: NavController
   ){
-    this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
+
   }
 
   ngOnInit() {
