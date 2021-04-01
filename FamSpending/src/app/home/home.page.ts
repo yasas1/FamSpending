@@ -37,8 +37,9 @@ export class HomePage implements OnInit{
 
   selectedDateToEvent: Date;
 
-
   today = new Date();
+
+  newSpendingButtonDisplay:boolean= true;
 
   private expenditures: Array<{date: string, total: any}>;
 
@@ -112,17 +113,6 @@ export class HomePage implements OnInit{
   // Calendar event was clicked
   async onEventSelected(event) {
     
-    //let start = formatDate(event.startTime, 'MMMM d, y', this.locale);
-    //let end = formatDate(event.endTime, 'fullDate', this.locale);
-  
-    // const alert = await this.alertCtrl.create({
-    //   header: formatDate(event.startTime, 'MMMM d, y', this.locale),
-    //   subHeader: formatDate(event.startTime, 'EEEE', this.locale),
-    //   message: 'Total : ' + ' Rs. '+ event.spends + '/= ',
-    //   buttons: ['OK'],
-    // });
-    // alert.present();
-
     const popover = await this.popoverController.create({
       component: SpendListPopoverComponent,
       event: event,
@@ -138,13 +128,6 @@ export class HomePage implements OnInit{
   }
 
   async goToNewSpending(date:any){
-    // const alert = await this.alertCtrl.create({
-    //   header: ' : '+ date,
-    //   subHeader: ' : ' +date,
-    //   message: 'Total : ' + ' Rs. '+ date + '/= ',
-    //   buttons: ['OK'],
-    // });
-    // alert.present();
 
     let navigationExtras: NavigationExtras = {
       queryParams: {
@@ -158,6 +141,20 @@ export class HomePage implements OnInit{
 
   onCurrentDateChanged(event:Date) {
     this.selectedDateToEvent = event;
+
+    if(this.selectedDateToEvent.getFullYear() < this.today.getFullYear())  {
+      this.newSpendingButtonDisplay = true;
+    }
+    else if(this.selectedDateToEvent.getFullYear() == this.today.getFullYear() && this.selectedDateToEvent.getMonth() < this.today.getMonth()){
+      this.newSpendingButtonDisplay = true;
+    }
+    else if(this.selectedDateToEvent.getFullYear() == this.today.getFullYear() && this.selectedDateToEvent.getMonth() == this.today.getMonth() &&
+            this.selectedDateToEvent.getDate() <= this.today.getDate()){
+      this.newSpendingButtonDisplay = true;
+    }
+    else{
+      this.newSpendingButtonDisplay = false;
+    }
   }
 
   markDisabled = (date: Date) => {

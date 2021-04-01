@@ -69,8 +69,7 @@
 
     <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
 
-      <ion-item *ngIf="selectedDateToEvent.getMonth() <= today.getMonth() && selectedDateToEvent.getFullYear() <= today.getFullYear()" >
-        <!-- *ngIf="selectedDateToEvent.getMonth() <= today.getMonth() " -->
+      <ion-item *ngIf="this.newSpendingButtonDisplay" >
         <ion-button fill="solid" expand="block"  (click)="goToNewSpending(selectedDateToEvent)">
            Add New Spending on {{selectedDateToEvent|date: 'MMMM dd yyyy'}}  
         </ion-button>

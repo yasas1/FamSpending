@@ -1,5 +1,5 @@
 import { Component, Input, Inject, LOCALE_ID} from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 
 @Component({
@@ -22,10 +22,8 @@ export class SpendViewComponent {
 
   constructor( 
     @Inject(LOCALE_ID) private locale: string,
-    private modalCtrl: ModalController
+    private popover:PopoverController,
   ) {
-
-    
 
   }
 
@@ -33,8 +31,10 @@ export class SpendViewComponent {
     this.thisDay = formatDate(new Date(this.date), 'MMMM dd yyyy', this.locale);
   }
 
-  dismissModal(){
-    this.modalCtrl.dismiss();
+
+  closePopover(){
+        this.popover.dismiss();
   }
+   
 
 }

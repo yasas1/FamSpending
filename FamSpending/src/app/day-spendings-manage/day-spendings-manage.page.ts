@@ -4,7 +4,7 @@ import { formatDate } from '@angular/common';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 import { Spending } from '../models/Spending';
-import {AlertController, ModalController } from '@ionic/angular';
+import {AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SpendViewComponent } from '../modals/spend-view/spend-view.component';
 import { SpendEditComponent } from '../modals/spend-edit/spend-edit.component';
@@ -24,7 +24,9 @@ export class DaySpendingsManagePage implements OnInit {
   spendsByMembers: Array<{member: string, total: any}>;
   spendsByNecessary: Array<{unnecessary: any, total: any}>;
 
-  public Spendings: Array<Spending>;
+  Spendings: Array<Spending>;
+
+  totalSpends:any;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -33,6 +35,7 @@ export class DaySpendingsManagePage implements OnInit {
     private alertViewer: ViewControllerService,
     public alertCtrl: AlertController,
     private router:Router,
+    private popoverController: PopoverController,
     private modalCtrl: ModalController,
     ) {
 
@@ -53,16 +56,48 @@ export class DaySpendingsManagePage implements OnInit {
 
     setTimeout(() =>
     {
+      this.getTotalSpending();
       this.getExpenditures();
       this.getSpendsForCategories();
       this.getSpendsForMembers();
       this.getSpendsForNecessary();
-    }, 700);
+    }, 800);
 
   }
 
   navgateNew() {
     this.router.navigateByUrl('/menu/home');
+  }
+
+  getTotalSpending(){
+
+    this.totalSpends = 0;
+
+    this.database.getTotalSpendsForDate(this.ParamDate).then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+            
+            this.totalSpends = expenditures[i].total
+            
+          }
+
+        }
+      }  
+      else{
+        expenditures = 0;
+      } 
+    });
+
   }
 
   getExpenditures(){
@@ -237,9 +272,9 @@ export class DaySpendingsManagePage implements OnInit {
 
   async spendViewModal(spending){
 
-    const modal = await this.modalCtrl.create({
+    const popover = await this.popoverController.create({
       component: SpendViewComponent,
-      componentProps:{
+      componentProps: {
         id:spending.id, 
         date:spending.date,
         member:spending.member,
@@ -247,10 +282,11 @@ export class DaySpendingsManagePage implements OnInit {
         description:spending.description,
         unnecessary:spending.unnecessary, 
         amount:spending.amount
-      }
+      },
+      translucent: true
     });
 
-    await modal.present();
+    await popover.present();
 
   }
 
