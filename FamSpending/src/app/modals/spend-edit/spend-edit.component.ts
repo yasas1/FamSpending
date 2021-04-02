@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController, PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-spend-edit',
@@ -8,12 +8,24 @@ import { ModalController } from '@ionic/angular';
 })
 export class SpendEditComponent implements OnInit {
 
-  constructor(private modalCtrl: ModalController) { }
+  @Input() id:number;
+  @Input() date:string;
+  @Input() member:string;
+  @Input() category:string;
+  @Input() description:string;
+  @Input() unnecessary:number;
+  @Input() amount:number;
+
+  constructor(private popover:PopoverController) { }
 
   ngOnInit() {}
 
-  dismissModal(){
-    this.modalCtrl.dismiss();
+  closePopover(){
+        this.popover.dismiss();
+  }
+
+  editSubmition(){
+
   }
 
 }

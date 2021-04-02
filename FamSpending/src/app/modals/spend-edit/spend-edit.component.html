@@ -1,14 +1,48 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-content>
 
-    <ion-title style="font-family:monospace;"> Spending Edit</ion-title>
-    
-    <ion-buttons slot="end">
-      <ion-button fill="solid" shape="round" (click)="dismissModal()" >
-        <ion-icon name="close" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+  <div class="ion-text-start"> 
 
-  </ion-toolbar>
+    <div style="font-family:monospace;" class="ion-text-center"> <b> Spending Edit </b></div>
+
+    <br>
  
-</ion-header>
+    <div class="fontClass">Date</div >         
+    <div class="fontClass">{{date|date: 'MMMM dd yyyy'}}</div >    
+    <br>
+
+    <div class="fontClass">Member</div>
+    <div class="fontDetails">{{member}}</div>
+    <br>
+
+    <div class="fontClass">Category</div>  
+    <div class="fontDetails"> {{category}} </div>
+    <br>
+
+    <div class="fontClass">Description</div>
+    <div class="fontDetails">{{description}} </div>
+    <br>
+
+    <div class="fontClass" *ngIf="unnecessary==0">This is necessary</div>
+    <div class="fontClass" *ngIf="unnecessary==1">This is unnecessary</div>
+    <br>
+
+    <div class="fontClass">Amount</div>
+    <div class="fontDetails">Rs. {{amount}} /= </div>
+    <br>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button color="success" expand="block" (click)="closePopover()">Cancel</ion-button>
+        </ion-col>
+
+        <ion-col  size="6">
+          <ion-button color="success" expand="block" (click)="editSubmition()">Edit</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+     
+  </div>
+
+</ion-content>

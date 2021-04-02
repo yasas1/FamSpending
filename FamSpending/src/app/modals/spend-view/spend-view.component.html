@@ -6,20 +6,20 @@
 
     <br>
  
-    <div  class="fontClass">Date</div >         
-    <div lines="line"  class="fontDetails">{{thisDay}}</div >    
+    <div class="fontClass">Date</div >         
+    <div class="fontDetails">{{date|date: 'MMMM dd yyyy'}}</div >    
     <br>
 
     <div class="fontClass">Member</div>
-    <div class="fontDetails" lines="none">{{member}}</div>
+    <div class="fontDetails" >{{member}}</div>
     <br>
 
     <div class="fontClass">Category</div>  
-    <div class="fontDetails" lines="none"> {{category}} </div>
+    <div class="fontDetails" > {{category}} </div>
     <br>
 
     <div class="fontClass">Description</div>
-    <div class="fontDetails" lines="none">{{description}} </div>
+    <div class="fontDetails" >{{description}} </div>
     <br>
 
     <div class="fontClass" *ngIf="unnecessary==0">This is necessary</div>
@@ -27,7 +27,7 @@
     <br>
 
     <div class="fontClass">Amount</div>
-    <div class="fontDetails" lines="none">Rs. {{amount}} /= </div>
+    <div class="fontDetails" >Rs. {{amount}} /= </div>
     <br>
 
     <ion-button color="success" expand="block" (click)="closePopover()">Ok</ion-button>

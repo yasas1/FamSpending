@@ -272,7 +272,7 @@ export class DaySpendingsManagePage implements OnInit {
 
   async spendViewModal(spending){
 
-    const popover = await this.popoverController.create({
+    const spendViewPopover = await this.popoverController.create({
       component: SpendViewComponent,
       componentProps: {
         id:spending.id, 
@@ -286,17 +286,27 @@ export class DaySpendingsManagePage implements OnInit {
       translucent: true
     });
 
-    await popover.present();
+    await spendViewPopover.present();
 
   }
 
   async spendEditModal(spending){
 
-    const modal = await this.modalCtrl.create({
-      component: SpendEditComponent
+    const spendEditPopover = await this.popoverController.create({
+      component: SpendEditComponent,
+      componentProps: {
+        id:spending.id, 
+        date:spending.date,
+        member:spending.member,
+        category:spending.category, 
+        description:spending.description,
+        unnecessary:spending.unnecessary, 
+        amount:spending.amount
+      },
+      translucent: true
     });
 
-    await modal.present();
+    await spendEditPopover.present();
 
   }
 
