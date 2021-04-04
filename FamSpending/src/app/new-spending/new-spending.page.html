@@ -104,22 +104,29 @@
 
       <br>
 
+      <div class="fontClass" >Is this necessary?</div>
       <ion-radio-group [(ngModel)]="unnecessary" formControlName="unnecessary">  
 
         <ion-row >
 
-          <ion-col size="6">
+          <ion-col size="1">
+          </ion-col>
+
+          <ion-col size="5">
             <ion-item lines="none">
-              <ion-label class="fontClass">Necessary</ion-label>
+              <ion-label class="fontClass">Yes</ion-label>
               <ion-radio [value]="0" ></ion-radio>
             </ion-item>
           </ion-col>
 
-          <ion-col size="6">
+          <ion-col size="5">
             <ion-item lines="none">
-              <ion-label class="fontClass">Unnecessary</ion-label>
+              <ion-label class="fontClass">No</ion-label>
               <ion-radio [value]="1"></ion-radio>
             </ion-item>
+          </ion-col>
+
+          <ion-col size="1">
           </ion-col>
 
         </ion-row>
@@ -162,12 +169,7 @@
       
         </ion-grid>
     
-      </div>
-
-      <div >
-        <ion-button class="center" (click)="getExpenditures()"  shape="round" expand="block" fill="outline">Get Expenditure </ion-button> 
-      </div>
-      
+      </div>   
 
     </ion-grid>
 

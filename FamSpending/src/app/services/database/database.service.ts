@@ -313,10 +313,14 @@ export class DatabaseService {
   }
 
   /**  Update Expenditure by id */
-  updateExpenditureById(id:number,date:string,category_id:number,description:string,amount:number) {
+  updateExpenditureById(id:number,date:string,member_id:number,category_id:number,description:string,amount:number) {
     this.databaseObj.executeSql(`
       UPDATE expenditure
-      SET date = '${date}', category_id = '${category_id}', description = '${description}',amount = '${amount}'
+      SET date = '${date}', 
+          member_id = '${member_id}', 
+          category_id = '${category_id}', 
+          description = '${description}',
+          amount = '${amount}'
       WHERE id = '${id}'
     `, [])
       .catch(error => {
@@ -382,6 +386,7 @@ export class DatabaseService {
       this.alertViewer.presentAlert("Categories Getting Error! ", "Error" + JSON.stringify(error));
     }
   }
+
 
   /**  Check the category by name */
   async checkCategoryByName(name:string) {
@@ -461,6 +466,34 @@ export class DatabaseService {
     .catch(e => {
         this.alertViewer.presentAlert("Insert Error! ", dbName+" inserting error");
       });
+  }
+
+  /**  Get All Categories */
+  async getMemberOrCategoriesByName(dbName:string,name:string) {
+
+    try {
+      const data = await this.databaseObj.executeSql(`
+      SELECT * FROM '${dbName}' WHERE name = '${name}';
+      `, []);
+      let details = [];
+      if (data.rows.length > 0) {
+
+        for (let i = 0; i < data.rows.length; i++) {
+
+          details.push({
+            id: data.rows.item(i).id,
+            name: data.rows.item(i).name
+          });
+
+        }
+        return details;
+      }
+      else {
+        return 0;
+      }
+    } catch (error) {
+      this.alertViewer.presentAlert("Categories Getting Error! ", "Error" + JSON.stringify(error));
+    }
   }
 
 

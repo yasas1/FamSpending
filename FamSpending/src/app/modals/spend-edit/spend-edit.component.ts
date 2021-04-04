@@ -12,14 +12,17 @@ export class SpendEditComponent implements OnInit {
 
   @Input() id:number;
   @Input() date:string;
-  @Input() member:string;
-  @Input() category:string;
+  @Input() member:string; //member name
+  @Input() category:string; //category name
   @Input() description:string;
   @Input() unnecessary:number;
   @Input() amount:number;
 
-  dbMembers= [];
-  dbCategories= [];
+  memberId:number; // current member id
+  categoryId:number; // current category id
+
+  dbMembers= []; //member list from db
+  dbCategories= []; //category list from db
 
   constructor(
     private popover:PopoverController,
@@ -29,6 +32,11 @@ export class SpendEditComponent implements OnInit {
   ngOnInit() {
     this.setCategoriesInDropDown();
     this.setMembersInDropDown();
+    setTimeout(() =>
+    {
+      this.getMemberIdAndCategoryId();
+    }, 500);
+    
   }
 
   closePopover(){
@@ -37,7 +45,65 @@ export class SpendEditComponent implements OnInit {
 
   editSubmition(){
 
-    this.alertViewer.presentAlert("gsfg sgsfgsg! ","  " + this.member+" "+this.amount+" "+this.category);
+    this.alertViewer.presentAlert("gsfg sgsfgsg! ","  " +
+     this.amount+" "+
+     this.member+" "+
+     this.memberId+" "+
+     this.category+" "+
+     this.categoryId
+     );
+    //this.database.updateExpenditureById(this.id,this.date,this.memberId,this.categoryId,this.description,this.amount);
+
+  }
+
+  private getMemberIdAndCategoryId(){
+    
+    this.memberId = 0;
+    
+
+    this.database.getMemberOrCategoriesByName("member",this.member).then((result) => { 
+
+      let members;
+
+      if(result != 0){
+
+        members =  result;  
+
+        let membersLength = members.length;
+
+        if(membersLength > 0){
+
+          for(let i=0; i < membersLength; i++) {
+      
+            this.memberId =members[i].id;
+              
+          }
+        }
+      }  
+    });
+
+    this.categoryId =0;
+
+    this.database.getMemberOrCategoriesByName("category",this.category).then((result) => { 
+
+      let category;
+
+      if(result != 0){
+
+        category =  result;  
+
+        let categoryLength = category.length;
+
+        if(categoryLength > 0){
+
+          for(let i=0; i < categoryLength; i++) {
+      
+            this.categoryId =category[i].id;
+              
+          }
+        }
+      }  
+    });
 
   }
 
