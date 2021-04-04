@@ -73,7 +73,7 @@
   <div>
     <ion-button [disabled]="!canAddField" (click)="addField()" color="secondary" > <ion-icon name="add"></ion-icon>  </ion-button>
     <ion-button color="light" (click)="clear()" > Clear </ion-button> 
-    <ion-button  (click)="onSubmit()" style="position: absolute; right:0%;">  ADD </ion-button>
+    <ion-button  (click)="onSubmit()" style="position: absolute; right:3%;" color="success">  ADD </ion-button>
   </div>
 
   <br>
@@ -107,7 +107,7 @@
 
             <ion-col size="2">
 
-              <ion-button style="background-color:darkorange;" (click)="presentPromptToEdit(typeItem.id,typeItem.name.toString())"> <ion-icon name="create"></ion-icon> </ion-button>
+              <ion-button color="medium"  (click)="presentPromptToEdit(typeItem.id,typeItem.name.toString())"> <ion-icon name="create"></ion-icon> </ion-button>
             
           </ion-col>
       

@@ -257,6 +257,7 @@ export class DaySpendingsManagePage implements OnInit {
 
             setTimeout(() =>
             {
+              this.getTotalSpending();
               this.getExpenditures();
               this.getSpendsForCategories();
               this.getSpendsForMembers();

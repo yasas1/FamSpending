@@ -16,23 +16,23 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NewSpendingPage implements OnInit {
 
-  public date:any;
-  public member:any;
-  public category:any;
-  public description:any;
-  public amount:number;
+  date:any;
+  member:any;
+  category:any;
+  description:any;
+  amount:number;
 
-  public isAddDisabled = true;
+  isAddDisabled = true;
 
-  public today: any;
+  today: any;
 
-  public displayDate: any;
+  displayDate: any;
 
-  public categories = [];
+  categories = [];
 
-  public members = [];
+  members = [];
 
-  public unnecessary =0;
+  unnecessary =0;
 
   expenditureForm: FormGroup;
 
@@ -200,6 +200,8 @@ export class NewSpendingPage implements OnInit {
   /** Get categories from db and SET category drop down ngModel */
   private setCategoriesInDropDown(){
 
+    this.categories=[];
+
     this.database.getAllCategories().then((result) => { 
 
       let categories;
@@ -255,6 +257,9 @@ export class NewSpendingPage implements OnInit {
 
   /** Get members from db and SET category drop down ngModel */
   private setMembersInDropDown(){
+
+
+    this.members=[];
 
     this.database.getAllMembers().then((result) => { 
 

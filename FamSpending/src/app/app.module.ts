@@ -14,6 +14,7 @@ import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { SpendViewComponent } from './modals/spend-view/spend-view.component';
 import { SpendEditComponent } from './modals/spend-edit/spend-edit.component';
 import { SpendListPopoverComponent } from './modals/spend-list-popover/spend-list-popover.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SpendListPopoverComponent } from './modals/spend-list-popover/spend-lis
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [
     StatusBar,
