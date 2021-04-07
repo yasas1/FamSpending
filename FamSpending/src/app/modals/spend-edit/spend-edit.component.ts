@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { DatabaseService } from 'src/app/services/database/database.service';
 import { ViewControllerService } from 'src/app/services/viewController/view-controller.service';
@@ -27,6 +28,7 @@ export class SpendEditComponent implements OnInit {
   constructor(
     private popover:PopoverController,
     private database: DatabaseService,
+    private router:Router,
     private alertViewer: ViewControllerService,) { }
 
   ngOnInit() {
@@ -39,21 +41,20 @@ export class SpendEditComponent implements OnInit {
     
   }
 
+  ionViewWillEnter() {
+
+  }
+
   closePopover(){
         this.popover.dismiss();
   }
 
   editSubmition(){
 
-    this.alertViewer.presentAlert("gsfg sgsfgsg! ","  " +
-     this.amount+" "+
-     this.member+" "+
-     this.memberId+" "+
-     this.category+" "+
-     this.categoryId
-     );
-    //this.database.updateExpenditureById(this.id,this.date,this.memberId,this.categoryId,this.description,this.amount);
+    this.database.updateExpenditureById(this.id,this.date,this.memberId,this.categoryId,this.description,this.unnecessary,this.amount);
 
+    this.popover.dismiss();
+    
   }
 
   private getMemberIdAndCategoryId(){

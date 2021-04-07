@@ -35,8 +35,7 @@ export class DaySpendingsManagePage implements OnInit {
     private alertViewer: ViewControllerService,
     public alertCtrl: AlertController,
     private router:Router,
-    private popoverController: PopoverController,
-    private modalCtrl: ModalController,
+    private popoverController: PopoverController
     ) {
 
       this.ParamDate = this.activatedRoute.snapshot.paramMap.get('date');
@@ -54,6 +53,12 @@ export class DaySpendingsManagePage implements OnInit {
 
   ionViewWillEnter() {
 
+    this.datainitialization();
+
+  }
+
+  private datainitialization(){
+
     setTimeout(() =>
     {
       this.getTotalSpending();
@@ -65,7 +70,7 @@ export class DaySpendingsManagePage implements OnInit {
 
   }
 
-  navgateNew() {
+  navgateHome() {
     this.router.navigateByUrl('/menu/home');
   }
 
@@ -295,6 +300,7 @@ export class DaySpendingsManagePage implements OnInit {
 
     const spendEditPopover = await this.popoverController.create({
       component: SpendEditComponent,
+      backdropDismiss: false,
       componentProps: {
         id:spending.id, 
         date:spending.date,
@@ -307,7 +313,12 @@ export class DaySpendingsManagePage implements OnInit {
       translucent: true
     });
 
+    spendEditPopover.onDidDismiss().then(() => { this.datainitialization(); });
+
     await spendEditPopover.present();
+
+ 
+   
 
   }
 

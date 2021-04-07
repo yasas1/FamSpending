@@ -313,13 +313,14 @@ export class DatabaseService {
   }
 
   /**  Update Expenditure by id */
-  updateExpenditureById(id:number,date:string,member_id:number,category_id:number,description:string,amount:number) {
+  updateExpenditureById(id:number,date:string,member_id:number,category_id:number,description:string,unnecessary:number,amount:number) {
     this.databaseObj.executeSql(`
       UPDATE expenditure
       SET date = '${date}', 
           member_id = '${member_id}', 
           category_id = '${category_id}', 
           description = '${description}',
+          unnecessary = '${unnecessary}',
           amount = '${amount}'
       WHERE id = '${id}'
     `, [])
