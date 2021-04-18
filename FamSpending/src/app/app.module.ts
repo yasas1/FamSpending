@@ -15,6 +15,7 @@ import { SpendViewComponent } from './modals/spend-view/spend-view.component';
 import { SpendEditComponent } from './modals/spend-edit/spend-edit.component';
 import { SpendListPopoverComponent } from './modals/spend-list-popover/spend-list-popover.component';
 import { FormsModule } from '@angular/forms';
+import { ReportsPageModule } from './reports/reports.module';
 
 @NgModule({
   declarations: [

@@ -24,6 +24,10 @@ const routes: Routes = [
       {
         path: 'CategoryAndMember',
         loadChildren: '../category-member/category-member.module#CategoryMemberPageModule'
+      },
+      {
+        path: 'reports',
+        loadChildren: '../reports/reports.module#ReportsPageModule'
       }
     ]
   },

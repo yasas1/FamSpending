@@ -74,6 +74,7 @@ export class DaySpendingsManagePage implements OnInit {
     this.router.navigateByUrl('/menu/home');
   }
 
+  // To see the total spending for this day
   getTotalSpending(){
 
     this.totalSpends = 0;
@@ -105,6 +106,7 @@ export class DaySpendingsManagePage implements OnInit {
 
   }
 
+  // To see the all spending for this day
   getExpenditures(){
 
     this.Spendings = [];
@@ -143,6 +145,7 @@ export class DaySpendingsManagePage implements OnInit {
     });
   }
 
+  // To see the all spending for this day gouping by categories
   public getSpendsForCategories(){
 
     this.spendsByCategories = [];
@@ -175,6 +178,7 @@ export class DaySpendingsManagePage implements OnInit {
     });
   }
 
+  // To see the all spending for this day gouping by members
   public getSpendsForMembers(){
 
     this.spendsByMembers = [];
@@ -207,6 +211,7 @@ export class DaySpendingsManagePage implements OnInit {
     });
   }
 
+  // To see the all spending for this day gouping by essential
   public getSpendsForNecessary(){
 
     this.spendsByNecessary= [];
@@ -234,12 +239,12 @@ export class DaySpendingsManagePage implements OnInit {
         }
       }  
       else{
-        this.alertViewer.presentAlert("Spendings Getting Error! ","zero");
         expenditures = 0;
       } 
     });
   }
 
+  // To present the delete confirmation alert 
   async presentConfirmToDelete(id:number,amount:number,){
 
     const alert = await this.alertCtrl.create({
@@ -276,6 +281,7 @@ export class DaySpendingsManagePage implements OnInit {
 
   }
 
+  // To present viewing popover
   async spendViewModal(spending){
 
     const spendViewPopover = await this.popoverController.create({
@@ -296,6 +302,7 @@ export class DaySpendingsManagePage implements OnInit {
 
   }
 
+  // To present edition popover
   async spendEditModal(spending){
 
     const spendEditPopover = await this.popoverController.create({
@@ -313,12 +320,14 @@ export class DaySpendingsManagePage implements OnInit {
       translucent: true
     });
 
-    spendEditPopover.onDidDismiss().then(() => { this.datainitialization(); });
+    // re-initialize if only an edition is occurred
+    spendEditPopover.onDidDismiss().then((data) => {
+        if(data['data']){
+          this.datainitialization(); 
+        }
+      });
 
     await spendEditPopover.present();
-
- 
-   
 
   }
 

@@ -32,28 +32,29 @@ export class SpendEditComponent implements OnInit {
     private alertViewer: ViewControllerService,) { }
 
   ngOnInit() {
+    
+  }
+
+  ionViewWillEnter() {
+
     this.setCategoriesInDropDown();
     this.setMembersInDropDown();
     setTimeout(() =>
     {
       this.getMemberIdAndCategoryId();
     }, 500);
-    
-  }
-
-  ionViewWillEnter() {
-
   }
 
   closePopover(){
-        this.popover.dismiss();
+        this.popover.dismiss(false);
   }
 
   editSubmition(){
 
     this.database.updateExpenditureById(this.id,this.date,this.memberId,this.categoryId,this.description,this.unnecessary,this.amount);
-
-    this.popover.dismiss();
+    
+    // dismiss the popover with saying that an edtion is occured
+    this.popover.dismiss(true);
     
   }
 

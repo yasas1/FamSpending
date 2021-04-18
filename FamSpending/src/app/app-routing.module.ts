@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { SpendViewComponent } from './modals/spend-view/spend-view.component';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: './menu/menu.module#MenuPageModule'
+  },
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
   }
   
   // {

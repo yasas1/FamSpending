@@ -25,6 +25,11 @@ export class MenuPage implements OnInit {
       name: 'Category-Member',
       path: '/menu/CategoryAndMember',
       icon: 'briefcase'
+    },
+    {
+      name: 'Reports',
+      path: '/menu/reports',
+      icon: 'briefcase'
     }
   ]
 

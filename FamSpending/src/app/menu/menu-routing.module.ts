@@ -23,6 +23,10 @@ const routes: Routes = [
       {
         path: 'daySpendingManage/:date',
         loadChildren: '../day-spendings-manage/day-spendings-manage.module#DaySpendingsManagePageModule'
+      },
+      {
+        path: 'reports',
+        loadChildren: '../reports/reports.module#ReportsPageModule'
       }
     ]
   },

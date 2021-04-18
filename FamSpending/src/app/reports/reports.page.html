@@ -1,0 +1,41 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-title style="font-family:monospace;"> Reports</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-text-end">
+    <ion-label style="font-style: oblique;font-family: fantasy; font-size:x-small ;">  {{today|date: 'MMMM dd yyyy'}} </ion-label>
+  </div>
+
+  <ion-row >
+
+ 
+    <ion-col size="6">
+      <ion-item lines="none">
+        <ion-label class="fontClass">Spendings for :  </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="5">
+      <ion-item lines="none">
+        <ion-select (ionChange)="aReportIsSelected($event)"  placeholder="Report Type" class="center"  interface="popover" [(ngModel)]="type" name="type" >
+          <ion-select-option  *ngFor="let type of types" [value]="type.id" >{{type.name}}</ion-select-option >
+        </ion-select>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="1">
+
+    </ion-col>
+
+  </ion-row>
+
+</ion-content>
