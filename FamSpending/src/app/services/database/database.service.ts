@@ -189,12 +189,12 @@ export class DatabaseService {
   }
 
   /**  Get Expenditures group by date for date range*/
-  getTotalSpendsForDate(date:string) {
+  getTotalSpendsForDate(dateStart:string,dateEnd:string) {
 
     return this.databaseObj.executeSql(`
       SELECT sum(amount) as total
       FROM expenditure 
-      WHERE date='${date}'
+      WHERE date BETWEEN '${dateStart}' AND '${dateEnd}'
       `, [])
         .then((data) => {
 

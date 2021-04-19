@@ -40,6 +40,12 @@
 
   <br>
 
+  <div class="ion-text-center"> 
+    <ion-title *ngIf="totalSpends!=0"  style="font-style:inherit;font-family: fantasy; font-size:medium ;"> {{displayDate}}  </ion-title>
+  </div>
+
+  <br>
+
   <div style="font-family:monospace;" *ngIf="totalSpends!=0" class="ion-text-start"> <b> Total Rs. {{totalSpends}} /= </b></div>
 
 

@@ -53,11 +53,11 @@ export class DaySpendingsManagePage implements OnInit {
 
   ionViewWillEnter() {
 
-    this.datainitialization();
+    this.dataInit();
 
   }
 
-  private datainitialization(){
+  private dataInit(){
 
     setTimeout(() =>
     {
@@ -79,7 +79,7 @@ export class DaySpendingsManagePage implements OnInit {
 
     this.totalSpends = 0;
 
-    this.database.getTotalSpendsForDate(this.ParamDate).then((result) => { 
+    this.database.getTotalSpendsForDate(this.ParamDate,this.ParamDate).then((result) => { 
 
       let expenditures;
 
@@ -323,7 +323,7 @@ export class DaySpendingsManagePage implements OnInit {
     // re-initialize if only an edition is occurred
     spendEditPopover.onDidDismiss().then((data) => {
         if(data['data']){
-          this.datainitialization(); 
+          this.dataInit(); 
         }
       });
 

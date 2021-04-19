@@ -17,6 +17,8 @@ export class ReportsPage implements OnInit {
 
   today = new Date();
 
+  displayDate:any;
+
   totalSpends:any = 0;
 
   Spendings: Array<Spending>;
@@ -40,7 +42,7 @@ export class ReportsPage implements OnInit {
 
   ionViewWillEnter() {
 
-    this.datainitialization();
+    this.dataInitForToday();
 
   }
 
@@ -61,16 +63,18 @@ export class ReportsPage implements OnInit {
   }
 
   aReportIsSelected(){
-    this.alertViewer.presentAlert("gsfg sgsfgsg! "," A Report Is Selected " + this.totalSpends);
+    this.alertViewer.presentAlert("gsfg sgsfgsg! "," A Report Is Selected " + this.type);
   }
 
-  private datainitialization(){
+  private dataInitForToday(){
+
+    this.displayDate = formatDate(this.today, 'EEEE MMMM dd yyyy', this.locale)
 
     setTimeout(() =>
     {
-      this.getTotalSpending(formatDate(this.today, 'yyyy-MM-dd', this.locale));
+      this.getTotalSpending( formatDate(this.today, 'yyyy-MM-dd', this.locale) );
 
-    }, 500);
+    }, 400);
 
   }
 
@@ -78,7 +82,7 @@ export class ReportsPage implements OnInit {
 
     this.totalSpends = 0;
 
-    this.database.getTotalSpendsForDate(date).then((result) => { 
+    this.database.getTotalSpendsForDate(date,date).then((result) => { 
 
       let expenditures;
 
