@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
+import { Spending } from '../models/Spending';
+import { DatabaseService } from '../services/database/database.service';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-reports',
@@ -14,15 +17,31 @@ export class ReportsPage implements OnInit {
 
   today = new Date();
 
-  constructor(private alertViewer: ViewControllerService) { 
+  totalSpends:any = 0;
 
-    
+  Spendings: Array<Spending>;
+
+  spendsByCategories: Array<{category: string, total: any}>;
+  spendsByMembers: Array<{member: string, total: any}>;
+  spendsByNecessary: Array<{unnecessary: any, total: any}>;
+
+  constructor(
+    private alertViewer: ViewControllerService,
+    private database: DatabaseService,
+    @Inject(LOCALE_ID) private locale: string,
+  ){ 
 
   }
 
   ngOnInit() {
 
     this.reportTypeInitializer();
+  }
+
+  ionViewWillEnter() {
+
+    this.datainitialization();
+
   }
 
   reportTypeInitializer(){
@@ -41,8 +60,47 @@ export class ReportsPage implements OnInit {
 
   }
 
-  aReportIsSelected($event){
-    this.alertViewer.presentAlert("gsfg sgsfgsg! ",this.type+" A Report Is Selected " + $event.target.value);
+  aReportIsSelected(){
+    this.alertViewer.presentAlert("gsfg sgsfgsg! "," A Report Is Selected " + this.totalSpends);
   }
+
+  private datainitialization(){
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(formatDate(this.today, 'yyyy-MM-dd', this.locale));
+
+    }, 500);
+
+  }
+
+  getTotalSpending(date:string){
+
+    this.totalSpends = 0;
+
+    this.database.getTotalSpendsForDate(date).then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+          for(let i=0; i < expendituresLength; i++) {      
+            this.totalSpends = expenditures[i].total        
+          }
+        }     
+      }  
+      else{
+        this.totalSpends = 0;
+      } 
+    });
+
+  }
+
+  
 
 }

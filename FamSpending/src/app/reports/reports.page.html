@@ -26,7 +26,7 @@
 
     <ion-col size="5">
       <ion-item lines="none">
-        <ion-select (ionChange)="aReportIsSelected($event)"  placeholder="Report Type" class="center"  interface="popover" [(ngModel)]="type" name="type" >
+        <ion-select (ionChange)="aReportIsSelected()"  placeholder="Report Type" class="center"  interface="popover" [(ngModel)]="type" name="type" >
           <ion-select-option  *ngFor="let type of types" [value]="type.id" >{{type.name}}</ion-select-option >
         </ion-select>
       </ion-item>
@@ -37,5 +37,10 @@
     </ion-col>
 
   </ion-row>
+
+  <br>
+
+  <div style="font-family:monospace;" *ngIf="totalSpends!=0" class="ion-text-start"> <b> Total Rs. {{totalSpends}} /= </b></div>
+
 
 </ion-content>

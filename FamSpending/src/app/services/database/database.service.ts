@@ -200,7 +200,7 @@ export class DatabaseService {
 
           let expenditures= [];
 
-          if(data.rows.length > 0){
+          if(data.rows.length > 0 && data.rows.item(0).total !=null){
 
             for(let i=0; i <data.rows.length; i++) {
 
