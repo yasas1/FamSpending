@@ -3,6 +3,8 @@ import { Spending } from '../models/Spending';
 import { DatabaseService } from '../services/database/database.service';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { formatDate } from '@angular/common';
+import { PopoverController } from '@ionic/angular';
+import { SpendViewComponent } from '../modals/spend-view/spend-view.component';
 
 @Component({
   selector: 'app-reports',
@@ -12,11 +14,9 @@ import { formatDate } from '@angular/common';
 export class ReportsPage implements OnInit {
 
   type:any;
-
   types=[];
 
   today = new Date();
-
   displayDate:any;
 
   totalSpends:any = 0;
@@ -31,6 +31,7 @@ export class ReportsPage implements OnInit {
     private alertViewer: ViewControllerService,
     private database: DatabaseService,
     @Inject(LOCALE_ID) private locale: string,
+    private popoverController: PopoverController
   ){ 
 
   }
@@ -70,19 +71,22 @@ export class ReportsPage implements OnInit {
 
     this.displayDate = formatDate(this.today, 'EEEE MMMM dd yyyy', this.locale)
 
+    let todayDateString = formatDate(this.today, 'yyyy-MM-dd', this.locale);
+
     setTimeout(() =>
     {
-      this.getTotalSpending( formatDate(this.today, 'yyyy-MM-dd', this.locale) );
+      this.getTotalSpending(todayDateString,todayDateString);
+      this.getSpendings(todayDateString);
 
     }, 400);
 
   }
 
-  getTotalSpending(date:string){
-
+  // Get total spendings for date range
+  getTotalSpending(startDate:string,endDate:string){
     this.totalSpends = 0;
 
-    this.database.getTotalSpendsForDate(date,date).then((result) => { 
+    this.database.getTotalSpendsForDate(startDate,endDate).then((result) => { 
 
       let expenditures;
 
@@ -102,6 +106,66 @@ export class ReportsPage implements OnInit {
         this.totalSpends = 0;
       } 
     });
+
+  }
+
+  // Getall spending for today
+  getSpendings(date:string){
+
+    this.Spendings = [];
+  
+    this.database.getExpendituresByDate(date).then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+
+            this.Spendings.push(new Spending(
+              expenditures[i].id,
+              expenditures[i].date,
+              expenditures[i].member,
+              expenditures[i].category,
+              expenditures[i].description,
+              expenditures[i].unnecessary,
+              expenditures[i].amount
+              ));
+          }
+
+        }
+      }  
+      else{
+        expenditures = 0;
+      } 
+
+    });
+  }
+
+  // To present viewing popover
+  async spendViewModal(spending){
+
+    const spendViewPopover = await this.popoverController.create({
+      component: SpendViewComponent,
+      componentProps: {
+        id:spending.id, 
+        date:spending.date,
+        member:spending.member,
+        category:spending.category, 
+        description:spending.description,
+        unnecessary:spending.unnecessary, 
+        amount:spending.amount
+      },
+      translucent: true
+    });
+
+    await spendViewPopover.present();
 
   }
 
