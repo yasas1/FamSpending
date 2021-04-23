@@ -77,6 +77,9 @@ export class ReportsPage implements OnInit {
     {
       this.getTotalSpending(todayDateString,todayDateString);
       this.getSpendings(todayDateString);
+      this.getSpendsForCategories(todayDateString);
+      this.getSpendsForMembers(todayDateString);
+      this.getSpendsForNecessary(todayDateString);
 
     }, 400);
 
@@ -167,6 +170,105 @@ export class ReportsPage implements OnInit {
 
     await spendViewPopover.present();
 
+  }
+
+  // To see the all spending for this day gouping by categories
+  public getSpendsForCategories(date:string){
+
+    this.spendsByCategories = [];
+
+    this.database.getSpendsGroupingCateMemForday(date,"category").then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+           
+            this.spendsByCategories.push({
+              category: expenditures[i].name ,
+              total:  expenditures[i].total
+            });
+          }
+
+        }
+      }  
+      else{
+        expenditures = 0;
+      } 
+    });
+  }
+
+  // To see the all spending for this day gouping by members
+  public getSpendsForMembers(date:string){
+
+    this.spendsByMembers = [];
+
+    this.database.getSpendsGroupingCateMemForday(date,"member").then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+            
+            this.spendsByMembers.push({
+              member: expenditures[i].name ,
+              total:  expenditures[i].total
+            });
+          }
+
+        }
+      }  
+      else{
+        expenditures = 0;
+      } 
+    });
+  }
+
+  // To see the all spending for this day gouping by essential
+  public getSpendsForNecessary(date:string){
+
+    this.spendsByNecessary= [];
+
+    this.database.getSpendsGroupByNecessaryForday(date).then((result) => { 
+
+      let expenditures;
+
+      if(result != 0){
+
+        expenditures =  result;  
+
+        let expendituresLength = expenditures.length;
+
+        if(expendituresLength > 0){
+
+          for(let i=0; i < expendituresLength; i++) { 
+            
+            this.spendsByNecessary.push({
+              unnecessary: expenditures[i].unnecessary ,
+              total:  expenditures[i].total
+            });
+          }
+
+        }
+      }  
+      else{
+        expenditures = 0;
+      } 
+    });
   }
 
   
