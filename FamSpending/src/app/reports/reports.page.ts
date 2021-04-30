@@ -64,12 +64,40 @@ export class ReportsPage implements OnInit {
   }
 
   aReportIsSelected(){
+
     this.alertViewer.presentAlert("gsfg sgsfgsg! "," A Report Is Selected " + this.type);
+
+    /** 
+     *  { id:1,name:"Today"} 
+        { id:2,name:"Yesterday"} 
+        { id:3,name:"This Week"} 
+        { id:4,name:"This Month"} 
+        { id:5,name:"Last Month"} 
+        { id:6,name:"This year"} 
+        { id:7,name:"Last Year"} 
+     */
+
+    switch (this.type) {
+      case 1:
+        this.dataInitForToday();
+        break;
+      case 2:
+        this.dataInitForYesterday();
+        break;
+      case 3:
+        console.log("It is a Tuesday.");
+        break;
+      default:
+        console.log("No such day exists!");
+        break;
+  }
+
+
   }
 
   private dataInitForToday(){
 
-    this.displayDate = formatDate(this.today, 'EEEE MMMM dd yyyy', this.locale)
+    this.displayDate = formatDate(this.today, 'EEEE MMMM dd yyyy', this.locale);
 
     let todayDateString = formatDate(this.today, 'yyyy-MM-dd', this.locale);
 
@@ -80,6 +108,27 @@ export class ReportsPage implements OnInit {
       this.getSpendsForCategories(todayDateString);
       this.getSpendsForMembers(todayDateString);
       this.getSpendsForNecessary(todayDateString);
+
+    }, 400);
+
+  }
+
+  private dataInitForYesterday(){
+
+
+    let yesterday = new Date(this.today);
+    yesterday.setDate(this.today.getDate() - 1);
+
+    this.displayDate = formatDate(yesterday, 'EEEE MMMM dd yyyy', this.locale);
+    let yesterdayDateString = formatDate(yesterday, 'yyyy-MM-dd', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(yesterdayDateString,yesterdayDateString);
+      this.getSpendings(yesterdayDateString);
+      this.getSpendsForCategories(yesterdayDateString);
+      this.getSpendsForMembers(yesterdayDateString);
+      this.getSpendsForNecessary(yesterdayDateString);
 
     }, 400);
 

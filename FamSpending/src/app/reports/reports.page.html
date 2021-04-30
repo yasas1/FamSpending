@@ -37,21 +37,19 @@
     </ion-col>
 
   </ion-row>
-
   <br>
-  <ion-list-header lines="full" >
+
   <div  class="ion-text-center"> 
-    <ion-title *ngIf="totalSpends!=0"  style="font-style:inherit;font-family: fantasy; font-size:medium ;"> {{displayDate}}  </ion-title>
+    <ion-title *ngIf="totalSpends!=0"  style="font-style:inherit;font-family: fantasy; font-size:medium ; color: darkslategray;">  {{displayDate}}  </ion-title>
   </div>
-</ion-list-header>
+
   <br>
 
-
-    <div style="font-family:monospace;" *ngIf="totalSpends!=0" class="ion-text-start"> <b> Total Rs. {{totalSpends}} /= </b></div>
+  <div style="font-family:monospace;" *ngIf="totalSpends!=0" class="ion-text-start"> <b> Total Rs. {{totalSpends}} /= </b></div>
   
-  <br><br>
+  <br>
 
-  <div class="ion-text-center">
+  <div *ngIf="totalSpends!=0" class="ion-text-center">
 
     <ion-list> 
 
@@ -93,7 +91,7 @@
 
   </div>
 
-  <div class="ion-text-center">
+  <div *ngIf="totalSpends!=0" class="ion-text-center">
 
     <ion-list-header lines="full" >
       <ion-label style="font-family:monospace;" class="ion-text-start">Categories</ion-label>
