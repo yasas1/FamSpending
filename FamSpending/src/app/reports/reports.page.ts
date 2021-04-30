@@ -63,11 +63,11 @@ export class ReportsPage implements OnInit {
 
   }
 
+  /** Set displaying reports data for selected report type from drop down
+   **/ 
   aReportIsSelected(){
 
-    this.alertViewer.presentAlert("gsfg sgsfgsg! "," A Report Is Selected " + this.type);
-
-    /** 
+    /**    Reports
      *  { id:1,name:"Today"} 
         { id:2,name:"Yesterday"} 
         { id:3,name:"This Week"} 
@@ -95,6 +95,7 @@ export class ReportsPage implements OnInit {
 
   }
 
+  /** Initialize the data for today to display */ 
   private dataInitForToday(){
 
     this.displayDate = formatDate(this.today, 'EEEE MMMM dd yyyy', this.locale);
@@ -113,6 +114,7 @@ export class ReportsPage implements OnInit {
 
   }
 
+  /** Initialize the data for yesterday to display */ 
   private dataInitForYesterday(){
 
 
@@ -134,7 +136,7 @@ export class ReportsPage implements OnInit {
 
   }
 
-  // Get total spendings for date range
+  /** Get total spendings for date range */
   getTotalSpending(startDate:string,endDate:string){
     this.totalSpends = 0;
 
@@ -161,7 +163,7 @@ export class ReportsPage implements OnInit {
 
   }
 
-  // Getall spending for today
+  /** Getall spending for today */
   getSpendings(date:string){
 
     this.Spendings = [];
@@ -200,7 +202,7 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  // To present viewing popover
+  /** To present viewing popover */
   async spendViewModal(spending){
 
     const spendViewPopover = await this.popoverController.create({
@@ -221,12 +223,12 @@ export class ReportsPage implements OnInit {
 
   }
 
-  // To see the all spending for this day gouping by categories
+  /** To see the all spending for this day gouping by categories */
   public getSpendsForCategories(date:string){
 
     this.spendsByCategories = [];
 
-    this.database.getSpendsGroupingCateMemForday(date,"category").then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(date, date, "category").then((result) => { 
 
       let expenditures;
 
@@ -254,12 +256,12 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  // To see the all spending for this day gouping by members
+  /** To see the all spending for this day gouping by members */
   public getSpendsForMembers(date:string){
 
     this.spendsByMembers = [];
 
-    this.database.getSpendsGroupingCateMemForday(date,"member").then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(date,date,"member").then((result) => { 
 
       let expenditures;
 
@@ -287,7 +289,7 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  // To see the all spending for this day gouping by essential
+  /** To see the all spending for this day gouping by essential */
   public getSpendsForNecessary(date:string){
 
     this.spendsByNecessary= [];

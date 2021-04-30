@@ -222,13 +222,13 @@ export class DatabaseService {
   
 
   /**  Get Expenditures by date grouping members or categories*/
-  getSpendsGroupingCateMemForday(date:string,dbType:string) {
+  getSpendsGroupingCateMemForday(dateStart:string,dateEnd:string,dbType:string) {
 
     return this.databaseObj.executeSql(`
       SELECT sum(amount) as total, t.name as name
       FROM expenditure e
       JOIN '${dbType}' t ON e.${dbType}_id = t.id
-      WHERE e.date='${date}'
+      WHERE e.date BETWEEN '${dateStart}' AND '${dateEnd}'
       GROUP BY ${dbType}_id
       `, [])
         .then((data) => {

@@ -150,7 +150,7 @@ export class DaySpendingsManagePage implements OnInit {
 
     this.spendsByCategories = [];
 
-    this.database.getSpendsGroupingCateMemForday(this.ParamDate,"category").then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(this.ParamDate, this.ParamDate,"category").then((result) => { 
 
       let expenditures;
 
@@ -183,7 +183,7 @@ export class DaySpendingsManagePage implements OnInit {
 
     this.spendsByMembers = [];
 
-    this.database.getSpendsGroupingCateMemForday(this.ParamDate,"member").then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(this.ParamDate,this.ParamDate,"member").then((result) => { 
 
       let expenditures;
 
