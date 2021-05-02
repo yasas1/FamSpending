@@ -136,6 +136,28 @@ export class ReportsPage implements OnInit {
 
   }
 
+  /** Initialize the data for yesterday to display */ 
+  private dataInitForThisWeek(){
+
+
+    let yesterday = new Date(this.today);
+    yesterday.setDate(this.today.getDate() - 1);
+
+    this.displayDate = formatDate(yesterday, 'EEEE MMMM dd yyyy', this.locale);
+    let yesterdayDateString = formatDate(yesterday, 'yyyy-MM-dd', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(yesterdayDateString,yesterdayDateString);
+      this.Spendings = [];
+      this.getSpendsForCategories(yesterdayDateString);
+      this.getSpendsForMembers(yesterdayDateString);
+      this.getSpendsForNecessary(yesterdayDateString);
+
+    }, 400);
+
+  }
+
   /** Get total spendings for date range */
   getTotalSpending(startDate:string,endDate:string){
     this.totalSpends = 0;
@@ -224,11 +246,11 @@ export class ReportsPage implements OnInit {
   }
 
   /** To see the all spending for this day gouping by categories */
-  public getSpendsForCategories(date:string){
+  public getSpendsForCategories(startDate:string,endDate:string){
 
     this.spendsByCategories = [];
 
-    this.database.getSpendsGroupingCateMemForday(date, date, "category").then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(startDate,endDate, "category").then((result) => { 
 
       let expenditures;
 
@@ -257,11 +279,11 @@ export class ReportsPage implements OnInit {
   }
 
   /** To see the all spending for this day gouping by members */
-  public getSpendsForMembers(date:string){
+  public getSpendsForMembers(startDate:string,endDate:string){
 
     this.spendsByMembers = [];
 
-    this.database.getSpendsGroupingCateMemForday(date,date,"member").then((result) => { 
+    this.database.getSpendsGroupingCateMemForday(startDate,endDate,"member").then((result) => { 
 
       let expenditures;
 
@@ -290,11 +312,11 @@ export class ReportsPage implements OnInit {
   }
 
   /** To see the all spending for this day gouping by essential */
-  public getSpendsForNecessary(date:string){
+  public getSpendsForNecessary(startDate:string,endDate:string){
 
     this.spendsByNecessary= [];
 
-    this.database.getSpendsGroupByNecessaryForday(date).then((result) => { 
+    this.database.getSpendsGroupByNecessaryForday(startDate,endDate).then((result) => { 
 
       let expenditures;
 
