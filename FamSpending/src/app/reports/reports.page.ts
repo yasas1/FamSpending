@@ -87,8 +87,14 @@ export class ReportsPage implements OnInit {
       case 3:
         this.dataInitForThisWeek();
         break;
+      case 4:
+        this.dataInitForThisMonth(); 
+        break;
+      case 5:
+        this.dataInitForLastMonth(); 
+        break;
       default:
-        console.log("No such day exists!");
+        console.log("No such day exists!"); 
         break;
   }
 
@@ -139,9 +145,8 @@ export class ReportsPage implements OnInit {
   /** Initialize the data for this week to display */ 
   private dataInitForThisWeek(){
 
-
     let today = new Date(this.today);
-    var first = today.getDate() - today.getDay();
+    let first = today.getDate() - today.getDay();
 
     let weekStart = new Date( today.setDate(first) );
     let weekEnd = new Date( today.setDate(weekStart.getDate()+6) );    
@@ -158,6 +163,58 @@ export class ReportsPage implements OnInit {
       this.getSpendsForCategories(weekStartString,weekEndString);
       this.getSpendsForMembers(weekStartString,weekEndString);
       this.getSpendsForNecessary(weekStartString,weekEndString);
+
+    }, 400);
+
+  }
+
+  /** Initialize the data for this month to display */ 
+  private dataInitForThisMonth(){
+
+    let month = this.today.getMonth() +1;
+    let year = this.today.getFullYear();
+
+    let daysInMonth = new Date(year, month,0).getDate(); 
+
+    let monthStartDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
+    let monthEndDate = formatDate(new Date(year.toString()+'-'+month.toString()+'-'+daysInMonth), 'yyyy-MM-dd', this.locale);
+
+    this.displayDate = formatDate(this.today, 'MMMM yyyy', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(monthStartDate,monthEndDate);
+      this.Spendings = []; // individual spendings are not displaied for more than one day
+      this.getSpendsForCategories(monthStartDate,monthEndDate);
+      this.getSpendsForMembers(monthStartDate,monthEndDate);
+      this.getSpendsForNecessary(monthStartDate,monthEndDate);
+
+    }, 400);
+
+  }
+
+   /** Initialize the data for last month to display */ 
+  private dataInitForLastMonth(){
+
+    let getMonth = this.today.getMonth();
+
+    let month = getMonth == 0 ? 12 : getMonth;
+    let year = this.today.getFullYear();
+
+    let daysInMonth = new Date(year, month,0).getDate(); 
+
+    let monthStartDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
+    let monthEndDate = formatDate(new Date(year.toString()+'-'+month.toString()+'-'+daysInMonth), 'yyyy-MM-dd', this.locale);
+
+    this.displayDate = formatDate(new Date(monthStartDate), 'MMMM yyyy', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(monthStartDate,monthEndDate);
+      this.Spendings = []; // individual spendings are not displaied for more than one day
+      this.getSpendsForCategories(monthStartDate,monthEndDate);
+      this.getSpendsForMembers(monthStartDate,monthEndDate);
+      this.getSpendsForNecessary(monthStartDate,monthEndDate);
 
     }, 400);
 
