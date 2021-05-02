@@ -71,7 +71,7 @@
 
       <ion-item *ngIf="this.newSpendingButtonDisplay" >
         <ion-button color="tertiary"  expand="block"  (click)="goToNewSpending(selectedDateToEvent)">
-           Add New Spending on {{selectedDateToEvent|date: 'MMMM dd yyyy'}}  
+          <ion-icon name="arrow-forward"></ion-icon> Add New Spending on {{selectedDateToEvent|date: 'MMMM dd yyyy'}}  
         </ion-button>
       </ion-item>
       

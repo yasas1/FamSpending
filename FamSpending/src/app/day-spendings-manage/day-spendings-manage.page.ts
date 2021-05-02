@@ -216,7 +216,7 @@ export class DaySpendingsManagePage implements OnInit {
 
     this.spendsByNecessary= [];
 
-    this.database.getSpendsGroupByNecessaryForday(this.ParamDate).then((result) => { 
+    this.database.getSpendsGroupByNecessaryForday(this.ParamDate,this.ParamDate).then((result) => { 
 
       let expenditures;
 

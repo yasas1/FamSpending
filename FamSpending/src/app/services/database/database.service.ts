@@ -257,12 +257,12 @@ export class DatabaseService {
   }
 
    /**  Get Expenditures by date grouping necessary*/
-   getSpendsGroupByNecessaryForday(date:string) {
+   getSpendsGroupByNecessaryForday(startDate:string,endDate:string) {
 
     return this.databaseObj.executeSql(`
       SELECT sum(amount) as total, unnecessary
       FROM expenditure
-      WHERE date='${date}'
+      WHERE date BETWEEN '${startDate}' AND '${endDate}'
       GROUP BY unnecessary
       `, [])
         .then((data) => {

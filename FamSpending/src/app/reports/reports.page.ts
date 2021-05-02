@@ -68,9 +68,9 @@ export class ReportsPage implements OnInit {
   aReportIsSelected(){
 
     /**    Reports
-     *  { id:1,name:"Today"} 
-        { id:2,name:"Yesterday"} 
-        { id:3,name:"This Week"} 
+     *  { id:1,name:"Today"}        // done
+        { id:2,name:"Yesterday"}      // done
+        { id:3,name:"This Week"}      // done
         { id:4,name:"This Month"} 
         { id:5,name:"Last Month"} 
         { id:6,name:"This year"} 
@@ -85,7 +85,7 @@ export class ReportsPage implements OnInit {
         this.dataInitForYesterday();
         break;
       case 3:
-        console.log("It is a Tuesday.");
+        this.dataInitForThisWeek();
         break;
       default:
         console.log("No such day exists!");
@@ -104,11 +104,11 @@ export class ReportsPage implements OnInit {
 
     setTimeout(() =>
     {
-      this.getTotalSpending(todayDateString,todayDateString);
+      this.getTotalSpending(todayDateString, todayDateString);
       this.getSpendings(todayDateString);
-      this.getSpendsForCategories(todayDateString);
-      this.getSpendsForMembers(todayDateString);
-      this.getSpendsForNecessary(todayDateString);
+      this.getSpendsForCategories(todayDateString, todayDateString);
+      this.getSpendsForMembers(todayDateString, todayDateString);
+      this.getSpendsForNecessary(todayDateString, todayDateString);
 
     }, 400);
 
@@ -126,33 +126,38 @@ export class ReportsPage implements OnInit {
 
     setTimeout(() =>
     {
-      this.getTotalSpending(yesterdayDateString,yesterdayDateString);
+      this.getTotalSpending(yesterdayDateString, yesterdayDateString);
       this.getSpendings(yesterdayDateString);
-      this.getSpendsForCategories(yesterdayDateString);
-      this.getSpendsForMembers(yesterdayDateString);
-      this.getSpendsForNecessary(yesterdayDateString);
+      this.getSpendsForCategories(yesterdayDateString, yesterdayDateString);
+      this.getSpendsForMembers(yesterdayDateString, yesterdayDateString);
+      this.getSpendsForNecessary(yesterdayDateString, yesterdayDateString);
 
     }, 400);
 
   }
 
-  /** Initialize the data for yesterday to display */ 
+  /** Initialize the data for this week to display */ 
   private dataInitForThisWeek(){
 
 
-    let yesterday = new Date(this.today);
-    yesterday.setDate(this.today.getDate() - 1);
+    let today = new Date(this.today);
+    var first = today.getDate() - today.getDay();
 
-    this.displayDate = formatDate(yesterday, 'EEEE MMMM dd yyyy', this.locale);
-    let yesterdayDateString = formatDate(yesterday, 'yyyy-MM-dd', this.locale);
+    let weekStart = new Date( today.setDate(first) );
+    let weekEnd = new Date( today.setDate(weekStart.getDate()+6) );    
+    
+    let weekStartString = formatDate(weekStart, 'yyyy-MM-dd', this.locale);
+    let weekEndString = formatDate(weekEnd, 'yyyy-MM-dd', this.locale);
+
+    this.displayDate = formatDate(weekStart, 'EEEE MMMM dd', this.locale)+ " to "+ formatDate(weekEnd, 'EEEE MMMM dd yyyy', this.locale);
 
     setTimeout(() =>
     {
-      this.getTotalSpending(yesterdayDateString,yesterdayDateString);
-      this.Spendings = [];
-      this.getSpendsForCategories(yesterdayDateString);
-      this.getSpendsForMembers(yesterdayDateString);
-      this.getSpendsForNecessary(yesterdayDateString);
+      this.getTotalSpending(weekStartString,weekEndString);
+      this.Spendings = []; // individual spendings are not displaied for more than one day
+      this.getSpendsForCategories(weekStartString,weekEndString);
+      this.getSpendsForMembers(weekStartString,weekEndString);
+      this.getSpendsForNecessary(weekStartString,weekEndString);
 
     }, 400);
 
@@ -222,27 +227,6 @@ export class ReportsPage implements OnInit {
       } 
 
     });
-  }
-
-  /** To present viewing popover */
-  async spendViewModal(spending){
-
-    const spendViewPopover = await this.popoverController.create({
-      component: SpendViewComponent,
-      componentProps: {
-        id:spending.id, 
-        date:spending.date,
-        member:spending.member,
-        category:spending.category, 
-        description:spending.description,
-        unnecessary:spending.unnecessary, 
-        amount:spending.amount
-      },
-      translucent: true
-    });
-
-    await spendViewPopover.present();
-
   }
 
   /** To see the all spending for this day gouping by categories */
@@ -344,6 +328,25 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  
+  /** To present viewing popover */
+  async spendViewModal(spending){
+
+    const spendViewPopover = await this.popoverController.create({
+      component: SpendViewComponent,
+      componentProps: {
+        id:spending.id, 
+        date:spending.date,
+        member:spending.member,
+        category:spending.category, 
+        description:spending.description,
+        unnecessary:spending.unnecessary, 
+        amount:spending.amount
+      },
+      translucent: true
+    });
+
+    await spendViewPopover.present();
+
+  }
 
 }

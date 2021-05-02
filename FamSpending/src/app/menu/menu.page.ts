@@ -27,9 +27,9 @@ export class MenuPage implements OnInit {
       icon: 'briefcase'
     },
     {
-      name: 'Reports',
+      name: 'Summary',
       path: '/menu/reports',
-      icon: 'briefcase'
+      icon: 'albums'
     }
   ]
 
