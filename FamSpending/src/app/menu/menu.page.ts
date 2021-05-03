@@ -24,12 +24,17 @@ export class MenuPage implements OnInit {
     {
       name: 'Category-Member',
       path: '/menu/CategoryAndMember',
-      icon: 'briefcase'
+      icon: 'briefcase' 
     },
     {
-      name: 'Summary',
+      name: 'Summary', 
       path: '/menu/reports',
       icon: 'albums'
+    },
+    {
+      name: 'Day View', 
+      path: '/menu/dayView',
+      icon: 'barcode'
     }
   ]
 

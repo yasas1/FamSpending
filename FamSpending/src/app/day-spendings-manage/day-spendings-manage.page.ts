@@ -4,7 +4,7 @@ import { formatDate } from '@angular/common';
 import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 import { Spending } from '../models/Spending';
-import {AlertController, ModalController, PopoverController } from '@ionic/angular';
+import {AlertController, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SpendViewComponent } from '../modals/spend-view/spend-view.component';
 import { SpendEditComponent } from '../modals/spend-edit/spend-edit.component';
@@ -32,7 +32,6 @@ export class DaySpendingsManagePage implements OnInit {
     @Inject(LOCALE_ID) private locale: string,
     private activatedRoute: ActivatedRoute,
     private database: DatabaseService,
-    private alertViewer: ViewControllerService,
     public alertCtrl: AlertController,
     private router:Router,
     private popoverController: PopoverController

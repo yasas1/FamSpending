@@ -28,7 +28,6 @@ export class ReportsPage implements OnInit {
   spendsByNecessary: Array<{unnecessary: any, total: any}>;
 
   constructor(
-    private alertViewer: ViewControllerService,
     private database: DatabaseService,
     @Inject(LOCALE_ID) private locale: string,
     private popoverController: PopoverController
@@ -164,7 +163,7 @@ export class ReportsPage implements OnInit {
     let weekStartString = formatDate(weekStart, 'yyyy-MM-dd', this.locale);
     let weekEndString = formatDate(weekEnd, 'yyyy-MM-dd', this.locale);
 
-    this.displayDate = formatDate(weekStart, 'EEEE MMMM dd', this.locale)+ " to "+ formatDate(weekEnd, 'EEEE MMMM dd yyyy', this.locale);
+    this.displayDate = formatDate(weekStart, 'EEE MMM dd', this.locale)+ " to "+ formatDate(weekEnd, 'EEE MMM dd yyyy', this.locale);
 
     setTimeout(() =>
     {

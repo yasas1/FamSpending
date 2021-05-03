@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'reports',
     loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
+  },
+  {
+    path: 'day-view',
+    loadChildren: () => import('./day-view/day-view.module').then( m => m.DayViewPageModule)
   }
   
   // {
