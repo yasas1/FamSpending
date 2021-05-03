@@ -68,33 +68,38 @@ export class ReportsPage implements OnInit {
   aReportIsSelected(){
 
     /**    Reports
-     *  { id:1,name:"Today"}        // done
-        { id:2,name:"Yesterday"}      // done
-        { id:3,name:"This Week"}      // done
-        { id:4,name:"This Month"} 
-        { id:5,name:"Last Month"} 
+     *  { id:1,name:"Today"}         // done
+        { id:2,name:"Yesterday"}     // done
+        { id:3,name:"This Week"}     // done
+        { id:4,name:"This Month"}    // done
+        { id:5,name:"Last Month"}    // done
         { id:6,name:"This year"} 
         { id:7,name:"Last Year"} 
      */
 
     switch (this.type) {
       case 1:
-        this.dataInitForToday();
+        this.dataInitForToday(); //today
         break;
       case 2:
-        this.dataInitForYesterday();
+        this.dataInitForYesterday();  //Yesterday
         break;
       case 3:
-        this.dataInitForThisWeek();
+        this.dataInitForThisWeek();  //This Week
         break;
       case 4:
-        this.dataInitForThisMonth(); 
+        this.dataInitForThisMonth();   //This Month
         break;
       case 5:
-        this.dataInitForLastMonth(); 
+        this.dataInitForLastMonth();  //Last Month
+        break;
+      case 6:
+        this.dataInitForThisYear();  //This Year
+        break;
+      case 7:
+        this.dataInitForLastYear();  //Last Year
         break;
       default:
-        console.log("No such day exists!"); 
         break;
   }
 
@@ -215,6 +220,54 @@ export class ReportsPage implements OnInit {
       this.getSpendsForCategories(monthStartDate,monthEndDate);
       this.getSpendsForMembers(monthStartDate,monthEndDate);
       this.getSpendsForNecessary(monthStartDate,monthEndDate);
+
+    }, 400);
+
+  }
+
+  /** Initialize the data for this year to display */ 
+  private dataInitForThisYear(){
+
+  
+    let year = this.today.getFullYear();
+
+
+    let yeartartDate =  formatDate(new Date(year.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
+    let yearEndDate = formatDate(new Date(year.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
+
+    this.displayDate = yeartartDate+" to "+ yearEndDate;  //formatDate(this.today, 'yyyy', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(yeartartDate,yearEndDate);
+      this.Spendings = []; // individual spendings are not displaied for more than one day
+      this.getSpendsForCategories(yeartartDate,yearEndDate);
+      this.getSpendsForMembers(yeartartDate,yearEndDate);
+      this.getSpendsForNecessary(yeartartDate,yearEndDate);
+
+    }, 400);
+
+  }
+
+  /** Initialize the data for this year to display */ 
+  private dataInitForLastYear(){
+
+  
+    let year = this.today.getFullYear() - 1;
+
+
+    let yeartartDate =  formatDate(new Date(year.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
+    let yearEndDate = formatDate(new Date(year.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
+
+    this.displayDate = yeartartDate+" to "+ yearEndDate;  //formatDate(this.today, 'yyyy', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(yeartartDate,yearEndDate);
+      this.Spendings = []; // individual spendings are not displaied for more than one day
+      this.getSpendsForCategories(yeartartDate,yearEndDate);
+      this.getSpendsForMembers(yeartartDate,yearEndDate);
+      this.getSpendsForNecessary(yeartartDate,yearEndDate);
 
     }, 400);
 
