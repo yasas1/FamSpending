@@ -7,7 +7,8 @@
         </ion-toolbar>
       </ion-header>
 
-      <ion-content>
+      <ion-content> 
+
         <ion-list lines="none">
           <ion-menu-toggle auto-hide="false" *ngFor="let page of pages">
             <ion-item  routerLinkActive="selected" [routerLink]="page.path" routerDirection="root" [class.active-menu]="activePath === page.path">
@@ -18,6 +19,20 @@
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
+
+        
+
+        <ion-list lines="none">
+          <ion-menu-toggle autoHide="false">
+            <ion-item  routerLinkActive="selected" [routerLink]="aboutPath" routerDirection="root" [class.active-menu]="activePath === aboutPath">
+              <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+              <ion-label class="fontClass">
+                About
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+
       </ion-content>
 
     </ion-menu>

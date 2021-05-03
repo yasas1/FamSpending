@@ -13,6 +13,10 @@ const routes: Routes = [
   {
     path: 'day-view',
     loadChildren: () => import('./day-view/day-view.module').then( m => m.DayViewPageModule)
+  },
+  {
+    path: 'about',
+    loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
   }
   
   // {

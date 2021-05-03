@@ -31,6 +31,10 @@ const routes: Routes = [
       {
         path: 'dayView',
         loadChildren: '../day-view/day-view.module#DayViewPageModule'
+      },
+      {
+        path: 'about',
+        loadChildren: '../about/about.module#AboutPageModule'
       }
     ]
   },

@@ -33,10 +33,12 @@ export class MenuPage implements OnInit {
     },
     {
       name: 'Day View', 
-      path: '/menu/dayView',
+      path: '/menu/dayView', 
       icon: 'barcode'
     }
   ]
+
+  aboutPath = '/menu/about';
 
   constructor(private router: Router) {
     this.router.events.subscribe((event: RouterEvent) => {
