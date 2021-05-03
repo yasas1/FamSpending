@@ -83,16 +83,6 @@ export class NewSpendingPage implements OnInit {
 
   ionViewDidLoad() {
     
-    // this.platform
-    //   .ready()
-    //   .then(() =>
-    //   {
-    //     setTimeout(() =>
-    //     {
-    //       this.checkAndsetCategories();
-    //       this.checkAndsetMembers();
-    //     }, 1000);
-    //   });
   }
 
   showDatePicker(){

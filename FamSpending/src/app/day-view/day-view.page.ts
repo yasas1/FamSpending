@@ -1,13 +1,11 @@
 import { Component ,OnInit, Inject, LOCALE_ID} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
-import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { DatabaseService } from '../services/database/database.service';
 import { Spending } from '../models/Spending';
 import {AlertController, PopoverController } from '@ionic/angular';
-import { Router } from '@angular/router';
 import { SpendViewComponent } from '../modals/spend-view/spend-view.component';
 import { SpendEditComponent } from '../modals/spend-edit/spend-edit.component';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 
 @Component({
   selector: 'app-day-view',
@@ -16,9 +14,11 @@ import { SpendEditComponent } from '../modals/spend-edit/spend-edit.component';
 })
 export class DayViewPage implements OnInit {
 
-  ParamDate = null;
+  date :any;
 
-  thisDay:any;
+  today: any;
+
+  displayDate: any;
 
   spendsByCategories: Array<{category: string, total: any}>;
   spendsByMembers: Array<{member: string, total: any}>;
@@ -28,19 +28,20 @@ export class DayViewPage implements OnInit {
 
   totalSpends:any;
 
+  
+
   constructor(
     @Inject(LOCALE_ID) private locale: string,
-    private activatedRoute: ActivatedRoute,
     private database: DatabaseService,
-    private alertViewer: ViewControllerService,
     public alertCtrl: AlertController,
-    private router:Router,
+    private datePicker: DatePicker,
     private popoverController: PopoverController
     ) {
 
-      this.ParamDate = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
+      this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
+      this.today = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
+      this.displayDate = formatDate(new Date(), 'EEEE MMM dd yyyy', this.locale);
 
-      this.thisDay = formatDate(new Date(this.ParamDate), 'EEEE MMMM dd yyyy', this.locale);
     }
 
     ngOnInit() {
@@ -55,6 +56,23 @@ export class DayViewPage implements OnInit {
   
       this.dataInit();
   
+    }
+
+    showDatePicker(){
+      this.datePicker.show({
+        date: new Date(this.date),
+        mode: 'date',
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+        minDate: new Date(new Date().setDate(new Date().getDate() - 400)).valueOf(),
+        maxDate: new Date().valueOf() ,
+      }).then(
+        date => {
+          this.date = formatDate(date, 'yyyy-MM-dd', this.locale);
+          this.displayDate = formatDate(date, 'EEEE MMM dd yyyy', this.locale);
+          this.dataInit();
+        },
+        err => console.log('Error occurred while getting date: ', err)
+      );
     }
   
     private dataInit(){
@@ -71,11 +89,11 @@ export class DayViewPage implements OnInit {
     }
   
     // To see the total spending for this day
-    getTotalSpending(){
+    private getTotalSpending(){
   
       this.totalSpends = 0;
   
-      this.database.getTotalSpendsForDate(this.ParamDate,this.ParamDate).then((result) => { 
+      this.database.getTotalSpendsForDate(this.date,this.date).then((result) => { 
   
         let expenditures;
   
@@ -97,17 +115,18 @@ export class DayViewPage implements OnInit {
         }  
         else{
           expenditures = 0;
+          this.totalSpends = 0;
         } 
       });
   
     }
   
     // To see the all spending for this day
-    getExpenditures(){
+    private getExpenditures(){
   
       this.Spendings = [];
     
-      this.database.getExpendituresByDate(this.ParamDate).then((result) => { 
+      this.database.getExpendituresByDate(this.date).then((result) => { 
   
         let expenditures;
   
@@ -142,11 +161,11 @@ export class DayViewPage implements OnInit {
     }
   
     // To see the all spending for this day gouping by categories
-    public getSpendsForCategories(){
+    private getSpendsForCategories(){
   
       this.spendsByCategories = [];
   
-      this.database.getSpendsGroupingCateMemForday(this.ParamDate, this.ParamDate,"category").then((result) => { 
+      this.database.getSpendsGroupingCateMemForday(this.date, this.date,"category").then((result) => { 
   
         let expenditures;
   
@@ -175,11 +194,11 @@ export class DayViewPage implements OnInit {
     }
   
     // To see the all spending for this day gouping by members
-    public getSpendsForMembers(){
+    private getSpendsForMembers(){
   
       this.spendsByMembers = [];
   
-      this.database.getSpendsGroupingCateMemForday(this.ParamDate,this.ParamDate,"member").then((result) => { 
+      this.database.getSpendsGroupingCateMemForday(this.date,this.date,"member").then((result) => { 
   
         let expenditures;
   
@@ -208,11 +227,11 @@ export class DayViewPage implements OnInit {
     }
   
     // To see the all spending for this day gouping by essential
-    public getSpendsForNecessary(){
+    private getSpendsForNecessary(){
   
       this.spendsByNecessary= [];
   
-      this.database.getSpendsGroupByNecessaryForday(this.ParamDate,this.ParamDate).then((result) => { 
+      this.database.getSpendsGroupByNecessaryForday(this.date,this.date).then((result) => { 
   
         let expenditures;
   
