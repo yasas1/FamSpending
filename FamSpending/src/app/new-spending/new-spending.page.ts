@@ -38,7 +38,6 @@ export class NewSpendingPage implements OnInit {
 
   passDate:any;
 
-
   constructor(
 
     @Inject(LOCALE_ID) private locale: string,
@@ -70,19 +69,12 @@ export class NewSpendingPage implements OnInit {
       amount: ['', Validators.compose([Validators.required])],
       unnecessary: ['', Validators.compose([Validators.required])],
     });
-
-    
       
   }
-
 
   ngOnInit() {
     this.checkAndsetCategories();
     this.checkAndsetMembers();
-  }
-
-  ionViewDidLoad() {
-    
   }
 
   showDatePicker(){
@@ -160,7 +152,6 @@ export class NewSpendingPage implements OnInit {
 
             this.alertViewer.presentAlert("Get Expenditures! ",expenditures[i].id+" "+expenditures[i].date+" "+expenditures[i].member+" "+expenditures[i].category+" "+expenditures[i].amount);
           }
-
         }
       }  
       else{
@@ -210,7 +201,6 @@ export class NewSpendingPage implements OnInit {
               id:categories[i].id,
               name:categories[i].name,
             });
-       
           }
         }
       }  
@@ -222,9 +212,6 @@ export class NewSpendingPage implements OnInit {
   private insertCategories(){
     this.database.insertCategory("Common");
     this.database.insertCategory("Food");
-    this.database.insertCategory("Medicine");
-    this.database.insertCategory("Bills");
-    this.database.insertCategory("Fashion");
     
   }
 
@@ -269,7 +256,6 @@ export class NewSpendingPage implements OnInit {
               id:members[i].id,
               name:members[i].name,
             });
-       
           }
         }
       }  
@@ -283,5 +269,4 @@ export class NewSpendingPage implements OnInit {
   }
 
   
-
 }

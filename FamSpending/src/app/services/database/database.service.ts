@@ -516,6 +516,26 @@ export class DatabaseService {
     }
   }
 
+  async getCountOfMemberOrCategories(dbName:string) {
+
+    return this.databaseObj.executeSql(`
+      SELECT COUNT(*) as count  FROM '${dbName}';
+      `, [])
+      .then((data) => {
+          if(data.rows.length > 0){
+            return data.rows.item(0).count;
+          }
+          else{
+            return 0;
+          }
+        })
+        .catch(error => {
+          this.alertViewer.presentAlert("Counting Error! ","Get error"+JSON.stringify(error));
+        }
+      );
+    
+  }
+
   /**  Update Category by id */
   updateCategoryOrMemberById(id:number,name:string,dbName:string) {
     this.databaseObj.executeSql(`

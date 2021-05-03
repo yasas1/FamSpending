@@ -90,12 +90,9 @@ export class DaySpendingsManagePage implements OnInit {
 
         if(expendituresLength > 0){
 
-          for(let i=0; i < expendituresLength; i++) { 
-            
+          for(let i=0; i < expendituresLength; i++) {     
             this.totalSpends = expenditures[i].total
-            
           }
-
         }
       }  
       else{
@@ -168,7 +165,6 @@ export class DaySpendingsManagePage implements OnInit {
               total:  expenditures[i].total
             });
           }
-
         }
       }  
       else{
@@ -201,7 +197,6 @@ export class DaySpendingsManagePage implements OnInit {
               total:  expenditures[i].total
             });
           }
-
         }
       }  
       else{
@@ -234,7 +229,6 @@ export class DaySpendingsManagePage implements OnInit {
               total:  expenditures[i].total
             });
           }
-
         }
       }  
       else{

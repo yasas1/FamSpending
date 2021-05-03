@@ -216,7 +216,6 @@ export class HomePage implements OnInit{
 
       let expendituresLength = this.expenditures.length;
       
-      
       for (let j = 0; j < expendituresLength; j++) {
 
         let spends = 0;
@@ -282,7 +281,6 @@ export class HomePage implements OnInit{
               total:  expenditures[i].total
             });
           }
-
         }
       }  
       else{

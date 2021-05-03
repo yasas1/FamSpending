@@ -28,8 +28,6 @@ export class DayViewPage implements OnInit {
 
   totalSpends:any;
 
-  
-
   constructor(
     @Inject(LOCALE_ID) private locale: string,
     private database: DatabaseService,

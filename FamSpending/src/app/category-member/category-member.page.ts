@@ -15,20 +15,24 @@ import { Member } from '../models/Member';
 })
 export class CategoryMemberPage implements OnInit {
 
-  public category = new Category();
+  category = new Category();
 
-  public member = new Member();
+  member = new Member();
 
-  public dataArray:any=[];
+  dataArray:any=[];
 
-  public List: Array<{id: number, name: string}>;
+  List: Array<{id: number, name: string}>;
 
-  public canAddField:boolean = true;
+  canAddField:boolean = true;
 
-  public today: any;
+  today: any;
 
   type =0;
   typeDisplay ="Categories";
+
+  maxNumber = 10;
+  furthurmoreAdd = 1;
+  dbCount = 0;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -51,14 +55,32 @@ export class CategoryMemberPage implements OnInit {
         setTimeout(() =>
         {
           this.getCategories();
+          this.dbCatergoryCountChecking();
         }, 1000);
       });
   }
 
-  ionViewDidLoad() {
+  dbCatergoryCountChecking(){
 
-    
-    
+    this.database.getCountOfMemberOrCategories("category").then((result) => {
+
+      this.dbCount = parseInt(result);
+      this.furthurmoreAdd = this.maxNumber - this.dbCount;
+      this.canAddFieldRefresh();
+    });
+
+  }
+
+  dbMemberCountChecking(){
+
+    this.database.getCountOfMemberOrCategories("member").then((result) => {
+
+      this.dbCount = parseInt(result);
+      this.furthurmoreAdd = this.maxNumber - this.dbCount;
+      this.canAddFieldRefresh();
+
+    });
+
   }
 
   /**  Add a new input field for category */
@@ -77,15 +99,21 @@ export class CategoryMemberPage implements OnInit {
 
     }
 
-    
+    this.canAddFieldRefresh();
+
+  }
+
+  canAddFieldRefresh(){
+
     let size = this.dataArray.length;
 
-    if(size >= 5){
+    if(size >= this.furthurmoreAdd){
       this.canAddField = false;
     }
     else{
       this.canAddField = true;
     }
+
   }
 
     /**  remove this input field  */
@@ -95,7 +123,7 @@ export class CategoryMemberPage implements OnInit {
 
     let size = this.dataArray.length;
 
-    if(size >=6){
+    if(size >= this.furthurmoreAdd){
       this.canAddField = false;
     }
     else{
@@ -110,7 +138,7 @@ export class CategoryMemberPage implements OnInit {
     this.category = new Category();
     this.category.name="";
     this.dataArray.push(this.category);
-    this.canAddField = true;
+    this.canAddFieldRefresh();
 
   }
 
@@ -119,10 +147,12 @@ export class CategoryMemberPage implements OnInit {
     if(this.type==0){
       this.typeDisplay = "Categories";
       this.getCategories();
+      this.dbCatergoryCountChecking();
     }
     else{
       this.typeDisplay = "Members";
       this.getMembers();
+      this.dbMemberCountChecking();
     }
   }
 
@@ -227,10 +257,13 @@ export class CategoryMemberPage implements OnInit {
           {
             if(this.type==0){
               this.getCategories();
+              this.dbCatergoryCountChecking();
             }
             else{
               this.getMembers();
+              this.dbMemberCountChecking();
             }
+            
 
           }, 500);
         }
@@ -253,6 +286,8 @@ export class CategoryMemberPage implements OnInit {
           this.member.name="";
           this.dataArray.push(this.member);
         }
+
+        this.canAddFieldRefresh();
         
       }, size*500);
       
@@ -292,9 +327,11 @@ export class CategoryMemberPage implements OnInit {
                 {
                   if(this.type==0){
                     this.getCategories();
+                    this.dbCatergoryCountChecking();
                   }
                   else{
                     this.getMembers();
+                    this.dbMemberCountChecking();
                   }
                 }, 500);
               }
@@ -341,10 +378,13 @@ export class CategoryMemberPage implements OnInit {
                 {
                   if(this.type==0){
                     this.getCategories();
+                    this.dbCatergoryCountChecking();
                   }
                   else{
                     this.getMembers();
+                    this.dbMemberCountChecking();
                   }
+                 
                 }, 500);
               }
             }
