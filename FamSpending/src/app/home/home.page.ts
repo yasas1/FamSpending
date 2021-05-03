@@ -196,9 +196,9 @@ export class HomePage implements OnInit{
     let year = this.newDateToday.getFullYear();
     let month = this.newDateToday.getMonth()+1;
 
-    // get initially total spendings for last 8 months
+    // get initially total spendings for last 12 months
     let dateForEarlyMonth = new Date();
-    dateForEarlyMonth.setMonth(dateForEarlyMonth.getMonth() - 8);
+    dateForEarlyMonth.setMonth(dateForEarlyMonth.getMonth() - 12);
    
     let startDateForEarlyMonth =  formatDate(dateForEarlyMonth, 'yyyy-MM-dd', this.locale);
     

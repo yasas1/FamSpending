@@ -40,7 +40,12 @@
   <br>
 
   <div  class="ion-text-center"> 
-    <ion-title *ngIf="totalSpends!=0"  style="font-style:inherit;font-family: fantasy; font-size:medium ; color: darkslategray;">  {{displayDate}}  </ion-title>
+    <ion-title  class="fontClass">  {{displayDate}}  </ion-title>
+  </div>
+  <br>
+
+  <div  class="ion-text-center"> 
+    <ion-title *ngIf="totalSpends==0"  class="fontClass"> <b> No Spendings </b>  </ion-title>
   </div>
 
   <br>

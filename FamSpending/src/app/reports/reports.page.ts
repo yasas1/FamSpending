@@ -56,10 +56,11 @@ export class ReportsPage implements OnInit {
     this.types.push( { id:1,name:"Today"} );
     this.types.push( { id:2,name:"Yesterday"} );
     this.types.push( { id:3,name:"This Week"} );
-    this.types.push( { id:4,name:"This Month"} );
-    this.types.push( { id:5,name:"Last Month"} );
-    this.types.push( { id:6,name:"This year"} );
-    this.types.push( { id:7,name:"Last Year"} );
+    this.types.push( { id:4,name:"Last Week"} );
+    this.types.push( { id:5,name:"This Month"} );
+    this.types.push( { id:6,name:"Last Month"} );
+    this.types.push( { id:7,name:"This year"} );
+    this.types.push( { id:8,name:"Last Year"} );
 
   }
 
@@ -71,10 +72,11 @@ export class ReportsPage implements OnInit {
      *  { id:1,name:"Today"}         // done
         { id:2,name:"Yesterday"}     // done
         { id:3,name:"This Week"}     // done
-        { id:4,name:"This Month"}    // done
-        { id:5,name:"Last Month"}    // done
-        { id:6,name:"This year"} 
-        { id:7,name:"Last Year"} 
+        { id:4,name:"Last Week"}
+        { id:5,name:"This Month"}    // done
+        { id:6,name:"Last Month"}    // done
+        { id:7,name:"This year"}     // done
+        { id:8,name:"Last Year"}     // done
      */
 
     switch (this.type) {
@@ -88,15 +90,18 @@ export class ReportsPage implements OnInit {
         this.dataInitForThisWeek();  //This Week
         break;
       case 4:
-        this.dataInitForThisMonth();   //This Month
+        this.dataInitForLastWeek();  //Last Week
         break;
       case 5:
-        this.dataInitForLastMonth();  //Last Month
+        this.dataInitForThisMonth();   //This Month
         break;
       case 6:
-        this.dataInitForThisYear();  //This Year
+        this.dataInitForLastMonth();  //Last Month
         break;
       case 7:
+        this.dataInitForThisYear();  //This Year
+        break;
+      case 8:
         this.dataInitForLastYear();  //Last Year
         break;
       default:
@@ -151,7 +156,7 @@ export class ReportsPage implements OnInit {
   private dataInitForThisWeek(){
 
     let today = new Date(this.today);
-    let first = today.getDate() - today.getDay();
+    let first = today.getDate() - today.getDay() +1;
 
     let weekStart = new Date( today.setDate(first) );
     let weekEnd = new Date( today.setDate(weekStart.getDate()+6) );    
@@ -160,6 +165,32 @@ export class ReportsPage implements OnInit {
     let weekEndString = formatDate(weekEnd, 'yyyy-MM-dd', this.locale);
 
     this.displayDate = formatDate(weekStart, 'EEEE MMMM dd', this.locale)+ " to "+ formatDate(weekEnd, 'EEEE MMMM dd yyyy', this.locale);
+
+    setTimeout(() =>
+    {
+      this.getTotalSpending(weekStartString,weekEndString);
+      this.Spendings = []; // individual spendings are not displaied for more than one day
+      this.getSpendsForCategories(weekStartString,weekEndString);
+      this.getSpendsForMembers(weekStartString,weekEndString);
+      this.getSpendsForNecessary(weekStartString,weekEndString);
+
+    }, 400);
+
+  }
+
+  /** Initialize the data for last week to display */ 
+  private dataInitForLastWeek(){
+
+    let today = new Date(this.today);
+    let first = today.getDate() - today.getDay()  - 6 ;
+
+    let weekStart = new Date( today.setDate(first) );
+    let weekEnd = new Date( today.setDate(weekStart.getDate()+6) );    
+    
+    let weekStartString = formatDate(weekStart, 'yyyy-MM-dd', this.locale);
+    let weekEndString = formatDate(weekEnd, 'yyyy-MM-dd', this.locale);
+
+    this.displayDate = formatDate(weekStart, 'EEE MMM dd', this.locale)+ " to "+ formatDate(weekEnd, 'EEE MMM dd yyyy', this.locale);
 
     setTimeout(() =>
     {
@@ -235,7 +266,7 @@ export class ReportsPage implements OnInit {
     let yeartartDate =  formatDate(new Date(year.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
     let yearEndDate = formatDate(new Date(year.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
 
-    this.displayDate = yeartartDate+" to "+ yearEndDate;  //formatDate(this.today, 'yyyy', this.locale);
+    this.displayDate = "Year "+ year;
 
     setTimeout(() =>
     {
@@ -259,7 +290,7 @@ export class ReportsPage implements OnInit {
     let yeartartDate =  formatDate(new Date(year.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
     let yearEndDate = formatDate(new Date(year.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
 
-    this.displayDate = yeartartDate+" to "+ yearEndDate;  //formatDate(this.today, 'yyyy', this.locale);
+    this.displayDate = "Year "+ year;
 
     setTimeout(() =>
     {
