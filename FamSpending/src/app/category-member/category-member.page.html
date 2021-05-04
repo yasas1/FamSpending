@@ -80,14 +80,21 @@
   </div>
 
   <br>
+
   <div>
-    <ion-title class="fontClass" > {{typeDisplay}} </ion-title>
+    
   </div>
 
   <div class="ion-text-center">
-
+    
     <ion-list> 
 
+      <ion-list-header class="ion-text-start" lines="full" >
+        <ion-label class="fontClass" > <b> {{typeDisplay}} </b> </ion-label>
+      </ion-list-header>
+      
+      <br>
+      
       <div *ngFor="let typeItem of List let idx = index" >
 
         <ion-grid>

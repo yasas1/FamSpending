@@ -28,9 +28,8 @@ export class NewSpendingPage implements OnInit {
 
   displayDate: any;
 
-  categories = [];
-
-  members = [];
+  categories :Array<{id: any, name: any}>;
+  members :Array<{id: any, name: any}>;
 
   unnecessary =0;
 
@@ -39,10 +38,7 @@ export class NewSpendingPage implements OnInit {
   passDate:any;
 
   constructor(
-
     @Inject(LOCALE_ID) private locale: string,
-   
-    private alertViewer: ViewControllerService,
     private database: DatabaseService,
     public formBuilder: FormBuilder,
     private datePicker: DatePicker,
@@ -69,12 +65,18 @@ export class NewSpendingPage implements OnInit {
       amount: ['', Validators.compose([Validators.required])],
       unnecessary: ['', Validators.compose([Validators.required])],
     });
-      
+
   }
 
   ngOnInit() {
+    
+  }
+
+  ionViewWillEnter() {
+  
     this.checkAndsetCategories();
     this.checkAndsetMembers();
+
   }
 
   showDatePicker(){
@@ -104,24 +106,15 @@ export class NewSpendingPage implements OnInit {
 
     this.database.insertExpenditure(date,member, category, description, unnecessary, amount);
 
-    this.expenditureForm.reset({
-      member: '',
-      category: '',
-      description: '',
-      amount: '',
-      unnecessary: 0,
-    });
-    this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
-    this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
-    this.unnecessary =0;
+    this.clearInputFields();
 
   }
 
   clearInputFields(){
 
     this.expenditureForm.reset({
-      member: '',
-      category: '',
+      member:  this.members[0].id,
+      category: this.categories[0].id,
       description: '',
       amount: '',
       unnecessary: 0,
@@ -129,36 +122,10 @@ export class NewSpendingPage implements OnInit {
     this.date = formatDate(new Date(), 'yyyy-MM-dd', this.locale);
     this.displayDate = formatDate(new Date(), 'MMMM dd yyyy', this.locale);
     this.unnecessary =0;
+
+    this.category = this.categories[0].id;
+    this.member = this.members[0].id;
  
-  }
-
-  getExpenditures(){
-
-    this.alertViewer.presentAlert("gsfg sgsfgsg! "," date " + this.passDate);
-  
-    this.database.getExpendituresByDate(this.date).then((result) => { 
-
-      let expenditures;
-
-      if(result != 0){
-
-        expenditures =  result;  
-
-        let expendituresLength = expenditures.length;
-
-        if(expendituresLength > 0){
-
-          for(let i=0; i < expendituresLength; i++) { 
-
-            this.alertViewer.presentAlert("Get Expenditures! ",expenditures[i].id+" "+expenditures[i].date+" "+expenditures[i].member+" "+expenditures[i].category+" "+expenditures[i].amount);
-          }
-        }
-      }  
-      else{
-        expenditures = 0;
-      } 
-
-    });
   }
 
   /** check categories count from db and set categories*/
@@ -194,6 +161,8 @@ export class NewSpendingPage implements OnInit {
         let categoriesLength = categories.length;
 
         if(categoriesLength > 0){
+
+          this.category = categories[0].id;
 
           for(let i=0; i < categoriesLength; i++) {
 
@@ -249,6 +218,8 @@ export class NewSpendingPage implements OnInit {
         let membersLength = members.length;
 
         if(membersLength > 0){
+
+          this.member = members[0].id;
 
           for(let i=0; i < membersLength; i++) {
 
