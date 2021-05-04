@@ -9,6 +9,7 @@
 .fontClass {
     font-style:inherit ;
     font-family: fantasy;
+    font-size:small ;
 }
 
 ion-content {
@@ -26,6 +27,6 @@ ion-select::part(icon) {
 .topic {
     font-style:inherit;
     font-family:fantasy; 
-    font-size:larger ;
+    font-size:medium ;
     color: darkslategray;
   }

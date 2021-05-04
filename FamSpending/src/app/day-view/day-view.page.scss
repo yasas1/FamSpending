@@ -8,7 +8,16 @@ ion-content {
 .fontClass {
     font-style:inherit ;
     font-family: fantasy;
-    font-size:medium ;
+    font-size:small ;
     color: darkslategray;
 
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    font-style:inherit ;
+    font-family: fantasy;
+    font-size:x-small ;
+    color:darkslategrey;
 }

@@ -72,6 +72,7 @@ Component
 ionic g c compName
 
 
+ionic cordova resources
 
 
 

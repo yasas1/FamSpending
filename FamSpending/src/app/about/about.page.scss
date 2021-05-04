@@ -13,8 +13,7 @@ ion-content {
 
 }
 
-p,li{
-   
+p,dt,dd,li{
     font-style:inherit ;
     font-family: fantasy;
     font-size:medium ;
@@ -24,4 +23,10 @@ p,li{
 h4,h6{
     font-style:inherit ;
     font-family: fantasy;
+    font-weight: bold;
+}
+
+h6{
+    color:darkcyan;
+    
 }
