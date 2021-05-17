@@ -27,14 +27,14 @@ export class MenuPage implements OnInit {
       icon: 'briefcase' 
     },
     {
-      name: 'Summary', 
-      path: '/menu/reports',
-      icon: 'albums'
-    },
-    {
       name: 'Day View', 
       path: '/menu/dayView', 
       icon: 'barcode'
+    },
+    {
+      name: 'Summary', 
+      path: '/menu/reports',
+      icon: 'albums'
     }
   ]
 
