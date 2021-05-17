@@ -48,20 +48,23 @@
     </ion-col>
   </ion-row>
 
-  <calendar
-    [eventSource]="eventSource"
-    [calendarMode]="calendar.mode"
-    [dateFormatter]="calendar.dateFormatter"
-    [currentDate]="calendar.currentDate"
-    (onEventSelected)="onEventSelected($event)"
-    (onTitleChanged)="onViewTitleChanged($event)"
-    (onCurrentDateChanged)="onCurrentDateChanged($event)"
-    step="30"
-    startingDayWeek="1"
-    [markDisabled]="markDisabled"
-    [monthviewEventDetailTemplate]="detailTemplate"
-  >
-  </calendar> 
+  <div  class="content"> 
+    <calendar
+      [eventSource]="eventSource"
+      [calendarMode]="calendar.mode"
+      [dateFormatter]="calendar.dateFormatter"
+      [currentDate]="calendar.currentDate"
+      (onEventSelected)="onEventSelected($event)"
+      (onTitleChanged)="onViewTitleChanged($event)"
+      (onCurrentDateChanged)="onCurrentDateChanged($event)"
+      step="30"
+      startingDayWeek="1"
+      [markDisabled]="markDisabled"
+      [monthviewEventDetailTemplate]="detailTemplate"
+    >
+    </calendar> 
+
+  </div>
 
   <ng-template  #detailTemplate let-showEventDetail="showEventDetail"  let-selectedDate="selectedDate" >
 

@@ -1,10 +1,8 @@
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
-import { Spending } from '../models/Spending';
 import { DatabaseService } from '../services/database/database.service';
-import { ViewControllerService } from '../services/viewController/view-controller.service';
 import { formatDate } from '@angular/common';
-import { PopoverController } from '@ionic/angular';
-import { SpendViewComponent } from '../modals/spend-view/spend-view.component';
+import { SummaryTotal } from '../models/SummaryTotal';
+import { ViewControllerService } from '../services/viewController/view-controller.service';
 
 @Component({
   selector: 'app-reports',
@@ -17,20 +15,29 @@ export class ReportsPage implements OnInit {
   types=[];
 
   today = new Date();
-  displayDate:any;
 
-  totalSpends:any = 0;
+  first="Today";
+  second="Yesterday";
 
-  Spendings: Array<Spending>;
+  firstDisplayDate:any;
+  secondDisplayDate:any;
 
-  spendsByCategories: Array<{category: string, total: any}>;
-  spendsByMembers: Array<{member: string, total: any}>;
-  spendsByNecessary: Array<{unnecessary: any, total: any}>;
+  firstTotalSpends:any = 0;
+  secondTotalSpends:any = 0;
+
+  categoryMap: Map<any, SummaryTotal>;
+
+  memberMap : Map<any, SummaryTotal>;
+
+  firstSpendsByNecessary: Array<{unnecessary: any, total: any}>;
+  secondSpendsByNecessary: Array<{unnecessary: any, total: any}>;
+
+  necessaryMap : Map<any, SummaryTotal>;
 
   constructor(
     private database: DatabaseService,
     @Inject(LOCALE_ID) private locale: string,
-    private popoverController: PopoverController
+    public alertViewer: ViewControllerService
   ){ 
 
   }
@@ -42,24 +49,22 @@ export class ReportsPage implements OnInit {
 
   ionViewWillEnter() {
 
-    this.dataInitForToday();
+    this.first = "Today";
+    this.second = "Yesterday";
+    this.dataInitForTodayAndYesterday();
 
   }
 
-  reportTypeInitializer(){
+  private reportTypeInitializer(){
 
     this.type = 1;
 
     this.types = [];
 
-    this.types.push( { id:1,name:"Today"} );
-    this.types.push( { id:2,name:"Yesterday"} );
-    this.types.push( { id:3,name:"This Week"} );
-    this.types.push( { id:4,name:"Last Week"} );
-    this.types.push( { id:5,name:"This Month"} );
-    this.types.push( { id:6,name:"Last Month"} );
-    this.types.push( { id:7,name:"This year"} );
-    this.types.push( { id:8,name:"Last Year"} );
+    this.types.push( { id:1,name:"Today and Yesterday"} );
+    this.types.push( { id:2,name:"This and Last Week"} );
+    this.types.push( { id:3,name:"This and Last Month"} );
+    this.types.push( { id:4,name:"This and Last year"} );
 
   }
 
@@ -68,245 +73,159 @@ export class ReportsPage implements OnInit {
   aReportIsSelected(){
 
     /**    Reports
-     *  { id:1,name:"Today"}         // done
-        { id:2,name:"Yesterday"}     // done
-        { id:3,name:"This Week"}     // done
-        { id:4,name:"Last Week"}
-        { id:5,name:"This Month"}    // done
-        { id:6,name:"Last Month"}    // done
-        { id:7,name:"This year"}     // done
-        { id:8,name:"Last Year"}     // done
+     *  { id:1,name:"Today and Yesterday"}          
+        { id:2,name:"This and Last Week"}    
+        { id:3,name:"This and Last Month"}     
+        { id:4,name:"This and Last year"}
      */
 
     switch (this.type) {
       case 1:
-        this.dataInitForToday(); //today
+        this.first = "Today";
+        this.second = "Yesterday";
+        this.dataInitForTodayAndYesterday(); //today
         break;
       case 2:
-        this.dataInitForYesterday();  //Yesterday
+        this.first = "This Week";
+        this.second = "Last Week";
+        this.dataInitForThisAndLastWeek();  //Yesterday
         break;
       case 3:
-        this.dataInitForThisWeek();  //This Week
+        this.first = "This Month";
+        this.second = "Last Month";
+        this.dataInitForThisAndLastMonth();  //This Week
         break;
       case 4:
-        this.dataInitForLastWeek();  //Last Week
-        break;
-      case 5:
-        this.dataInitForThisMonth();   //This Month
-        break;
-      case 6:
-        this.dataInitForLastMonth();  //Last Month
-        break;
-      case 7:
-        this.dataInitForThisYear();  //This Year
-        break;
-      case 8:
-        this.dataInitForLastYear();  //Last Year
+        this.first = "This Year";
+        this.second = "Last Year";
+        this.dataInitForThisAndLastYear();  //Last Week
         break;
       default:
         break;
+    }
+
   }
 
+  private getSummaryToArray(thisStart:string, thisEnd:string, lastStart:string, lastEnd:string){
+     
+    this.getTotalSpending(thisStart, thisEnd,"first");
+    this.getTotalSpending(lastStart, lastEnd,"second");
 
+    this.getSpendsForCategories(thisStart, thisEnd,lastStart, lastEnd);
+
+    this.getSpendsForMembers(thisStart, thisEnd,lastStart, lastEnd);
+
+    this.getSpendsForNecessary(thisStart, thisEnd,lastStart, lastEnd);
+ 
   }
 
   /** Initialize the data for today to display */ 
-  private dataInitForToday(){
+  private dataInitForTodayAndYesterday(){
 
-    this.displayDate = formatDate(this.today, 'EEEE MMMM dd yyyy', this.locale);
-
+    //--- today
     let todayDateString = formatDate(this.today, 'yyyy-MM-dd', this.locale);
 
-    setTimeout(() =>
-    {
-      this.getTotalSpending(todayDateString, todayDateString);
-      this.getSpendings(todayDateString);
-      this.getSpendsForCategories(todayDateString, todayDateString);
-      this.getSpendsForMembers(todayDateString, todayDateString);
-      this.getSpendsForNecessary(todayDateString, todayDateString);
+    this.firstDisplayDate = ' '+formatDate(this.today, 'MMM dd', this.locale);
 
-    }, 400);
-
-  }
-
-  /** Initialize the data for yesterday to display */ 
-  private dataInitForYesterday(){
-
-
+    //--- yesterday
     let yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
-
-    this.displayDate = formatDate(yesterday, 'EEEE MMMM dd yyyy', this.locale);
     let yesterdayDateString = formatDate(yesterday, 'yyyy-MM-dd', this.locale);
 
-    setTimeout(() =>
-    {
-      this.getTotalSpending(yesterdayDateString, yesterdayDateString);
-      this.getSpendings(yesterdayDateString);
-      this.getSpendsForCategories(yesterdayDateString, yesterdayDateString);
-      this.getSpendsForMembers(yesterdayDateString, yesterdayDateString);
-      this.getSpendsForNecessary(yesterdayDateString, yesterdayDateString);
+    this.secondDisplayDate = ' '+formatDate(yesterday, 'MMM dd', this.locale);
 
-    }, 400);
+    this.getSummaryToArray(todayDateString, todayDateString, yesterdayDateString, yesterdayDateString);
 
   }
 
   /** Initialize the data for this week to display */ 
-  private dataInitForThisWeek(){
+  private dataInitForThisAndLastWeek(){
 
-    let today = new Date(this.today);
-    let first = today.getDate() - today.getDay() +1;
+    //---- this week
+    let todayFirst = new Date(this.today);
+    let first = todayFirst.getDate() - todayFirst.getDay() +1;
 
-    let weekStart = new Date( today.setDate(first) );
-    let weekEnd = new Date( today.setDate(weekStart.getDate()+6) );    
+    let thisWeekStart = new Date( todayFirst.setDate(first) );
+    let thisWeekEnd = new Date( todayFirst.setDate(thisWeekStart.getDate()+6) );    
     
-    let weekStartString = formatDate(weekStart, 'yyyy-MM-dd', this.locale);
-    let weekEndString = formatDate(weekEnd, 'yyyy-MM-dd', this.locale);
+    let thisWeekStartString = formatDate(thisWeekStart, 'yyyy-MM-dd', this.locale);
+    let thisWeekEndString = formatDate(thisWeekEnd, 'yyyy-MM-dd', this.locale);
 
-    this.displayDate = formatDate(weekStart, 'EEE MMM dd', this.locale)+ " to "+ formatDate(weekEnd, 'EEE MMM dd yyyy', this.locale);
+    this.firstDisplayDate = ' '+formatDate(thisWeekStart, 'MMM dd', this.locale)+ " to "+ formatDate(thisWeekEnd, 'MMM dd yyyy', this.locale);
 
-    setTimeout(() =>
-    {
-      this.getTotalSpending(weekStartString,weekEndString);
-      this.Spendings = []; // individual spendings are not displaied for more than one day
-      this.getSpendsForCategories(weekStartString,weekEndString);
-      this.getSpendsForMembers(weekStartString,weekEndString);
-      this.getSpendsForNecessary(weekStartString,weekEndString);
+    //---- last week
+    let todaySecond= new Date(this.today);
+    let second = todaySecond.getDate() - todaySecond.getDay()  - 6 ;
 
-    }, 400);
-
-  }
-
-  /** Initialize the data for last week to display */ 
-  private dataInitForLastWeek(){
-
-    let today = new Date(this.today);
-    let first = today.getDate() - today.getDay()  - 6 ;
-
-    let weekStart = new Date( today.setDate(first) );
-    let weekEnd = new Date( today.setDate(weekStart.getDate()+6) );    
+    let lastWeekStart = new Date( todaySecond.setDate(second) );
+    let lastWeekEnd = new Date( todaySecond.setDate(lastWeekStart.getDate()+6) );    
     
-    let weekStartString = formatDate(weekStart, 'yyyy-MM-dd', this.locale);
-    let weekEndString = formatDate(weekEnd, 'yyyy-MM-dd', this.locale);
+    let lastWeekStartString = formatDate(lastWeekStart, 'yyyy-MM-dd', this.locale);
+    let lastWeekEndString = formatDate(lastWeekEnd, 'yyyy-MM-dd', this.locale);
 
-    this.displayDate = formatDate(weekStart, 'EEE MMM dd', this.locale)+ " to "+ formatDate(weekEnd, 'EEE MMM dd yyyy', this.locale);
+    this.secondDisplayDate = ' '+formatDate(lastWeekStart, 'MMM dd', this.locale)+ " to "+ formatDate(lastWeekEnd, 'MMM dd yyyy', this.locale);
 
-    setTimeout(() =>
-    {
-      this.getTotalSpending(weekStartString,weekEndString);
-      this.Spendings = []; // individual spendings are not displaied for more than one day
-      this.getSpendsForCategories(weekStartString,weekEndString);
-      this.getSpendsForMembers(weekStartString,weekEndString);
-      this.getSpendsForNecessary(weekStartString,weekEndString);
-
-    }, 400);
+    this.getSummaryToArray(thisWeekStartString, thisWeekEndString, lastWeekStartString, lastWeekEndString);
+ 
 
   }
 
   /** Initialize the data for this month to display */ 
-  private dataInitForThisMonth(){
+  private dataInitForThisAndLastMonth(){
 
-    let month = this.today.getMonth() +1;
+    //--- this month
+    let monthFirst = this.today.getMonth() +1;
     let year = this.today.getFullYear();
 
-    let daysInMonth = new Date(year, month,0).getDate(); 
+    let daysInFirstMonth = new Date(year, monthFirst,0).getDate(); 
 
-    let monthStartDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
-    let monthEndDate = formatDate(new Date(year.toString()+'-'+month.toString()+'-'+daysInMonth), 'yyyy-MM-dd', this.locale);
+    let thisMonthStartDate =  formatDate(new Date(year.toString()+'-'+monthFirst.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
+    let thisMonthEndDate = formatDate(new Date(year.toString()+'-'+monthFirst.toString()+'-'+daysInFirstMonth), 'yyyy-MM-dd', this.locale);
 
-    this.displayDate = formatDate(this.today, 'MMMM yyyy', this.locale);
+    this.firstDisplayDate = ' '+ formatDate(this.today, 'MMMM yyyy', this.locale);
 
-    setTimeout(() =>
-    {
-      this.getTotalSpending(monthStartDate,monthEndDate);
-      this.Spendings = []; // individual spendings are not displaied for more than one day
-      this.getSpendsForCategories(monthStartDate,monthEndDate);
-      this.getSpendsForMembers(monthStartDate,monthEndDate);
-      this.getSpendsForNecessary(monthStartDate,monthEndDate);
-
-    }, 400);
-
-  }
-
-   /** Initialize the data for last month to display */ 
-  private dataInitForLastMonth(){
-
+    //--- last month
     let getMonth = this.today.getMonth();
+    let monthSecond = getMonth == 0 ? 12 : getMonth;
 
-    let month = getMonth == 0 ? 12 : getMonth;
-    let year = this.today.getFullYear();
+    let daysInSecondMonth = new Date(year, monthSecond,0).getDate(); 
 
-    let daysInMonth = new Date(year, month,0).getDate(); 
+    let lastMonthStartDate =  formatDate(new Date(year.toString()+'-'+monthSecond.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
+    let lastMonthEndDate = formatDate(new Date(year.toString()+'-'+monthSecond.toString()+'-'+daysInSecondMonth), 'yyyy-MM-dd', this.locale);
 
-    let monthStartDate =  formatDate(new Date(year.toString()+'-'+month.toString()+'-'+1), 'yyyy-MM-dd', this.locale);
-    let monthEndDate = formatDate(new Date(year.toString()+'-'+month.toString()+'-'+daysInMonth), 'yyyy-MM-dd', this.locale);
+    this.secondDisplayDate = ' '+ formatDate(new Date(lastMonthStartDate), 'MMMM yyyy', this.locale);
 
-    this.displayDate = formatDate(new Date(monthStartDate), 'MMMM yyyy', this.locale);
-
-    setTimeout(() =>
-    {
-      this.getTotalSpending(monthStartDate,monthEndDate);
-      this.Spendings = []; // individual spendings are not displaied for more than one day
-      this.getSpendsForCategories(monthStartDate,monthEndDate);
-      this.getSpendsForMembers(monthStartDate,monthEndDate);
-      this.getSpendsForNecessary(monthStartDate,monthEndDate);
-
-    }, 400);
+    this.getSummaryToArray(thisMonthStartDate, thisMonthEndDate, lastMonthStartDate, lastMonthEndDate);
 
   }
 
   /** Initialize the data for this year to display */ 
-  private dataInitForThisYear(){
+  private dataInitForThisAndLastYear(){
 
-  
-    let year = this.today.getFullYear();
+    //--- this Year  
+    let thisYear = this.today.getFullYear();
+    let thisYeartartDate =  formatDate(new Date(thisYear.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
+    let thisYearEndDate = formatDate(new Date(thisYear.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
 
+    this.firstDisplayDate = ' '+ thisYear;
 
-    let yeartartDate =  formatDate(new Date(year.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
-    let yearEndDate = formatDate(new Date(year.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
+    //--- last year
+    let lastYear = this.today.getFullYear() - 1;
 
-    this.displayDate = "Year "+ year;
+    let lastYeartartDate =  formatDate(new Date(lastYear.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
+    let lastYearEndDate = formatDate(new Date(lastYear.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
 
-    setTimeout(() =>
-    {
-      this.getTotalSpending(yeartartDate,yearEndDate);
-      this.Spendings = []; // individual spendings are not displaied for more than one day
-      this.getSpendsForCategories(yeartartDate,yearEndDate);
-      this.getSpendsForMembers(yeartartDate,yearEndDate);
-      this.getSpendsForNecessary(yeartartDate,yearEndDate);
+    this.secondDisplayDate = ' '+ lastYear;
 
-    }, 400);
-
-  }
-
-  /** Initialize the data for this year to display */ 
-  private dataInitForLastYear(){
-
-  
-    let year = this.today.getFullYear() - 1;
-
-
-    let yeartartDate =  formatDate(new Date(year.toString()+'-01-01'), 'yyyy-MM-dd', this.locale);
-    let yearEndDate = formatDate(new Date(year.toString()+'-12-31'), 'yyyy-MM-dd', this.locale);
-
-    this.displayDate = "Year "+ year;
-
-    setTimeout(() =>
-    {
-      this.getTotalSpending(yeartartDate,yearEndDate);
-      this.Spendings = []; // individual spendings are not displaied for more than one day
-      this.getSpendsForCategories(yeartartDate,yearEndDate);
-      this.getSpendsForMembers(yeartartDate,yearEndDate);
-      this.getSpendsForNecessary(yeartartDate,yearEndDate);
-
-    }, 400);
+    this.getSummaryToArray(thisYeartartDate, thisYearEndDate, lastYeartartDate, lastYearEndDate);
 
   }
 
   /** Get total spendings for date range */
-  getTotalSpending(startDate:string,endDate:string){
-    this.totalSpends = 0;
+  getTotalSpending(startDate:string,endDate:string,type:string){
 
+    type=="first"? this.firstTotalSpends = 0 : this.secondTotalSpends = 0;
+    
     this.database.getTotalSpendsForDate(startDate,endDate).then((result) => { 
 
       let expenditures;
@@ -314,119 +233,95 @@ export class ReportsPage implements OnInit {
       if(result != 0){
 
         expenditures =  result;  
-
         let expendituresLength = expenditures.length;
 
         if(expendituresLength > 0){
-          for(let i=0; i < expendituresLength; i++) {      
-            this.totalSpends = expenditures[i].total        
+          for(let i=0; i < expendituresLength; i++) {     
+            if(type=="first"){
+              this.firstTotalSpends = expenditures[i].total;
+            }
+            else{
+              this.secondTotalSpends  = expenditures[i].total;
+            }     
           }
         }     
       }  
       else{
-        this.totalSpends = 0;
-      } 
-    });
-
-  }
-
-  /** Getall spending for today */
-  getSpendings(date:string){
-
-    this.Spendings = [];
-  
-    this.database.getExpendituresByDate(date).then((result) => { 
-
-      let expenditures;
-
-      if(result != 0){
-
-        expenditures =  result;  
-
-        let expendituresLength = expenditures.length;
-
-        if(expendituresLength > 0){
-
-          for(let i=0; i < expendituresLength; i++) { 
-
-            this.Spendings.push(new Spending(
-              expenditures[i].id,
-              expenditures[i].date,
-              expenditures[i].member,
-              expenditures[i].category,
-              expenditures[i].description,
-              expenditures[i].unnecessary,
-              expenditures[i].amount
-              ));
-          }
-
-        }
-      }  
-      else{
         expenditures = 0;
       } 
-
     });
+
   }
 
   /** To see the all spending for this day gouping by categories */
-  public getSpendsForCategories(startDate:string,endDate:string){
+  private getSpendsForCategories(dateStart1:string,dateEnd1:string,dateStart2:string,dateEnd2:string){
 
-    this.spendsByCategories = [];
+    this.categoryMap = new Map<any, SummaryTotal>();
 
-    this.database.getSpendsGroupingCateMemForday(startDate,endDate, "category").then((result) => { 
+    this.database.getSpendsGroupingCateMem(dateStart1,dateEnd1,dateStart2,dateEnd2, "category").then((result) => { 
 
       let expenditures;
 
       if(result != 0){
 
         expenditures =  result;  
-
         let expendituresLength = expenditures.length;
 
         if(expendituresLength > 0){
 
           for(let i=0; i < expendituresLength; i++) { 
-           
-            this.spendsByCategories.push({
-              category: expenditures[i].name ,
-              total:  expenditures[i].total
-            });
-          }
 
+            let name = expenditures[i].name;
+            if(expenditures[i].time == "this"){
+              let sumTot = this.categoryMap.has(name)? this.categoryMap.get(expenditures[i].name): new SummaryTotal();
+              sumTot.firstTotal= expenditures[i].total;
+              this.categoryMap.set(name,sumTot);
+            }
+            else{
+              let sumTot = this.categoryMap.has(name)? this.categoryMap.get(name): new SummaryTotal();
+              sumTot.secondTotal= expenditures[i].total;
+              this.categoryMap.set(name,sumTot)
+            }     
+          }
         }
       }  
       else{
         expenditures = 0;
       } 
     });
+
   }
 
   /** To see the all spending for this day gouping by members */
-  public getSpendsForMembers(startDate:string,endDate:string){
+  private getSpendsForMembers(dateStart1:string,dateEnd1:string,dateStart2:string,dateEnd2:string){
 
-    this.spendsByMembers = [];
+    this.memberMap = new Map<any, SummaryTotal>();
 
-    this.database.getSpendsGroupingCateMemForday(startDate,endDate,"member").then((result) => { 
+    this.database.getSpendsGroupingCateMem(dateStart1,dateEnd1,dateStart2,dateEnd2, "member").then((result) => { 
 
       let expenditures;
 
       if(result != 0){
 
         expenditures =  result;  
-
         let expendituresLength = expenditures.length;
 
         if(expendituresLength > 0){
 
           for(let i=0; i < expendituresLength; i++) { 
-            
-            this.spendsByMembers.push({
-              member: expenditures[i].name ,
-              total:  expenditures[i].total
-            });
-          }
 
+            let name = expenditures[i].name;
+            if(expenditures[i].time == "this"){
+              let sumTot = this.memberMap.has(name)? this.memberMap.get(expenditures[i].name): new SummaryTotal();
+              sumTot.firstTotal= expenditures[i].total;
+              this.memberMap.set(name,sumTot);
+            }
+            else{
+              let sumTot = this.memberMap.has(name)? this.memberMap.get(name): new SummaryTotal();
+              sumTot.secondTotal= expenditures[i].total;
+              this.memberMap.set(name,sumTot)
+            }       
+          }
         }
       }  
       else{
@@ -436,57 +331,44 @@ export class ReportsPage implements OnInit {
   }
 
   /** To see the all spending for this day gouping by essential */
-  public getSpendsForNecessary(startDate:string,endDate:string){
+  private getSpendsForNecessary(dateStart1:string,dateEnd1:string,dateStart2:string,dateEnd2:string){
 
-    this.spendsByNecessary= [];
+    this.necessaryMap = new Map<any, SummaryTotal>();
 
-    this.database.getSpendsGroupByNecessaryForday(startDate,endDate).then((result) => { 
+    this.database.getSpendsGroupByNecessary(dateStart1,dateEnd1,dateStart2,dateEnd2).then((result) => { 
 
       let expenditures;
 
       if(result != 0){
 
         expenditures =  result;  
-
         let expendituresLength = expenditures.length;
 
         if(expendituresLength > 0){
 
           for(let i=0; i < expendituresLength; i++) { 
-            
-            this.spendsByNecessary.push({
-              unnecessary: expenditures[i].unnecessary ,
-              total:  expenditures[i].total
-            });
-          }
 
+            let unnecessary = expenditures[i].unnecessary;
+            if(expenditures[i].time == "this"){
+              let sumTot = this.necessaryMap.has(unnecessary)? this.necessaryMap.get(expenditures[i].unnecessary): new SummaryTotal();
+              sumTot.firstTotal= expenditures[i].total;
+              this.necessaryMap.set(unnecessary,sumTot);
+            }
+            else{
+              let sumTot = this.necessaryMap.has(unnecessary)? this.necessaryMap.get(unnecessary): new SummaryTotal();
+              sumTot.secondTotal= expenditures[i].total;
+              this.necessaryMap.set(unnecessary,sumTot)
+            }       
+          }
         }
       }  
       else{
         expenditures = 0;
       } 
     });
+
+    
   }
 
-  /** To present viewing popover */
-  async spendViewModal(spending){
-
-    const spendViewPopover = await this.popoverController.create({
-      component: SpendViewComponent,
-      componentProps: {
-        id:spending.id, 
-        date:spending.date,
-        member:spending.member,
-        category:spending.category, 
-        description:spending.description,
-        unnecessary:spending.unnecessary, 
-        amount:spending.amount
-      },
-      translucent: true
-    });
-
-    await spendViewPopover.present();
-
-  }
 
 }

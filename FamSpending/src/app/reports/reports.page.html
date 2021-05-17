@@ -17,13 +17,13 @@
 
   <ion-row >
  
-    <ion-col size="6">
+    <ion-col size="5">
       <ion-item lines="none">
         <ion-label class="fontClass">Spendings for :  </ion-label>
       </ion-item>
     </ion-col>
 
-    <ion-col size="5">
+    <ion-col size="7">
       <ion-item >
         <ion-select (ionChange)="aReportIsSelected()"  placeholder="Report Type" class="center"  interface="popover" [(ngModel)]="type" name="type" >
           <ion-select-option  *ngFor="let type of types" [value]="type.id" >{{type.name}}</ion-select-option >
@@ -31,157 +31,156 @@
       </ion-item>
     </ion-col>
 
-    <ion-col size="1">
-    </ion-col>
 
   </ion-row>
 
   <br>
 
-  <div  class="ion-text-center"> 
-    <ion-title  class="fontClass">  {{displayDate}}  </ion-title>
+  <div  class="ion-text-start"> 
+    <ion-title  class="dates"> <b> {{first}} </b> : {{firstDisplayDate}}  </ion-title>
+  </div>
+  <br>
+  <div  class="ion-text-start"> 
+    <ion-title  class="dates"> <b> {{second}} </b> : {{secondDisplayDate}}  </ion-title>
   </div>
   <br>
 
   <div  class="ion-text-center"> 
-    <ion-title *ngIf="totalSpends==0"  class="fontClass"> <b> No Spendings </b>  </ion-title>
+    <ion-title *ngIf="firstTotalSpends==0 && secondTotalSpends==0 "  class="fontClass"> <b> No Spendings </b>  </ion-title>
   </div>
 
   <br>
 
-  <div style="font-family:monospace;" *ngIf="totalSpends!=0" class="ion-text-start"> <b> Total Rs. {{totalSpends}} /= </b></div>
-  
-  <br>
+  <div  class="content" *ngIf="firstTotalSpends!=0 || secondTotalSpends!=0 ">
 
-  <div *ngIf="totalSpends!=0" class="ion-text-center">
+    <ion-grid>
 
-    <ion-list> 
+      <ion-row class="dates">
+        <ion-col size="4">
+        </ion-col>
+        <ion-col size="4">
+          {{first}}
+        </ion-col>
+        <ion-col size="4">
+          {{second}}
+        </ion-col>
+      </ion-row>
 
-      <div *ngFor="let spending of Spendings let idx = index" >
+      <br>
+
+      <ion-row  >
+        <ion-col class="details" size="4">
+          <b>Total</b> 
+        </ion-col>
+        <ion-col class="fontClass" size="4">
+          Rs. {{firstTotalSpends}}
+        </ion-col>
+        <ion-col class="fontClass" size="4">
+          Rs. {{secondTotalSpends}}
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+    <br>
+
+    <ion-list-header class="ion-text-start" lines="full" >
+      <ion-label class="details"> <b>Categories</b></ion-label>
+    </ion-list-header>
+
+    <div *ngIf="categoryMap"> 
+
+      <div  *ngFor="let category of categoryMap  | keyvalue " >
 
         <ion-grid>
 
           <ion-row>
-
-            <ion-col size="2">
-
-              <div class="ion-text-start">
-                <ion-icon name="star-outline"></ion-icon>
-                {{idx + 1}}
-              </div>
-                             
-            </ion-col>
-    
-            <ion-col class="ion-text-start" size="8">
-
-                <div class="fontClass"> Rs. {{spending.amount}} /= </div>
-              
+            <ion-col size="4">
+              <div class="fontClass">  {{category.key}}  </div>
             </ion-col>
 
-            <ion-col size="2">
-             
-              <ion-button color="success" size="small" (click)="spendViewModal(spending)" > <ion-icon slot="icon-only" name="eye"></ion-icon> </ion-button>
-            
+            <ion-col size="4">
+              <div class="fontClass"> Rs. {{category.value.firstTotal}} </div>
             </ion-col>
 
-    
+            <ion-col size="4">
+              <div class="fontClass"> Rs. {{category.value.secondTotal}} </div>
+            </ion-col>
+
           </ion-row>
-      
+
         </ion-grid>
-        
+
       </div>
 
-    </ion-list>
+    </div>
+
+    <br>
+
+    <ion-list-header class="ion-text-start" lines="full" >
+      <ion-label class="details" ><b>Members</b></ion-label>
+    </ion-list-header>
+
+    <div *ngIf="memberMap"> 
+
+      <div *ngFor="let member of memberMap  | keyvalue " >
+
+        <ion-grid>
+
+          <ion-row>
+            <ion-col size="4">
+              <div class="fontClass">  {{member.key}}  </div>
+            </ion-col>
+
+            <ion-col size="4">
+              <div class="fontClass"> Rs. {{member.value.firstTotal}} </div>
+            </ion-col>
+
+            <ion-col size="4">
+              <div class="fontClass">  Rs. {{member.value.secondTotal}} </div>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <ion-list-header class="ion-text-start" lines="full" >
+      <ion-label class="details"><b>Essential </b></ion-label>
+    </ion-list-header>
+
+    <div *ngFor="let essential of necessaryMap  | keyvalue " >
+
+      <ion-grid>
+
+        <ion-row>
+
+          <ion-col size="4">
+            <ion-label class="fontClass" *ngIf="essential.key==0">Yes</ion-label>
+            <ion-label class="fontClass" *ngIf="essential.key==1">No</ion-label>
+          </ion-col>
+
+          <ion-col size="4">
+            <div class="fontClass"> Rs. {{essential.value.firstTotal}} </div>
+          </ion-col>
+
+          <ion-col size="4">
+            <div class="fontClass"> Rs. {{essential.value.secondTotal}} </div>
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+    </div>
 
   </div>
 
-  <div *ngIf="totalSpends!=0" class="ion-text-center">
 
-    <ion-list-header lines="full" >
-      <ion-label style="font-family:monospace;" class="ion-text-start">Categories</ion-label>
-    </ion-list-header>
-
-    <ion-list> 
-
-      <div *ngFor="let spending of spendsByCategories" >
-
-        <ion-grid>
-
-          <ion-row>
-
-            <ion-col size="6">
-              <div class="fontClass">  {{spending.category}}  </div>
-            </ion-col>
-
-            <ion-col size="6">
-              <div class="fontClass"> Rs. {{spending.total}} /= </div>
-            </ion-col>
-
-          </ion-row>
-
-        </ion-grid>
-
-      </div>
-
-    </ion-list>
-
-    <ion-list-header lines="full" >
-      <ion-label style="font-family:monospace;" class="ion-text-start">Members</ion-label>
-    </ion-list-header>
-
-    <ion-list> 
-
-      <div *ngFor="let spending of spendsByMembers" >
-
-        <ion-grid>
-
-          <ion-row>
-
-            <ion-col size="6">
-              <div class="fontClass">  {{spending.member}}  </div>
-            </ion-col>
-
-            <ion-col size="6">
-              <div class="fontClass"> Rs. {{spending.total}} /= </div>
-            </ion-col>
-
-          </ion-row>
-
-        </ion-grid>
-
-      </div>
-
-    </ion-list>
-
-    <ion-list-header lines="full" >
-      <ion-label style="font-family:monospace;" class="ion-text-start">Essential</ion-label>
-    </ion-list-header>
-
-    <ion-list> 
-
-      <div *ngFor="let spending of spendsByNecessary" >
-
-        <ion-grid>
-
-          <ion-row>
-
-            <ion-col size="6">
-              <ion-label class="fontClass" *ngIf="spending.unnecessary==0">Yes</ion-label>
-              <ion-label class="fontClass" *ngIf="spending.unnecessary==1">No</ion-label>
-            </ion-col>
-
-            <ion-col size="6">
-              <div class="fontClass"> Rs. {{spending.total}} /= </div>
-            </ion-col>
-
-          </ion-row>
-
-        </ion-grid>
-
-      </div>
-
-    </ion-list>
-
-  </div>
 
 </ion-content>

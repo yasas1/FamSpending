@@ -256,6 +256,102 @@ export class DatabaseService {
     );
   }
 
+  /**  Get Expenditures by date grouping members or categories for summary*/
+  getSpendsGroupingCateMem(dateStart1:string,dateEnd1:string,dateStart2:string,dateEnd2:string,dbType:string) {
+
+    return this.databaseObj.executeSql(`
+      SELECT sum(e.amount) as total, t.name as name, periods.start_date as start, periods.end_date as end
+      FROM expenditure e
+      JOIN '${dbType}' t ON e.${dbType}_id = t.id
+      JOIN (SELECT '${dateStart1}' as start_date, '${dateEnd1}' as end_date UNION ALL
+            SELECT '${dateStart2}' as start_date, '${dateEnd2}' as end_date) as periods
+      ON e.date BETWEEN periods.start_date AND periods.end_date
+      GROUP BY periods.start_date, periods.end_date, ${dbType}_id 
+      
+      `, [])
+        .then((data) => {
+
+          let expenditures= [];
+
+          if(data.rows.length > 0){
+
+            for(let i=0; i <data.rows.length; i++) {
+
+              if(data.rows.item(i).start == dateStart1){
+                expenditures.push({
+                  time:"this",
+                  name:data.rows.item(i).name,
+                  total:data.rows.item(i).total,
+                });
+              }
+              else{
+                expenditures.push({
+                  time:"last",
+                  name:data.rows.item(i).name,
+                  total:data.rows.item(i).total,
+                });
+              }
+            }
+
+            return expenditures;
+          }
+          else{
+            return 0;
+          }
+        })
+        .catch(error => {
+          this.alertViewer.presentAlert("Spendings Getting Error! ","Getting error"+JSON.stringify(error));
+        }
+    );
+  }
+
+  /**  Get Expenditures by date grouping necessary*/
+  getSpendsGroupByNecessary(dateStart1:string,dateEnd1:string,dateStart2:string,dateEnd2:string) {
+
+    return this.databaseObj.executeSql(`
+      SELECT sum(amount) as total, unnecessary, periods.start_date as start, periods.end_date as end
+      FROM expenditure
+      JOIN (SELECT '${dateStart1}' as start_date, '${dateEnd1}' as end_date UNION ALL
+            SELECT '${dateStart2}' as start_date, '${dateEnd2}' as end_date) as periods
+      ON date BETWEEN periods.start_date AND periods.end_date
+      GROUP BY periods.start_date, periods.end_date, unnecessary
+      `, [])
+      .then((data) => {
+
+        let expenditures= [];
+
+        if(data.rows.length > 0){
+
+          for(let i=0; i <data.rows.length; i++) {
+
+            if(data.rows.item(i).start == dateStart1){
+              expenditures.push({
+                time:"this",
+                unnecessary:data.rows.item(i).unnecessary,
+                total:data.rows.item(i).total,
+              });
+            }
+            else{
+              expenditures.push({
+                time:"last",
+                unnecessary:data.rows.item(i).unnecessary,
+                total:data.rows.item(i).total,
+              });
+            }
+          }
+
+          return expenditures;
+        }
+        else{
+          return 0;
+        }
+      })
+      .catch(error => {
+        this.alertViewer.presentAlert("Spendings Getting Error! ","Getting error"+JSON.stringify(error));
+      }
+    );
+  }
+
    /**  Get Expenditures by date grouping necessary*/
    getSpendsGroupByNecessaryForday(startDate:string,endDate:string) {
 
