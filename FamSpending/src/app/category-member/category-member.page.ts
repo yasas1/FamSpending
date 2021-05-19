@@ -228,8 +228,14 @@ export class CategoryMemberPage implements OnInit {
 
     if(size > 0){
 
-      for(var i = 0; i < size; i++) { 
-        let name = this.dataArray[i].name;  
+      // remove duplicates
+      let map = new Map<any,any>();
+      for(let item of this.dataArray){
+        map.set(item.name,item.name);
+      }
+      
+      for (let entry of Array.from(map.entries())) { 
+        let name = entry[0];//this.dataArray[i].name;  
         if(name != ""){
           allNull = false;
           this.database.checkCategoryOrMemberByName(name,dbType).then((result) => { 

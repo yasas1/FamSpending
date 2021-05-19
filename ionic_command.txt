@@ -58,6 +58,15 @@ https://ionicframework.com/docs/native/date-picker
 https://ionicframework.com/docs/v3/native/date-picker/
 https://forum.ionicframework.com/t/ionic-native-datetimepicker-demo/101151
 
+////////////
+keytool -genkey -v -keystore yaka.keystore -alias yaka -keyalg RSA -keysize 2048 -validity 20000
+password : yaka123
+creationyaka
+Sri Lanka
+Colombo
+SL
+cordova build --release
+////////////////
 
 /////////// native run 
 npm i -g native-run
@@ -73,6 +82,8 @@ ionic g c compName
 
 
 ionic cordova resources
+
+
 
 
 

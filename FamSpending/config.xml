@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.yaka.creation" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>FmS</name>
     <description>
     FmS is a Family Spending tracking application for a family which is focused only on daily spending with managing customizable Categories and Members.
     </description>
-    <author email="hi@ionicframework.com" href="http://ionicframework.com/">YaKA Creation</author>
+    <author email="creationyaka@gmail.com" href="https://www.linkedin.com/in/yasasr/">Yaka Creation</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

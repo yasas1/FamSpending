@@ -19,31 +19,6 @@ const routes: Routes = [
     loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
   }
   
-  // {
-  //   path: 'daySpendingManage',
-  //   loadChildren: () => import('./day-spendings-manage/day-spendings-manage.module').then( m => m.DaySpendingsManagePageModule)
-  // }
-  // {
-  //   path: 'category-member',
-  //   loadChildren: () => import('./category-member/category-member.module').then( m => m.CategoryMemberPageModule)
-  // }
-  // {
-  //   path: 'home',
-  //   loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  // },
-  // {
-  //   path: '',
-  //   redirectTo: 'home',
-  //   pathMatch: 'full'
-  // },
-  // {
-  //   path: 'menu',
-  //   loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
-  // },
-  // {
-  //   path: 'new-spending',
-  //   loadChildren: () => import('./new-spending/new-spending.module').then( m => m.NewSpendingPageModule)
-  // },
 ];
 
 @NgModule({

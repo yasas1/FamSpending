@@ -20,7 +20,7 @@ export class ViewControllerService {
     });
     alert.present();
 
-    //setTimeout(()=>alert.dismiss(),3000);
+    setTimeout(()=>alert.dismiss(),3000);
 
   }
   
